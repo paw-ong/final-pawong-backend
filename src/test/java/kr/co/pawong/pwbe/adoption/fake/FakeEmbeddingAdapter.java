@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.adoption.fake;
 
-import kr.co.pawong.pwbe.adoption.application.service.port.EmbeddingProcessorPort;
+import kr.co.pawong.pwbe.infrastructure.ai.port.EmbeddingProcessorPort;
 
 public class FakeEmbeddingAdapter implements EmbeddingProcessorPort {
     @Override

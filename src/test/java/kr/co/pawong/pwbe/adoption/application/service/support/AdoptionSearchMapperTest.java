@@ -3,7 +3,7 @@ package kr.co.pawong.pwbe.adoption.application.service.support;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import kr.co.pawong.pwbe.adoption.application.service.dto.request.AdoptionSearchCondition.Region;
+import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionSearchCondition.Region;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 

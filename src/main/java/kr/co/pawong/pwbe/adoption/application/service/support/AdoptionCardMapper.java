@@ -1,7 +1,7 @@
 package kr.co.pawong.pwbe.adoption.application.service.support;
 
-import kr.co.pawong.pwbe.adoption.application.domain.Adoption;
-import kr.co.pawong.pwbe.adoption.application.service.dto.response.AdoptionCard;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCard;
+import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 
 public class AdoptionCardMapper {
 

@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.adoption.application.service.util;
 
+import kr.co.pawong.pwbe.infrastructure.ai.AdoptionAiExecutor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AdoptionAiExecutorTest {
 

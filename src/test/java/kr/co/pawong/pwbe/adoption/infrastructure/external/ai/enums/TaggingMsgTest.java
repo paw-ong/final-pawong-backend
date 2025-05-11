@@ -2,7 +2,7 @@ package kr.co.pawong.pwbe.adoption.infrastructure.external.ai.enums;
 
 import org.junit.jupiter.api.Test;
 
-import static kr.co.pawong.pwbe.adoption.infrastructure.external.ai.enums.TaggingMsg.TAGGING_TEMPLATE_1;
+import static kr.co.pawong.pwbe.infrastructure.ai.enums.TaggingMsg.TAGGING_TEMPLATE_1;
 
 class TaggingMsgTest {
 

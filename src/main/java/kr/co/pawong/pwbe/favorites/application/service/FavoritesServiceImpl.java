@@ -1,8 +1,8 @@
 package kr.co.pawong.pwbe.favorites.application.service;
 
-import kr.co.pawong.pwbe.adoption.application.domain.Adoption;
-import kr.co.pawong.pwbe.adoption.application.service.dto.response.AdoptionCard;
-import kr.co.pawong.pwbe.adoption.application.service.port.AdoptionQueryRepository;
+import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCard;
+import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
 import kr.co.pawong.pwbe.adoption.application.service.support.AdoptionCardMapper;
 import kr.co.pawong.pwbe.favorites.application.domain.Favorites;
 import kr.co.pawong.pwbe.favorites.application.service.dto.FavoritesRequest;
@@ -25,7 +25,7 @@ public class FavoritesServiceImpl implements FavoritesService {
 
     private final FavoritesRepository favoritesRepository;
     private final UserQueryRepository userQueryRepository;
-    private final AdoptionQueryRepository adoptionQueryRepository;
+    private final AdoptionDataQueryPort adoptionDataQueryPort;
 
     // toggle 방식의 찜 (이미 찜을 한 경우 찜 취소. 찜을 안한 경우 찜.)
     @Override
@@ -38,7 +38,7 @@ public class FavoritesServiceImpl implements FavoritesService {
         userQueryRepository.findByUserIdOrThrow(userId);
 
         // 2) Adoption 존재 검증 (없으면 EntityNotFoundException 등)
-        adoptionQueryRepository.findByIdOrThrow(adoptionId);
+        adoptionDataQueryPort.findByIdOrThrow(adoptionId);
 
         // 3) 토글 로직
         return favoritesRepository
@@ -80,7 +80,7 @@ public class FavoritesServiceImpl implements FavoritesService {
 
         // 유저와 공고 존재 검증
         userQueryRepository.findByUserIdOrThrow(userId);
-        adoptionQueryRepository.findByIdOrThrow(adoptionId);
+        adoptionDataQueryPort.findByIdOrThrow(adoptionId);
 
         // 사용자가 해당 공고를 찜했는지 확인 (존재하면 true, 없으면 false)
         boolean present = favoritesRepository
@@ -93,7 +93,7 @@ public class FavoritesServiceImpl implements FavoritesService {
         List<AdoptionCard> adoptionCards = new ArrayList<>(favoritesList.size());
         for(Favorites favorites : favoritesList) {
             Long adoptionId = favorites.getAdoptionId();
-            Adoption adoption = adoptionQueryRepository.findByIdOrThrow(adoptionId);
+            Adoption adoption = adoptionDataQueryPort.findByIdOrThrow(adoptionId);
             adoptionCards.add(AdoptionCardMapper.toAdoptionCard(adoption));
         }
         return adoptionCards;

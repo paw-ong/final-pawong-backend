@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.shelter.infrastructure.adapter;
 
-import kr.co.pawong.pwbe.adoption.application.service.port.ShelterInfoPort;
+import kr.co.pawong.pwbe.adoption.application.port.out.ShelterInfoPort;
 import kr.co.pawong.pwbe.shelter.presentation.controller.dto.ShelterInfoDto;
 import kr.co.pawong.pwbe.shelter.presentation.port.ShelterQueryService;
 import lombok.RequiredArgsConstructor;

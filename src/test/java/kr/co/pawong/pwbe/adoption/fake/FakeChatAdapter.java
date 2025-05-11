@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.adoption.fake;
 
-import kr.co.pawong.pwbe.adoption.application.service.port.ChatProcessorPort;
+import kr.co.pawong.pwbe.infrastructure.ai.port.ChatProcessorPort;
 
 import java.util.List;
 
