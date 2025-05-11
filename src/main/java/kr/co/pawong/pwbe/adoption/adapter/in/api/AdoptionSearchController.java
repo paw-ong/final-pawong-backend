@@ -1,10 +1,10 @@
-package kr.co.pawong.pwbe.adoption.adapter.in.controller;
+package kr.co.pawong.pwbe.adoption.adapter.in.api;
 
-import kr.co.pawong.pwbe.adoption.adapter.in.controller.dto.request.AdoptionSearchRequest;
-import kr.co.pawong.pwbe.adoption.adapter.in.controller.dto.response.AdoptionAutocompleteResponse;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.dto.request.AdoptionSearchRequest;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.dto.response.AdoptionAutocompleteResponse;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionSearchResponses;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionIdSearchResponses;
-import kr.co.pawong.pwbe.adoption.application.port.in.SearchEngineUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.SearchAdoptionEngineUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,18 +16,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdoptionSearchController {
 
-    private final SearchEngineUseCase searchEngineUseCase;
+    private final SearchAdoptionEngineUseCase searchAdoptionEngineUseCase;
 
     @GetMapping("/search")
     public ResponseEntity<AdoptionSearchResponses> search(@ModelAttribute AdoptionSearchRequest request) {
-        AdoptionSearchResponses response = searchEngineUseCase.search(request);
+        AdoptionSearchResponses response = searchAdoptionEngineUseCase.search(request);
         return ResponseEntity.ok(response);
     }
 
     // adoptionId 리스트만 반환하는 테스트용 API
     @GetMapping("/test/search")
     public ResponseEntity<AdoptionIdSearchResponses> searchDocumentIds(@ModelAttribute AdoptionSearchRequest request) {
-        AdoptionIdSearchResponses response = searchEngineUseCase.searchDocumentIds(request);
+        AdoptionIdSearchResponses response = searchAdoptionEngineUseCase.searchDocumentIds(request);
         return ResponseEntity.ok(response);
     }
 
@@ -35,7 +35,7 @@ public class AdoptionSearchController {
     public ResponseEntity<AdoptionAutocompleteResponse> searchAutoComplete(
             @RequestParam String keyword
     ) {
-        List<String> autocomplete = searchEngineUseCase.autocomplete(keyword);
+        List<String> autocomplete = searchAdoptionEngineUseCase.autocomplete(keyword);
         return ResponseEntity.ok(
                 new AdoptionAutocompleteResponse(autocomplete)
         );

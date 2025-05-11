@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.in.controller.dto.request;
+package kr.co.pawong.pwbe.adoption.adapter.in.api.dto.request;
 
 import kr.co.pawong.pwbe.adoption.enums.NeuterYn;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;

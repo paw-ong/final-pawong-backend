@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.adoption.application.port.in;
 
-import kr.co.pawong.pwbe.adoption.adapter.in.controller.dto.request.AdoptionSearchRequest;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.dto.request.AdoptionSearchRequest;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionSearchResponses;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionIdSearchResponses;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface SearchEngineUseCase {
+public interface SearchAdoptionEngineUseCase {
 
     // RDB에서 adoptionId로 최종 adoptions 반환
     AdoptionSearchResponses search(AdoptionSearchRequest request);

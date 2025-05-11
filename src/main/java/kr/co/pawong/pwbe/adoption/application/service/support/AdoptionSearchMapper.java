@@ -6,7 +6,7 @@ import java.util.Optional;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionSearchCondition;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionSearchCondition.Region;
-import kr.co.pawong.pwbe.adoption.adapter.in.controller.dto.request.AdoptionSearchRequest;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.dto.request.AdoptionSearchRequest;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionIdSearchResponse;
 
 public class AdoptionSearchMapper {

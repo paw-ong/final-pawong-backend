@@ -8,11 +8,11 @@ import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionEngineQueryPort;
 import kr.co.pawong.pwbe.adoption.application.service.support.AdoptionCardMapper;
 import kr.co.pawong.pwbe.adoption.application.service.support.AdoptionSearchMapper;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCard;
-import kr.co.pawong.pwbe.adoption.adapter.in.controller.dto.request.AdoptionSearchRequest;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.dto.request.AdoptionSearchRequest;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionIdSearchResponse;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionIdSearchResponses;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionSearchResponses;
-import kr.co.pawong.pwbe.adoption.application.port.in.SearchEngineUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.SearchAdoptionEngineUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class SearchEngineService implements SearchEngineUseCase {
+public class SearchAdoptionEngineService implements SearchAdoptionEngineUseCase {
     private final AdoptionEngineQueryPort adoptionEngineQueryPort;
     private final AdoptionDataQueryPort adoptionDataQueryPort;
     private final AdoptionAiPort adoptionAiPort;

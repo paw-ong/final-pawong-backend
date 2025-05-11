@@ -13,7 +13,7 @@ import kr.co.pawong.pwbe.adoption.application.port.out.ShelterInfoPort;
 import kr.co.pawong.pwbe.adoption.application.service.support.AdoptionCardMapper;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionRecommendResponses;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionDetailResponse;
-import kr.co.pawong.pwbe.adoption.application.port.in.RetrieveDataUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.QueryAdoptionDataUseCase;
 import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RetrieveDataService implements RetrieveDataUseCase {
+public class QueryAdoptionDataService implements QueryAdoptionDataUseCase {
 
     private final AdoptionDataQueryPort adoptionDataQueryPort;
 

@@ -1,9 +1,9 @@
-package kr.co.pawong.pwbe.adoption.adapter.in.controller;
+package kr.co.pawong.pwbe.adoption.adapter.in.api;
 
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.SliceAdoptionSearchResponses;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionRecommendResponses;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionDetailResponse;
-import kr.co.pawong.pwbe.adoption.application.port.in.RetrieveDataUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.QueryAdoptionDataUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,27 +19,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AdoptionQueryController {
 
-    private final RetrieveDataUseCase retrieveDataUseCase;
+    private final QueryAdoptionDataUseCase queryAdoptionDataUseCase;
 
     // slice 방식 (무한 스크롤)
     @GetMapping("")
     public ResponseEntity<SliceAdoptionSearchResponses> getSlicedAdoptions(
             @PageableDefault(page = 0, size = 20, sort = "noticeSdt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        SliceAdoptionSearchResponses response = retrieveDataUseCase.fetchSlicedAdoptions(pageable);
+        SliceAdoptionSearchResponses response = queryAdoptionDataUseCase.fetchSlicedAdoptions(pageable);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/recommend")
     public ResponseEntity<AdoptionRecommendResponses> getRecommendAdoptions() {
-        AdoptionRecommendResponses response = retrieveDataUseCase.getRecommendAdoptions();
+        AdoptionRecommendResponses response = queryAdoptionDataUseCase.getRecommendAdoptions();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AdoptionDetailResponse> getAdoptionDetail(
             @PathVariable("id") Long adoptionId) {
-        var response = retrieveDataUseCase.getAdoptionDetail(adoptionId);
+        var response = queryAdoptionDataUseCase.getAdoptionDetail(adoptionId);
         return ResponseEntity.ok(response);
     }
 }

@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.in.controller.dto.response;
+package kr.co.pawong.pwbe.adoption.adapter.in.api.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

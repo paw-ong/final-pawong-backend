@@ -20,7 +20,7 @@ import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Body;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Items;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Response;
-import kr.co.pawong.pwbe.adoption.application.port.in.UpdateDataUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionDataUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class ApiRequestService implements ApiRequestUseCase {
 
     private final RestTemplate restTemplate;
-    private final UpdateDataUseCase updateDataUseCase;
+    private final UpdateAdoptionDataUseCase updateAdoptionDataUseCase;
 
     @Value("${api.service-key}")
     private String serviceKey;
@@ -72,7 +72,7 @@ public class ApiRequestService implements ApiRequestUseCase {
             List<AdoptionCreate> adoptionCreates = convertToAdoptionCreates(items);
 
             // 3. 변환된 데이터를 리스트에 추가
-            updateDataUseCase.saveAdoptions(adoptionCreates);
+            updateAdoptionDataUseCase.saveAdoptions(adoptionCreates);
 
             totalSaved += adoptionCreates.size();
             log.info("페이지 {} 처리 및 저장 완료: {} 건의 데이터 저장됨 (현재까지 총 {}건)",

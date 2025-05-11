@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.shelter.adapter.in.controller;
+package kr.co.pawong.pwbe.shelter.adapter.in.api;
 
 import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterCreate;
 import kr.co.pawong.pwbe.shelter.application.service.ApiShelterService;

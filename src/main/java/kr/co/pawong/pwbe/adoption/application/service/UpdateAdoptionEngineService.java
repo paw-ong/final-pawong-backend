@@ -11,8 +11,8 @@ import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionEsDto;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.RegionInfoDto;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionEngineCommandPort;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataCommandPort;
-import kr.co.pawong.pwbe.adoption.application.port.in.UpdateEngineUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.RetrieveDataUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionEngineUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.QueryAdoptionDataUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,11 +21,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UpdateEngineService implements UpdateEngineUseCase {
+public class UpdateAdoptionEngineService implements UpdateAdoptionEngineUseCase {
     private final AdoptionEngineCommandPort adoptionEngineCommandPort;
     private final AdoptionDataCommandPort adoptionDataCommandPort;
     private final AdoptionAiPort adoptionAiPort;
-    private final RetrieveDataUseCase retrieveDataUseCase;
+    private final QueryAdoptionDataUseCase queryAdoptionDataUseCase;
 
     @Value("${adoption.batch-size:50}")
     private int batchSize;
@@ -47,7 +47,7 @@ public class UpdateEngineService implements UpdateEngineUseCase {
 
         List<AdoptionEsDto> adoptionEsDtos = adoptions.stream()
                 .map(adoption -> {
-                    RegionInfoDto regionInfoDto = RegionInfoDto.from(retrieveDataUseCase.findShelterInfoByAdoptionId(
+                    RegionInfoDto regionInfoDto = RegionInfoDto.from(queryAdoptionDataUseCase.findShelterInfoByAdoptionId(
                             adoption.getAdoptionId()));
 
                     return AdoptionEsDto.from(adoption, regionInfoDto);

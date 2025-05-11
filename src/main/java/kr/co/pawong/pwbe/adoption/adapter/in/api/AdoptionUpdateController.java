@@ -1,10 +1,10 @@
-package kr.co.pawong.pwbe.adoption.adapter.in.controller;
+package kr.co.pawong.pwbe.adoption.adapter.in.api;
 
 import java.util.List;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
-import kr.co.pawong.pwbe.adoption.application.port.in.UpdateEngineUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.RetrieveDataUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.UpdateDataUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionEngineUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.QueryAdoptionDataUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionDataUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.*;
 public class AdoptionUpdateController {
 
     private final ApiRequestUseCase apiRequestUseCase;
-    private final RetrieveDataUseCase retrieveDataUseCase;
-    private final UpdateDataUseCase updateDataUseCase;
-    private final UpdateEngineUseCase updateEngineUseCase;
+    private final QueryAdoptionDataUseCase queryAdoptionDataUseCase;
+    private final UpdateAdoptionDataUseCase updateAdoptionDataUseCase;
+    private final UpdateAdoptionEngineUseCase updateAdoptionEngineUseCase;
 
     @PostMapping("/save")
     public ResponseEntity<Void> saveAdoptions() {
@@ -31,14 +31,14 @@ public class AdoptionUpdateController {
 
     @PostMapping("/save-es")
     public ResponseEntity<Void> saveAdoptionsEs() {
-        List<Adoption> adoptions = retrieveDataUseCase.getAllAdoptions();
-        updateEngineUseCase.saveAdoptionToEs(adoptions);
+        List<Adoption> adoptions = queryAdoptionDataUseCase.getAllAdoptions();
+        updateAdoptionEngineUseCase.saveAdoptionToEs(adoptions);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/ai-preprocessing")
     public ResponseEntity<Void> aiProcessAdoptions() {
-        updateDataUseCase.aiProcessAdoptions();
+        updateAdoptionDataUseCase.aiProcessAdoptions();
         return ResponseEntity.ok().build();
     }
 
