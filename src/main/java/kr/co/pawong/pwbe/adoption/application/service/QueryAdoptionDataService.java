@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCard;
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionDetail;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionDetailDto;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.SliceAdoptionSearchResponses;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
 import kr.co.pawong.pwbe.adoption.application.port.out.ShelterInfoPort;
@@ -94,12 +94,12 @@ public class QueryAdoptionDataService implements QueryAdoptionDataUseCase {
         Adoption adoption = adoptionDataQueryPort.findByAdoptionIdOrThrow(adoptionId);
 
         // 2) AdoptionDetailDto로 매핑
-        AdoptionDetail adoptionDetail = AdoptionDetail.from(adoption);
+        AdoptionDetailDto adoptionDetailDto = AdoptionDetailDto.from(adoption);
 
         // 3) Port를 통해 ShelterDetail 조회
-        var shelterDetailDto = shelterInfoPort.getShelterDetail(adoptionDetail.getCareRegNo());
+        var shelterDetailDto = shelterInfoPort.getShelterDetail(adoptionDetailDto.getCareRegNo());
 
         // 4) Response 생성 후 반환
-        return new AdoptionDetailResponse(adoptionDetail, shelterDetailDto);
+        return new AdoptionDetailResponse(adoptionDetailDto, shelterDetailDto);
     }
 }

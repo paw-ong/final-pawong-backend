@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdoptionDetail {
+public class AdoptionDetailDto {
     private String careRegNo; // 보호소 번호
     private String kindNm; // 품종명
     private SexCd sexCd; // 성별
@@ -25,8 +25,8 @@ public class AdoptionDetail {
     private String popfile1; // 이미지1(텍스트)
     private String popfile2; // 이미지2(텍스트)
 
-    public static AdoptionDetail from(Adoption adoption) {
-        return AdoptionDetail.builder()
+    public static AdoptionDetailDto from(Adoption adoption) {
+        return AdoptionDetailDto.builder()
                 .careRegNo(adoption.getCareRegNo())
                 .kindNm(adoption.getKindNm())
                 .sexCd(adoption.getSexCd())

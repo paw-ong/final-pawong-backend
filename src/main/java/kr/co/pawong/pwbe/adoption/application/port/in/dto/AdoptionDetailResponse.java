@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdoptionDetailResponse {
-    private AdoptionDetail adoptionDetail;
+    private AdoptionDetailDto adoptionDetailDto;
     private ShelterDetailDto shelterDetailDto;
 }

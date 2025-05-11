@@ -1,6 +1,6 @@
-package kr.co.pawong.pwbe.shelter.adapter.out.repository;
+package kr.co.pawong.pwbe.shelter.adapter.out.persistence.repository;
 
-import kr.co.pawong.pwbe.shelter.adapter.out.entity.ShelterEntity;
+import kr.co.pawong.pwbe.shelter.adapter.out.persistence.entity.ShelterEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
