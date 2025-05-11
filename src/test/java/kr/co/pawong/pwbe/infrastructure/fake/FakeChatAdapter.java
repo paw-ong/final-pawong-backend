@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.fake;
+package kr.co.pawong.pwbe.infrastructure.fake;
 
 import kr.co.pawong.pwbe.infrastructure.ai.port.ChatProcessorPort;
 

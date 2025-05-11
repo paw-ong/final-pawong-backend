@@ -1,6 +1,6 @@
-package kr.co.pawong.pwbe.adoption.infrastructure.external.ai.huggingface;
+package kr.co.pawong.pwbe.infrastructure.ai.openai;
 
-import kr.co.pawong.pwbe.infrastructure.ai.huggingface.HuggingFaceChatAdapter;
+import kr.co.pawong.pwbe.infrastructure.ai.openai.OpenAiChatAdapter;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +10,10 @@ import java.util.List;
 
 @Disabled("AI 연동 테스트는 전체 빌드 시 제외")
 @SpringBootTest(properties = "spring.profiles.active=dev")
-class HuggingFaceChatAdapterTest {
+class OpenAiChatAdapterTest {
 
     @Autowired
-    private HuggingFaceChatAdapter chatAdapter;
+    private OpenAiChatAdapter chatAdapter;
 
     @Test
     void LLM_질의() {
@@ -30,8 +30,9 @@ class HuggingFaceChatAdapterTest {
 
     @Test
     void 태깅() {
-        String searchTerm = "새낑 강아지인데 어르신들과 잘 지냄. 구조? 순종적인?";
-        List<String> output = chatAdapter.getTagsByFeature(searchTerm);
+        String animalFeature = "새낑 강아지인데 어르신들과 잘 지냄. 구조? 순종적인? / 체중: 7kg / 색: 검정 / 나이 9살";
+        List<String> output = chatAdapter.getTagsByFeature(animalFeature);
         System.out.println(output);
+        // 예상 출력: [노인과잘지냄, 무게가중간임, 색깔이어두움, 나이가많음, 구조됨, 온순함]
     }
 }

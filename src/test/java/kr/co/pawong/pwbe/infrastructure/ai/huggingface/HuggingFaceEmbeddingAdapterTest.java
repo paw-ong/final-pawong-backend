@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.infrastructure.external.ai.huggingface;
+package kr.co.pawong.pwbe.infrastructure.ai.huggingface;
 
 import kr.co.pawong.pwbe.infrastructure.ai.huggingface.HuggingFaceEmbeddingAdapter;
 import org.junit.jupiter.api.Disabled;

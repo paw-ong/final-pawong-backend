@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.infrastructure.external.ai.enums;
+package kr.co.pawong.pwbe.infrastructure.ai.enums;
 
 import org.junit.jupiter.api.Test;
 

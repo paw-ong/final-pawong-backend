@@ -1,6 +1,5 @@
-package kr.co.pawong.pwbe.adoption.application.service.util;
+package kr.co.pawong.pwbe.infrastructure.ai;
 
-import kr.co.pawong.pwbe.infrastructure.ai.AdoptionAiExecutor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
