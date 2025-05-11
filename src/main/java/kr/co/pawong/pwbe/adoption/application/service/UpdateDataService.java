@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionAiPort;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
-import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataCommandPort;
 import kr.co.pawong.pwbe.adoption.enums.ActiveState;

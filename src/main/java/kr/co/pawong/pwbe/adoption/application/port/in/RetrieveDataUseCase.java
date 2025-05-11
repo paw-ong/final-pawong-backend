@@ -9,7 +9,7 @@ import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionDetailResponse
 import org.springframework.data.domain.Pageable;
 
 
-import kr.co.pawong.pwbe.shelter.presentation.controller.dto.ShelterInfoDto;
+import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterInfoDto;
 
 public interface RetrieveDataUseCase {
     List<Adoption> getAllAdoptions();

@@ -1,7 +1,7 @@
 package kr.co.pawong.pwbe.adoption.application.port.in;
 
 import java.util.List;
-import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
 
 public interface UpdateDataUseCase {
     // AdoptionCreate -> Adoption

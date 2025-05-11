@@ -2,8 +2,8 @@ package kr.co.pawong.pwbe.adoption.domain.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionCreate;
-import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionUpdate;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionUpdate;
 import kr.co.pawong.pwbe.adoption.enums.ActiveState;
 import kr.co.pawong.pwbe.adoption.enums.NeuterYn;
 import kr.co.pawong.pwbe.adoption.enums.ProcessState;

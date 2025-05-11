@@ -1,9 +1,9 @@
 package kr.co.pawong.pwbe.shelter.application.service;
 
-import kr.co.pawong.pwbe.shelter.application.domain.ShelterCreate;
-import kr.co.pawong.pwbe.shelter.application.service.port.ShelterUpdateRepository;
+import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterCreate;
+import kr.co.pawong.pwbe.shelter.application.port.out.ShelterDataCommandPort;
 import kr.co.pawong.pwbe.shelter.enums.DivisionNm;
-import kr.co.pawong.pwbe.shelter.infrastructure.external.ShelterApi;
+import kr.co.pawong.pwbe.shelter.application.service.dto.ShelterApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class ApiShelterService {
-    private final ShelterUpdateRepository shelterUpdateRepository;
+    private final ShelterDataCommandPort shelterDataCommandPort;
     private final RestTemplate restTemplate;
     @Value("${api.service-key}")
     private String serviceKey;
@@ -34,7 +34,7 @@ public class ApiShelterService {
         boolean hasMoreData = true;
 
         // 1. 미리 DB에 존재하는 careRegNo 목록을 Set으로 가져오기 (빠른 조회용)
-        Set<String> existingCareRegNos = new HashSet<>(shelterUpdateRepository.findAllCareRegNos());
+        Set<String> existingCareRegNos = new HashSet<>(shelterDataCommandPort.findAllCareRegNos());
         log.info("이미 존재하는 보호소 수: {}", existingCareRegNos.size());
 
         while (hasMoreData) {

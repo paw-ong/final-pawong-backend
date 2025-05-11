@@ -9,13 +9,12 @@ import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCard;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionDetail;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.SliceAdoptionSearchResponses;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
-import kr.co.pawong.pwbe.adoption.application.port.out.ShelterDetailPort;
 import kr.co.pawong.pwbe.adoption.application.port.out.ShelterInfoPort;
 import kr.co.pawong.pwbe.adoption.application.service.support.AdoptionCardMapper;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionRecommendResponses;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionDetailResponse;
 import kr.co.pawong.pwbe.adoption.application.port.in.RetrieveDataUseCase;
-import kr.co.pawong.pwbe.shelter.presentation.controller.dto.ShelterInfoDto;
+import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,6 +26,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class RetrieveDataService implements RetrieveDataUseCase {
+
     private final AdoptionDataQueryPort adoptionDataQueryPort;
 
     /**
@@ -40,7 +40,6 @@ public class RetrieveDataService implements RetrieveDataUseCase {
     }
 
     private final ShelterInfoPort shelterInfoPort;
-    private final ShelterDetailPort shelterDetailPort;
 
     // infinite scroll을 위한 slice 방식
     @Override
@@ -98,7 +97,7 @@ public class RetrieveDataService implements RetrieveDataUseCase {
         AdoptionDetail adoptionDetail = AdoptionDetail.from(adoption);
 
         // 3) Port를 통해 ShelterDetail 조회
-        var shelterDetailDto = shelterDetailPort.getShelterDetail(adoptionDetail.getCareRegNo());
+        var shelterDetailDto = shelterInfoPort.getShelterDetail(adoptionDetail.getCareRegNo());
 
         // 4) Response 생성 후 반환
         return new AdoptionDetailResponse(adoptionDetail, shelterDetailDto);

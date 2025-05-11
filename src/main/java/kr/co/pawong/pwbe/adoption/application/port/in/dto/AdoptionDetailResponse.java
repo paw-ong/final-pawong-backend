@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.adoption.application.port.in.dto;
 
-import kr.co.pawong.pwbe.shelter.presentation.controller.dto.ShelterDetailDto;
+import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterDetailDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
