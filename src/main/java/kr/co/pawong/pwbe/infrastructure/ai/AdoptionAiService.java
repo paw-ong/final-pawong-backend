@@ -58,7 +58,7 @@ public class AdoptionAiService implements AdoptionAiPort {
     @Override
     public float[] embed(String completion) {
         if (!isValidateInput(completion)) {
-            return new float[EMBEDDING_DIMENSION]; // 디폴트 제로 벡터 반환
+            completion = " "; // 입력이 없을 시에 공백을 임베딩함.
         }
         return embeddingPort.embed(completion);
     }

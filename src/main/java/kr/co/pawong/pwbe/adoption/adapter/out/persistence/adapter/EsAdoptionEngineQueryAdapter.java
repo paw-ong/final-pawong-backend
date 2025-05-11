@@ -45,8 +45,6 @@ public class EsAdoptionEngineQueryAdapter implements AdoptionEngineQueryPort {
             .withMaxResults(20)
             .build();
 
-        log.info("{}", searchQuery);
-
         return elasticsearchOperations.search(searchQuery, AdoptionDocument.class);
     }
 
