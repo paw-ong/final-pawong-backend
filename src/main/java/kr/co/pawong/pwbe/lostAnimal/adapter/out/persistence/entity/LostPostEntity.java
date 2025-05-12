@@ -7,12 +7,13 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.time.LocalDate;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
+import kr.co.pawong.pwbe.lostAnimal.domain.LostPost;
 import kr.co.pawong.pwbe.lostAnimal.enums.PostStatus;
 import kr.co.pawong.pwbe.lostAnimal.enums.PostType;
 import lombok.AllArgsConstructor;
@@ -26,10 +27,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SequenceGenerator(
+        name = "lost_post_seq",
+        sequenceName = "lost_post_seq",
+        allocationSize = 1   // 한 번에 1개씩만 미리 당겨옵니다
+)
 public class LostPostEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lost_post_seq")
     private Long lostPostId;        // 실종게시글 id
 
     @Enumerated(EnumType.STRING)
@@ -39,9 +45,11 @@ public class LostPostEntity {
     @Column(nullable = false)
     private LocalDate date;         // 실종날짜, 발견날짜
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UpKindNm upKindNm;      // 축종명
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UpKindCd upKindCd;      // 축종코드
 
@@ -50,6 +58,7 @@ public class LostPostEntity {
     @Column(nullable = false)
     private String color;           // 색상
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SexCd sexCd;            // 성별
 
@@ -63,7 +72,7 @@ public class LostPostEntity {
 
     private String content;         // 상세 내용
 
-    private Long rfidCd;            // 마이크로 칩번호
+    private String rfidCd;            // 마이크로 칩번호
 
     @Column(nullable = false)
     private LocalDate createdAt;    // 생성날짜
@@ -83,4 +92,54 @@ public class LostPostEntity {
     private Long userId;            // 작성자 유저 id
 
 
+    public static LostPostEntity from(LostPost lostPost) {
+        return LostPostEntity.builder()
+                .postType(lostPost.getPostType())
+                .date(lostPost.getDate())
+                .upKindNm(lostPost.getUpKindNm())
+                .upKindCd(lostPost.getUpKindCd())
+                .kindNm(lostPost.getKindNm())
+                .color(lostPost.getColor())
+                .sexCd(lostPost.getSexCd())
+                .age(lostPost.getAge())
+                .imageUrl(lostPost.getImageUrl())
+                .specialMark(lostPost.getSpecialMark())
+                .content(lostPost.getContent())
+                .rfidCd(lostPost.getRfidCd())
+                .createdAt(lostPost.getCreatedAt())
+                .updatedAt(lostPost.getUpdatedAt())
+                .deletedAt(lostPost.getDeletedAt())
+                .status(lostPost.getStatus())
+                .location(lostPost.getLocation())
+                .latitude(lostPost.getLatitude())
+                .longitude(lostPost.getLongitude())
+                .userId(lostPost.getUserId())
+                .build();
+    }
+
+    public LostPost toDomain() {
+        return LostPost.builder()
+                .lostPostId(this.lostPostId)
+                .postType(this.postType)
+                .date(this.date)
+                .upKindNm(this.upKindNm)
+                .upKindCd(this.upKindCd)
+                .kindNm(this.kindNm)
+                .color(this.color)
+                .sexCd(this.sexCd)
+                .age(this.age)
+                .imageUrl(this.imageUrl)
+                .specialMark(this.specialMark)
+                .content(this.content)
+                .rfidCd(this.rfidCd)
+                .createdAt(this.createdAt)
+                .updatedAt(this.updatedAt)
+                .deletedAt(this.deletedAt)
+                .status(this.status)
+                .location(this.location)
+                .latitude(this.latitude)
+                .longitude(this.longitude)
+                .userId(this.userId)
+                .build();
+    }
 }
