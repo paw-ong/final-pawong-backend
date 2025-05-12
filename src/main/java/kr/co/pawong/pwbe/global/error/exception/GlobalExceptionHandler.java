@@ -1,5 +1,7 @@
 package kr.co.pawong.pwbe.global.error.exception;
 
+import jdk.jshell.spi.ExecutionControlProvider;
+import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.errorcode.ErrorCode;
 import kr.co.pawong.pwbe.global.error.response.BaseErrorResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         final ErrorCode errorCode = exception.getErrorCode();
         log.error("BaseException : {}, errorCode : {}", exception, errorCode, exception);
         return handleExceptionInternal(errorCode, exception.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleException(final Exception exception) {
+        log.error("Exception : {}", exception, exception);
+        return handleExceptionInternal(CustomErrorCode.SERVER_ERROR, exception.getMessage());
     }
 
     private ResponseEntity<Object> handleExceptionInternal(final ErrorCode errorCode, final String message) {
