@@ -1,9 +1,10 @@
-package kr.co.pawong.pwbe.lostPost.domain;
+package kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.request;
 
 import java.time.LocalDate;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
+import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
