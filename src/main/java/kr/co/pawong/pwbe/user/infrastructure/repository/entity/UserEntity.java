@@ -7,7 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import kr.co.pawong.pwbe.user.application.domain.User;
 import kr.co.pawong.pwbe.user.enums.UserStatus;
 import lombok.AllArgsConstructor;
@@ -33,9 +33,9 @@ public class UserEntity {
   private String tel;               // 전화번호
   @Enumerated(EnumType.STRING)
   private UserStatus status;        // 사용자 상태
-  private LocalDate createdAt;      // 가입날짜
-  private LocalDate updatedAt;      // 수정날짜
-  private LocalDate deletedAt;      // 삭제날짜
+  private LocalDateTime createdAt;      // 가입날짜
+  private LocalDateTime updatedAt;      // 수정날짜
+  private LocalDateTime deletedAt;      // 삭제날짜
 
   public User toDomain() {
     return User.builder()
@@ -61,7 +61,7 @@ public class UserEntity {
         .region(user.getRegion())
         .tel(user.getTel())
         .status(user.getStatus())
-        .createdAt(LocalDate.now())
+        .createdAt(LocalDateTime.now())
         .updatedAt(user.getUpdatedAt())
         .deletedAt(user.getDeletedAt())
         .build();
@@ -71,7 +71,7 @@ public class UserEntity {
     this.nickname = user.getNickname();
     this.region = user.getRegion();
     this.tel = user.getTel();
-    this.updatedAt = LocalDate.now();
+    this.updatedAt = LocalDateTime.now();
     this.status = user.getStatus();
     return this;
   }

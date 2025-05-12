@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.user.application.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import kr.co.pawong.pwbe.user.enums.UserStatus;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,9 +15,9 @@ public class User {
   private String region;
   private String tel;
   private UserStatus status;
-  private LocalDate createdAt;
-  private LocalDate updatedAt;
-  private LocalDate deletedAt;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
+  private LocalDateTime deletedAt;
 
   public static User from(UserCreate userCreate) {
     return User.builder()
@@ -25,7 +25,7 @@ public class User {
             .nickname(userCreate.getNickname())
             .profileImage(userCreate.getProfileImage())
             .status(UserStatus.PENDING)
-            .createdAt(LocalDate.now())
+            .createdAt(LocalDateTime.now())
             .build();
   }
 
@@ -33,7 +33,7 @@ public class User {
     this.nickname = userUpdate.getNickname();
     this.region = userUpdate.getRegion();
     this.tel = userUpdate.getTel();
-    this.updatedAt = LocalDate.now();
+    this.updatedAt = LocalDateTime.now();
     this.status = UserStatus.ACTIVE;
     return this;
   }

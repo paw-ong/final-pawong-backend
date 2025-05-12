@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.user.presentation.controller.dto.response;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import kr.co.pawong.pwbe.user.application.domain.User;
 import kr.co.pawong.pwbe.user.enums.UserStatus;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ public class UserResponse {
     private String region;
     private String tel;
     private UserStatus status;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     public UserResponse(User user) {
         this.userId = user.getUserId();
