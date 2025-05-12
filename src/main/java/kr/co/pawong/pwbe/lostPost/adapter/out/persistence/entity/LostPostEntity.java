@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
@@ -69,9 +70,9 @@ public class LostPostEntity {
     private String rfidCd;            // 마이크로 칩번호
 
     @Column(nullable = false)
-    private LocalDate createdAt;    // 생성날짜
-    private LocalDate updatedAt;    // 수정날짜
-    private LocalDate deletedAt;    // 삭제날짜
+    private LocalDateTime createdAt;    // 생성날짜
+    private LocalDateTime updatedAt;    // 수정날짜
+    private LocalDateTime deletedAt;    // 삭제날짜
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.lostPost.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
@@ -26,9 +27,9 @@ public class LostPost {
     private String specialMark;     // 동물 특징
     private String content;         // 상세 내용
     private String rfidCd;            // 마이크로 칩번호
-    private LocalDate createdAt;    // 생성날짜
-    private LocalDate updatedAt;    // 수정날짜
-    private LocalDate deletedAt;    // 삭제날짜
+    private LocalDateTime createdAt;    // 생성날짜
+    private LocalDateTime updatedAt;    // 수정날짜
+    private LocalDateTime deletedAt;    // 삭제날짜
     private PostStatus status;      // 게시글 상태
     private String location;        // 실종장소, 발견장소
     private Double latitude;        // 위도
@@ -40,17 +41,17 @@ public class LostPost {
     }
 
     public void create() {
-        this.createdAt = LocalDate.now();
+        this.createdAt = LocalDateTime.now();
         this.status = PostStatus.ACTIVE;
     }
 
     public void update() {
-        this.updatedAt = LocalDate.now();
+        this.updatedAt = LocalDateTime.now();
         this.status = PostStatus.ACTIVE;
     }
 
     public void delete() {
-        this.deletedAt = LocalDate.now();
+        this.deletedAt = LocalDateTime.now();
         this.status = PostStatus.DELETED;
     }
 }
