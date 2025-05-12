@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/lost-post")
+@RequestMapping("/api/lost-posts")
 @RequiredArgsConstructor
 public class LostPostUpdateController {
 
