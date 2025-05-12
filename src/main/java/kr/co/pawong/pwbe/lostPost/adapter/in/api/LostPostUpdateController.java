@@ -26,7 +26,8 @@ public class LostPostUpdateController {
             @RequestBody LostPostCreate lostPostCreate,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        LostPost lostPost = lostPostUpdateUseCase.createLostPost(lostPostCreate.toDomain(), userDetails.getUserId());
+        LostPost lostPost = lostPostUpdateUseCase.createLostPost(lostPostCreate.toDomain(),
+                userDetails.getUserId());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new LostPostCreateResponse(lostPost.getLostPostId()));

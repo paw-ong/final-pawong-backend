@@ -8,5 +8,6 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class LostPostCreateResponse {
+
     private Long lostPostId;        // 실종게시글 id
 }

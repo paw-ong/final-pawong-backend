@@ -12,6 +12,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class LostPost {
+
     private Long lostPostId;        // 실종게시글 id
     private PostType postType;      // 실종(LOST), 발견(FOUND), 보호(FOSTER)
     private LocalDate date;         // 실종날짜, 발견날짜
