@@ -7,3 +7,7 @@ data:
       create-mappings: false
 adoption:
   batch-size: 50
+spring:
+  batch:
+    jdbc:
+      initialize-schema: always
