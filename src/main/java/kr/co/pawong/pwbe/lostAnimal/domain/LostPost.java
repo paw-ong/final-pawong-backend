@@ -25,7 +25,7 @@ public class LostPost {
     private String imageUrl;        // 이미지 url
     private String specialMark;     // 동물 특징
     private String content;         // 상세 내용
-    private Long rfidCd;            // 마이크로 칩번호
+    private String rfidCd;            // 마이크로 칩번호
     private LocalDate createdAt;    // 생성날짜
     private LocalDate updatedAt;    // 수정날짜
     private LocalDate deletedAt;    // 삭제날짜
@@ -34,4 +34,23 @@ public class LostPost {
     private Double latitude;        // 위도
     private Double longitude;       // 경도
     private Long userId;            // 작성자 유저 id
+
+    public void writedBy(Long userId) {
+        this.userId = userId;
+    }
+
+    public void create() {
+        this.createdAt = LocalDate.now();
+        this.status = PostStatus.ACTIVE;
+    }
+
+    public void update() {
+        this.updatedAt = LocalDate.now();
+        this.status = PostStatus.ACTIVE;
+    }
+
+    public void delete() {
+        this.deletedAt = LocalDate.now();
+        this.status = PostStatus.DELETED;
+    }
 }
