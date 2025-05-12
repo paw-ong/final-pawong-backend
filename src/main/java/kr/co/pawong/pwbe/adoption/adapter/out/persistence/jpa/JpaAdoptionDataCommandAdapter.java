@@ -1,11 +1,11 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataCommandPort;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.repository.AdoptionJpaRepository;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.entity.AdoptionEntity;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.repository.AdoptionJpaRepository;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.entity.AdoptionEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;

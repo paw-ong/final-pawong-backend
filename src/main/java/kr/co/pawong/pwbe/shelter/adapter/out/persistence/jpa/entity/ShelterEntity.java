@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.shelter.adapter.out.persistence.entity;
+package kr.co.pawong.pwbe.shelter.adapter.out.persistence.jpa.entity;
 
 import jakarta.persistence.*;
 

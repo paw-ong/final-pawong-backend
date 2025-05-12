@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence.document;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence.es.document;
 
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;

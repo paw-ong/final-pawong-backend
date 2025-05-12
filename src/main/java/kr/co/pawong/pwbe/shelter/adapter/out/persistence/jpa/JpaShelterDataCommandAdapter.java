@@ -1,9 +1,9 @@
-package kr.co.pawong.pwbe.shelter.adapter.out.persistence;
+package kr.co.pawong.pwbe.shelter.adapter.out.persistence.jpa;
 
-import kr.co.pawong.pwbe.shelter.adapter.out.persistence.repository.ShelterJpaRepository;
+import kr.co.pawong.pwbe.shelter.adapter.out.persistence.jpa.repository.ShelterJpaRepository;
 import kr.co.pawong.pwbe.shelter.domain.Shelter;
 import kr.co.pawong.pwbe.shelter.application.port.out.ShelterDataCommandPort;
-import kr.co.pawong.pwbe.shelter.adapter.out.persistence.entity.ShelterEntity;
+import kr.co.pawong.pwbe.shelter.adapter.out.persistence.jpa.entity.ShelterEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;

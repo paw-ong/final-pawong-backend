@@ -1,12 +1,12 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence.es;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionSearchCondition;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionEngineQueryPort;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.query.AdoptionQueryBuilder;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.document.AdoptionDocument;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.document.AutocompleteDocument;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.es.query.AdoptionQueryBuilder;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.es.document.AdoptionDocument;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.es.document.AutocompleteDocument;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;

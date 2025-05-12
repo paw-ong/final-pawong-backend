@@ -1,11 +1,10 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence.query;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence.es.query;
 
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.json.JsonData;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionSearchCondition;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionSearchCondition.Region;

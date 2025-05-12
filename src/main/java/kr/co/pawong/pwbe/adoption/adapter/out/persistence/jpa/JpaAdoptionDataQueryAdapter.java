@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa;
 
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.ADOPTION_NOT_FOUND;
 
@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
 import kr.co.pawong.pwbe.adoption.enums.ActiveState;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.repository.AdoptionJpaRepository;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.entity.AdoptionEntity;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.repository.AdoptionJpaRepository;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.entity.AdoptionEntity;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

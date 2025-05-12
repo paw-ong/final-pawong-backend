@@ -2,7 +2,7 @@ package kr.co.pawong.pwbe.adoption.application.port.out;
 
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionSearchCondition;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.document.AdoptionDocument;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.es.document.AdoptionDocument;
 import org.springframework.data.elasticsearch.core.SearchHits;
 
 import java.util.List;

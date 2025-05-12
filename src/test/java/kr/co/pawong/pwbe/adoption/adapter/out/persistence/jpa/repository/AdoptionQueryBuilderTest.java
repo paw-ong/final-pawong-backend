@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence.repository;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.List;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionSearchCondition;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionSearchCondition.Region;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.query.AdoptionQueryBuilder;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.document.TestDocument;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.es.query.AdoptionQueryBuilder;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.es.document.TestDocument;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

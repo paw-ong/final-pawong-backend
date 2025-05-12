@@ -1,11 +1,11 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence.repository;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.repository;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import kr.co.pawong.pwbe.adoption.enums.ActiveState;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.entity.AdoptionEntity;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.entity.AdoptionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,11 +1,11 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence.es;
 
 import java.util.List;
 import java.util.Objects;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionEsDto;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionEngineCommandPort;
 import kr.co.pawong.pwbe.adoption.enums.ActiveState;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.document.AdoptionDocument;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.es.document.AdoptionDocument;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;

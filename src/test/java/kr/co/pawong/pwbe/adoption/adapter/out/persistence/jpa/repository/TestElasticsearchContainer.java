@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence.repository;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.repository;
 
 import org.junit.jupiter.api.Disabled;
 import org.springframework.test.context.DynamicPropertyRegistry;

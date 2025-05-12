@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence.document;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence.es.document;
 
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionEsDto;
