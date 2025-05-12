@@ -1,5 +1,5 @@
 package kr.co.pawong.pwbe.lostAnimal.application.service;
 
-public class LostAnimalQueryServiceImpl {
+public class LostAnimalQueryService {
 
 }
