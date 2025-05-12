@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence.adapter;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence;
 
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.ADOPTION_NOT_FOUND;
 

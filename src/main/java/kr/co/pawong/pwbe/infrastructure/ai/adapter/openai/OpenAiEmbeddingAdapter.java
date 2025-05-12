@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.infrastructure.ai.openai;
+package kr.co.pawong.pwbe.infrastructure.ai.adapter.openai;
 
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.SEARCH_ERROR;
 

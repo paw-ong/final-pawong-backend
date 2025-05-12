@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence.adapter;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence;
 
 import java.util.List;
 import java.util.Objects;

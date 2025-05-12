@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence.adapter;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;

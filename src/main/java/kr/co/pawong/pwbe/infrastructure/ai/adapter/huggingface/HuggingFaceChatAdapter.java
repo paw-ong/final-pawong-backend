@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.infrastructure.ai.huggingface;
+package kr.co.pawong.pwbe.infrastructure.ai.adapter.huggingface;
 
 import kr.co.pawong.pwbe.infrastructure.ai.port.ChatProcessorPort;
 import kr.co.pawong.pwbe.infrastructure.ai.enums.AnimalFeature;

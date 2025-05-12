@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.infrastructure.ai.huggingface;
+package kr.co.pawong.pwbe.infrastructure.ai.adapter.huggingface;
 
 import java.util.ArrayList;
 import java.util.List;

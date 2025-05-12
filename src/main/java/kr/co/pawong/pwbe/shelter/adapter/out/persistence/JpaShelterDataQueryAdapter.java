@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.shelter.adapter.out.persistence.adapter;
+package kr.co.pawong.pwbe.shelter.adapter.out.persistence;
 
 import kr.co.pawong.pwbe.shelter.adapter.out.persistence.repository.ShelterJpaRepository;
 import kr.co.pawong.pwbe.shelter.domain.Shelter;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class ShelterDataQueryAdapter implements ShelterDataQueryPort {
+public class JpaShelterDataQueryAdapter implements ShelterDataQueryPort {
 
     private final ShelterJpaRepository shelterJpaRepository;
 

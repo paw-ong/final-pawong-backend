@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.infrastructure.ai.openai;
 
-import kr.co.pawong.pwbe.infrastructure.ai.openai.OpenAiEmbeddingAdapter;
+import kr.co.pawong.pwbe.infrastructure.ai.adapter.openai.OpenAiEmbeddingAdapter;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.infrastructure.ai.openai;
 
-import kr.co.pawong.pwbe.infrastructure.ai.openai.OpenAiChatAdapter;
+import kr.co.pawong.pwbe.infrastructure.ai.adapter.openai.OpenAiChatAdapter;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.infrastructure.ai.huggingface;
 
-import kr.co.pawong.pwbe.infrastructure.ai.huggingface.HuggingFaceChatAdapter;
+import kr.co.pawong.pwbe.infrastructure.ai.adapter.huggingface.HuggingFaceChatAdapter;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

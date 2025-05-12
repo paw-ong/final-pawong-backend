@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.persistence.adapter;
+package kr.co.pawong.pwbe.adoption.adapter.out.persistence;
 
 import jakarta.transaction.Transactional;
 import java.util.List;

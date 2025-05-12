@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.shelter.adapter.out.persistence.adapter;
+package kr.co.pawong.pwbe.shelter.adapter.out.persistence;
 
 import kr.co.pawong.pwbe.shelter.adapter.out.persistence.repository.ShelterJpaRepository;
 import kr.co.pawong.pwbe.shelter.domain.Shelter;
@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class ShelterDataCommandAdapter implements ShelterDataCommandPort {
+public class JpaShelterDataCommandAdapter implements ShelterDataCommandPort {
 
     private final ShelterJpaRepository shelterJpaRepository;
 
