@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.time.LocalDate;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
@@ -52,7 +53,7 @@ public class LostPostEntity {
     @Column(nullable = false)
     private SexCd sexCd;            // 성별
 
-    private int age;                // 나이
+    private Integer age;            // 나이
 
     @Column(columnDefinition = "TEXT")
     private String imageUrl;        // 이미지 url
