@@ -7,7 +7,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
@@ -27,15 +26,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SequenceGenerator(
-        name = "lost_post_seq",
-        sequenceName = "lost_post_seq",
-        allocationSize = 1              // id 1씩 증가
-)
 public class LostPostEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lost_post_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long lostPostId;        // 실종게시글 id
 
     @Enumerated(EnumType.STRING)
