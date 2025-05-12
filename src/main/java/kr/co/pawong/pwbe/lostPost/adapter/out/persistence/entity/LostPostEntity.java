@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 @SequenceGenerator(
         name = "lost_post_seq",
         sequenceName = "lost_post_seq",
-        allocationSize = 1   // 한 번에 1개씩만 미리 당겨옵니다
+        allocationSize = 1              // id 1씩 증가
 )
 public class LostPostEntity {
 
