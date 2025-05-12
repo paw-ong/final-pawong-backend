@@ -3,11 +3,11 @@ package kr.co.pawong.pwbe.adoption.application.service.support;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import kr.co.pawong.pwbe.adoption.application.domain.Adoption;
-import kr.co.pawong.pwbe.adoption.application.service.dto.request.AdoptionSearchCondition;
-import kr.co.pawong.pwbe.adoption.application.service.dto.request.AdoptionSearchCondition.Region;
-import kr.co.pawong.pwbe.adoption.presentation.controller.dto.request.AdoptionSearchRequest;
-import kr.co.pawong.pwbe.adoption.presentation.controller.dto.response.AdoptionIdSearchResponse;
+import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
+import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionSearchCondition;
+import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionSearchCondition.Region;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.dto.request.AdoptionSearchRequest;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionIdSearchResponse;
 
 public class AdoptionSearchMapper {
 

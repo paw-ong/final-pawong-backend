@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.favorites.presentation.dto.response;
 
-import kr.co.pawong.pwbe.adoption.application.service.dto.response.AdoptionCard;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCard;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -3,8 +3,8 @@ package kr.co.pawong.pwbe.favorites.infrastructure.entity.repository;
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.ADOPTION_NOT_FOUND;
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.USER_NOT_FOUND;
 
-import kr.co.pawong.pwbe.adoption.infrastructure.repository.AdoptionJpaRepository;
-import kr.co.pawong.pwbe.adoption.infrastructure.repository.entity.AdoptionEntity;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.repository.AdoptionJpaRepository;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.entity.AdoptionEntity;
 import kr.co.pawong.pwbe.favorites.application.domain.Favorites;
 import kr.co.pawong.pwbe.favorites.application.service.port.FavoritesRepository;
 import kr.co.pawong.pwbe.favorites.infrastructure.entity.FavoritesEntity;
