@@ -35,7 +35,7 @@ public class LostPost {
     private Double longitude;       // 경도
     private Long userId;            // 작성자 유저 id
 
-    public void writedBy(Long userId) {
+    public void writtenBy(Long userId) {
         this.userId = userId;
     }
 

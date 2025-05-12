@@ -14,7 +14,7 @@ public class LostPostUpdateService implements UpdateLostPostUseCase {
 
     @Override
     public LostPost createLostPost(LostPost lostPost, Long userId) {
-        lostPost.writedBy(userId);
+        lostPost.writtenBy(userId);
         lostPost.create();
         return lostPostUpdatePort.saveLostPost(lostPost);
     }
