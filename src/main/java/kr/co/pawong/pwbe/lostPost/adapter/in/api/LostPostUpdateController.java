@@ -1,8 +1,8 @@
 package kr.co.pawong.pwbe.lostPost.adapter.in.api;
 
-import kr.co.pawong.pwbe.lostPost.domain.LostPostCreate;
+import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.request.LostPostCreate;
 import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.response.LostPostCreateResponse;
-import kr.co.pawong.pwbe.lostPost.application.port.in.LostPostUpdateUseCase;
+import kr.co.pawong.pwbe.lostPost.application.port.in.UpdateLostPostUseCase;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import kr.co.pawong.pwbe.user.infrastructure.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class LostPostUpdateController {
 
-    private final LostPostUpdateUseCase lostPostUpdateUseCase;
+    private final UpdateLostPostUseCase lostPostUpdateUseCase;
 
     @PostMapping
     public ResponseEntity<LostPostCreateResponse> createLostPost(
