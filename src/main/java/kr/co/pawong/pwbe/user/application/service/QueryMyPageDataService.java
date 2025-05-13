@@ -22,7 +22,7 @@ public class QueryMyPageDataService implements QueryMyPageDataUseCase {
         List<MyPageLostPostInfo> myPageLostPosts = lostPostInfoPort.getLostPostsByUserId(userId);
 
         return myPageLostPosts.stream()
-                .map(post -> MyPageMapper.toMyPageLostPostResponse(post, timeUtils))
+                .map(MyPageMapper::toMyPageLostPostResponse)
                 .toList();
     }
 }
