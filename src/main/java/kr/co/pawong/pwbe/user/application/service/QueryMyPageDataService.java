@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.user.application.service;
 
 import java.util.List;
+import kr.co.pawong.pwbe.global.time.TimeUtils;
 import kr.co.pawong.pwbe.user.application.port.in.QueryMyPageDataUseCase;
 import kr.co.pawong.pwbe.user.application.port.in.dto.MyPageLostPostResponse;
 import kr.co.pawong.pwbe.user.application.port.out.LostPostInfoPort;
@@ -14,13 +15,14 @@ import org.springframework.stereotype.Service;
 public class QueryMyPageDataService implements QueryMyPageDataUseCase {
 
     private final LostPostInfoPort lostPostInfoPort;
+    private final TimeUtils timeUtils;
 
     @Override
     public List<MyPageLostPostResponse> getLostPostsByUserId(Long userId) {
         List<MyPageLostPostInfo> myPageLostPosts = lostPostInfoPort.getLostPostsByUserId(userId);
 
         return myPageLostPosts.stream()
-                .map(MyPageMapper::toMyPageLostPostResponse)
+                .map(post -> MyPageMapper.toMyPageLostPostResponse(post, timeUtils))
                 .toList();
     }
 }
