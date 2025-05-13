@@ -10,18 +10,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionDataUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
+import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Body;
+import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Items;
+import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Response;
 import kr.co.pawong.pwbe.adoption.enums.NeuterYn;
 import kr.co.pawong.pwbe.adoption.enums.ProcessState;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
-import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
-import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Body;
-import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Items;
-import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Response;
-import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionDataUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,7 +56,7 @@ public class ApiRequestService implements ApiRequestUseCase {
         int totalSaved = 0; // 총 저장된 개수
 
         while (hasMoreData) {
-            log.info("데이터 가져오기: 페이지 {}, 페이지당 {} 건", pageNo, numOfRows);
+//            log.info("데이터 가져오기: 페이지 {}, 페이지당 {} 건", pageNo, numOfRows);
 
             // 1. API에서 데이터 가져오기
             AdoptionApi adoptionApi = fetchAdoptionData(pageNo, numOfRows);
@@ -110,7 +110,7 @@ public class ApiRequestService implements ApiRequestUseCase {
                 .build(true)
                 .toUri();
 
-        log.info("요청 주소: {}", uri.toString());
+//        log.info("요청 주소: {}", uri.toString());
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -120,9 +120,8 @@ public class ApiRequestService implements ApiRequestUseCase {
         try {
             ResponseEntity<AdoptionApi> responseEntity = restTemplate.exchange(uri, HttpMethod.GET,
                     entity, AdoptionApi.class);
-            AdoptionApi adoptionApi = responseEntity.getBody();
-            log.info("응답 수신 완료");
-            return adoptionApi;
+            //            log.info("응답 수신 완료");
+            return responseEntity.getBody();
         } catch (Exception e) {
             log.error("API 호출 중 오류 발생: {}", e.getMessage(), e);
             return null;
