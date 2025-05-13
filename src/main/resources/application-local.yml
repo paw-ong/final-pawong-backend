@@ -1,9 +1,19 @@
 spring:
   datasource:
-    url: ${DEV_DB_URL}
-    username: ${DEV_DB_USERNAME}
-    password: ${DEV_DB_PASSWORD}
+    url: jdbc:mysql://localhost:3306/pawong
+    username: pawong
+    password: pawong
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      # 스키마 생성/수정
+      ddl-auto: update
+    # SQL 로그
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
   security:
     oauth2:
       client:
