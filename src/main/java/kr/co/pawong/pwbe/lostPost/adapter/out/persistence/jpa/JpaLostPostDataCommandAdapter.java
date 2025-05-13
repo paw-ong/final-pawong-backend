@@ -1,7 +1,6 @@
-package kr.co.pawong.pwbe.lostPost.adapter.out.persistence;
+package kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa;
 
-import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.entity.LostPostEntity;
-import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.repository.LostPostJpaRepository;
+import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.entity.LostPostEntity;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataCommandPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class JpaLostPostDataCommandAdapter implements LostPostDataCommandPort {
 
-    private final LostPostJpaRepository lostPostJpaRepository;
+    private final kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.LostPostJpaRepository lostPostJpaRepository;
 
     @Override
     public LostPost saveLostPost(LostPost lostPost) {

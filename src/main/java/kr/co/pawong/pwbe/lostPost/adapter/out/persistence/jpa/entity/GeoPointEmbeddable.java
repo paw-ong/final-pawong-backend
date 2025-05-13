@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.lostPost.adapter.out.persistence.entity;
+package kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
