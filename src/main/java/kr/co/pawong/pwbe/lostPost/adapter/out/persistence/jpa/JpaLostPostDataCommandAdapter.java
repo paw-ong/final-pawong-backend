@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class JpaLostPostDataCommandAdapter implements LostPostDataCommandPort {
 
-    private final kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.LostPostJpaRepository lostPostJpaRepository;
+    private final kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.repository.LostPostJpaRepository lostPostJpaRepository;
 
     @Override
     public LostPost saveLostPost(LostPost lostPost) {

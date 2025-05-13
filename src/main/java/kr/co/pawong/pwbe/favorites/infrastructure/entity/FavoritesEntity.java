@@ -3,7 +3,7 @@ package kr.co.pawong.pwbe.favorites.infrastructure.entity;
 import jakarta.persistence.*;
 import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.entity.AdoptionEntity;
 import kr.co.pawong.pwbe.favorites.application.domain.Favorites;
-import kr.co.pawong.pwbe.user.infrastructure.repository.entity.UserEntity;
+import kr.co.pawong.pwbe.user.adapter.out.jpa.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
