@@ -11,7 +11,7 @@ import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionEsDto;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.RegionInfoDto;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionEngineCommandPort;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataCommandPort;
-import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionEngineUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionEngineUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.in.QueryAdoptionDataUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UpdateAdoptionEngineService implements UpdateAdoptionEngineUseCase {
+public class CommandAdoptionEngineService implements CommandAdoptionEngineUseCase {
     private final AdoptionEngineCommandPort adoptionEngineCommandPort;
     private final AdoptionDataCommandPort adoptionDataCommandPort;
     private final AdoptionAiPort adoptionAiPort;

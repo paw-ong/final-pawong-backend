@@ -2,9 +2,9 @@ package kr.co.pawong.pwbe.adoption.adapter.in.api;
 
 import java.util.List;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
-import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionEngineUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionEngineUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.in.QueryAdoptionDataUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionDataUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionDataUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/adoptions")
 @RequiredArgsConstructor
-public class AdoptionUpdateController {
+public class AdoptionCommandController {
 
     private final ApiRequestUseCase apiRequestUseCase;
     private final QueryAdoptionDataUseCase queryAdoptionDataUseCase;
-    private final UpdateAdoptionDataUseCase updateAdoptionDataUseCase;
-    private final UpdateAdoptionEngineUseCase updateAdoptionEngineUseCase;
+    private final CommandAdoptionDataUseCase updateAdoptionDataUseCase;
+    private final CommandAdoptionEngineUseCase commandAdoptionEngineUseCase;
 
     @PostMapping("/save")
     public ResponseEntity<Void> saveAdoptions() {
@@ -32,7 +32,7 @@ public class AdoptionUpdateController {
     @PostMapping("/save-es")
     public ResponseEntity<Void> saveAdoptionsEs() {
         List<Adoption> adoptions = queryAdoptionDataUseCase.getAllAdoptions();
-        updateAdoptionEngineUseCase.saveAdoptionToEs(adoptions);
+        commandAdoptionEngineUseCase.saveAdoptionToEs(adoptions);
         return ResponseEntity.ok().build();
     }
 

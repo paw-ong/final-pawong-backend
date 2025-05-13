@@ -12,7 +12,7 @@ import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataCommandPort;
 import kr.co.pawong.pwbe.adoption.enums.ActiveState;
-import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionDataUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionDataUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UpdateAdoptionDataService implements UpdateAdoptionDataUseCase {
+public class CommandAdoptionDataService implements CommandAdoptionDataUseCase {
 
     private final AdoptionDataCommandPort adoptionDataCommandPort;
     private final AdoptionDataQueryPort adoptionDataQueryPort;
