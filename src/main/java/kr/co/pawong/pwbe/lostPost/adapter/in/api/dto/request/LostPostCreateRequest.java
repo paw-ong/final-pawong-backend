@@ -12,7 +12,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class LostPostCreate {
+public class LostPostCreateRequest {
 
     private PostType postType;      // 실종(LOST), 발견(FOUND), 보호(FOSTER)
     private LocalDate date;         // 실종날짜, 발견날짜
