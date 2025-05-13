@@ -4,5 +4,5 @@ import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 
 public interface UpdateLostPostUseCase {
 
-    LostPost createLostPost(LostPost lostPost, Long userId);
+    Long createLostPost(LostPost lostPost, Long userId);
 }

@@ -3,7 +3,6 @@ package kr.co.pawong.pwbe.lostPost.adapter.in.api;
 import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.request.LostPostCreate;
 import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.response.LostPostCreateResponse;
 import kr.co.pawong.pwbe.lostPost.application.port.in.UpdateLostPostUseCase;
-import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import kr.co.pawong.pwbe.user.infrastructure.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,10 +25,12 @@ public class LostPostUpdateController {
             @RequestBody LostPostCreate lostPostCreate,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        LostPost lostPost = lostPostUpdateUseCase.createLostPost(lostPostCreate.toDomain(),
-                userDetails.getUserId());
+        Long createdId = lostPostUpdateUseCase.createLostPost(
+                lostPostCreate.toDomain(),
+                userDetails.getUserId()
+        );
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new LostPostCreateResponse(lostPost.getLostPostId()));
+                .body(new LostPostCreateResponse(createdId));
     }
 }
