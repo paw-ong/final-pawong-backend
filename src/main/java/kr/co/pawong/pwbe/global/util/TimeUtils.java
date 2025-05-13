@@ -1,18 +1,12 @@
-package kr.co.pawong.pwbe.global.time;
+package kr.co.pawong.pwbe.global.util;
 
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
-@RequiredArgsConstructor
 public class TimeUtils {
-
-    private final Clock clock;
 
     private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -22,28 +16,28 @@ public class TimeUtils {
     /**
      * 시간을 yyyy-MM-dd HH:mm:ss 형식의 문자열로 반환합니다.
      */
-    public static String formatTime(LocalDateTime time) {
-        if (time == null) {
+    public static String formatTime(LocalDateTime dt) {
+        if (dt == null) {
             return "";
         }
-        return time.format(DATETIME_FORMATTER);
+        return dt.format(DATETIME_FORMATTER);
     }
 
     /**
      * 날짜를 yyyy-MM-dd 형식의 문자열로 반환합니다.
      */
-    public static String formatDate(LocalDate date) {
-        if (date == null) {
+    public static String formatDate(LocalDate dt) {
+        if (dt == null) {
             return "";
         }
-        return date.format(DATE_FORMATTER);
+        return dt.format(DATE_FORMATTER);
     }
 
     /**
      * 현재로부터 어느 정도 이전인지 한글로 반환합니다.
      * @param past 비교 시간 - LocalDateTime
      */
-    public String formatTimeAgo(LocalDateTime past) {
+    public static String formatTimeAgo(LocalDateTime past, Clock clock) {
         if (past == null) {
             return "";
         }
@@ -66,7 +60,7 @@ public class TimeUtils {
      * 현재로부터 어느 정도 이전인지 한글로 반환합니다.
      * @param past 비교 시간 - LocalDate
      */
-    public String formatDateAgo(LocalDate past) {
+    public static String formatDateAgo(LocalDate past, Clock clock) {
         if (past == null) {
             return "";
         }

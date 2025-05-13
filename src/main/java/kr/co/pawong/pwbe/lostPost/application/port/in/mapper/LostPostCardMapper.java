@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.lostPost.application.port.in.mapper;
 
-import kr.co.pawong.pwbe.global.time.TimeUtils;
+import java.time.Clock;
+import kr.co.pawong.pwbe.global.util.TimeUtils;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 
@@ -10,12 +11,11 @@ import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 public class LostPostCardMapper {
 
     /**
-     * @param timeUtils - TimeUtils 빈. (이 함수를 static으로 만들기 위해 주입받게 했습니다.)
      * @param lostPost - 변환할 LostPost
      * @param author - 작성자 닉네임
      */
     public static LostPostCard toLostPostCard(
-            TimeUtils timeUtils, LostPost lostPost, String author) {
+            LostPost lostPost, String author, Clock clock) {
 
         return LostPostCard.builder()
                 .postId(lostPost.getLostPostId())
@@ -25,7 +25,7 @@ public class LostPostCardMapper {
                 .happenedPlace(lostPost.getLocation())
                 .upKindNm(lostPost.getUpKindNm().name())
                 .kindNm(lostPost.getKindNm())
-                .createdAt(timeUtils.formatTimeAgo(lostPost.getCreatedAt()))
+                .createdAt(TimeUtils.formatTimeAgo(lostPost.getCreatedAt(), clock))
                 .feature(lostPost.getSpecialMark())
                 .build();
     }

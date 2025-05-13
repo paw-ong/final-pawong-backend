@@ -5,9 +5,9 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
-import kr.co.pawong.pwbe.global.time.TimeUtils;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.UserInfoPort;
@@ -19,18 +19,21 @@ import org.junit.jupiter.api.Test;
 class QueryLostPostDataServiceTest {
 
     private QueryLostPostDataService service;
+    private static final LocalDateTime FIXED_LDT =
+            LocalDateTime.of(2025, 5, 13, 12, 14, 3);
 
     @BeforeEach
     void setUp() {
         // Fake 구현체들로 Service를 직접 생성
         LostPostDataQueryPort fakeLostPostPort = new FakeLostPostDataQueryPort();
         UserInfoPort fakeUserInfoPort = new FakeUserInfoPort();
-        TimeUtils fakeTimeUtils    = new FakeTimeUtils(null);
+        Clock fixedClock = Clock.fixed(FIXED_LDT.atZone(ZoneId.systemDefault()).toInstant(),
+                ZoneId.systemDefault());
 
         service = new QueryLostPostDataService(
                 fakeLostPostPort,
                 fakeUserInfoPort,
-                fakeTimeUtils
+                fixedClock
         );
     }
 
@@ -51,7 +54,7 @@ class QueryLostPostDataServiceTest {
         assertThat(card.happenedPlace()).isEqualTo("Seoul");
         assertThat(card.upKindNm()).isEqualTo("개");
         assertThat(card.kindNm()).isEqualTo("푸들");
-        assertThat(card.createdAt()).isEqualTo("10분 전");    // FakeTimeUtils 기준
+        assertThat(card.createdAt()).isEqualTo("12일 전");    // FakeTimeUtils 기준
         assertThat(card.feature()).isEqualTo("흰 점이 있음");
     }
 
@@ -93,16 +96,4 @@ class QueryLostPostDataServiceTest {
         }
     }
 
-    /** 항상 "10분 전" 을 반환하도록 고정된 Fake TimeUtils */
-    static class FakeTimeUtils extends TimeUtils {
-
-        public FakeTimeUtils(Clock clock) {
-            super(clock);
-        }
-
-        @Override
-        public String formatTimeAgo(LocalDateTime time) {
-            return "10분 전";
-        }
-    }
 }
