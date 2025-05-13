@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
+import kr.co.pawong.pwbe.lostPost.domain.GeoPoint;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import lombok.AllArgsConstructor;
@@ -43,8 +44,7 @@ public class LostPostCreate {
                 .content(this.content)
                 .rfidCd(this.rfidCd)
                 .location(this.location)
-                .latitude(this.latitude)
-                .longitude(this.longitude)
+                .geoPoint(GeoPoint.of(this.latitude, this.longitude))
                 .build();
     }
 }

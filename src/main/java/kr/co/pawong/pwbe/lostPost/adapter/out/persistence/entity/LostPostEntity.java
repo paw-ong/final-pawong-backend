@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.lostPost.adapter.out.persistence.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -81,11 +82,10 @@ public class LostPostEntity {
     @Column(nullable = false)
     private String location;        // 실종장소, 발견장소
 
-    private Double latitude;        // 위도
-    private Double longitude;       // 경도
+    @Embedded
+    private GeoPointEmbeddable geoPoint;
 
     private Long userId;            // 작성자 유저 id
-
 
     public static LostPostEntity from(LostPost lostPost) {
         return LostPostEntity.builder()
@@ -106,8 +106,7 @@ public class LostPostEntity {
                 .deletedAt(lostPost.getDeletedAt())
                 .status(lostPost.getStatus())
                 .location(lostPost.getLocation())
-                .latitude(lostPost.getLatitude())
-                .longitude(lostPost.getLongitude())
+                .geoPoint(new GeoPointEmbeddable(lostPost.getGeoPoint()))
                 .userId(lostPost.getUserId())
                 .build();
     }
@@ -132,8 +131,7 @@ public class LostPostEntity {
                 .deletedAt(this.deletedAt)
                 .status(this.status)
                 .location(this.location)
-                .latitude(this.latitude)
-                .longitude(this.longitude)
+                .geoPoint(this.geoPoint.toDomain())
                 .userId(this.userId)
                 .build();
     }
