@@ -43,7 +43,7 @@ public class EsAdoptionEngineCommandAdapter implements AdoptionEngineCommandPort
 
                 // Active 상태의 Adoption만 AdoptionDocument로 반환
                 List<IndexQuery> queries = batch.stream()
-                        .filter(adoptionEsDto -> ActiveState.ACTIVE == adoptionEsDto.getActiveState())
+                        .filter(adoptionEsDto -> ActiveState.ADOPTED == adoptionEsDto.getActiveState())
                         .map(adoptionEsDto -> {
                             try {
                                 // Adoption -> AdoptionDocument

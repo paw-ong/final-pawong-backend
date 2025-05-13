@@ -47,10 +47,18 @@ public class AdoptionCreate {
      * - 그 외에는 INACTIVE로 설정한다.
      */
     public void updateActiveState() {
-        if (this.getProcessState() == ProcessState.PROTECTED) {
-            this.activeState = ActiveState.ACTIVE;
+        LocalDate today = LocalDate.now();
+
+        if (this.getProcessState() != ProcessState.PROTECTED) {
+            this.activeState = ActiveState.CLOSED;
+        } else  if (this.getNoticeEdt() == null){
+            this.activeState = ActiveState.MISSING;
         } else {
-            this.activeState = ActiveState.INACTIVE;
+            if (this.getNoticeEdt().isEqual(today) || this.getNoticeEdt().isAfter(today)) {
+                this.activeState = ActiveState.MISSING;
+            } else {
+                this.activeState = ActiveState.ADOPTED;
+            }
         }
     }
 }
