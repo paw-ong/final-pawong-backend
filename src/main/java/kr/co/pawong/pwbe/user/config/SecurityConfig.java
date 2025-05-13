@@ -1,11 +1,11 @@
 package kr.co.pawong.pwbe.user.config;
 
-import kr.co.pawong.pwbe.user.infrastructure.security.error.CustomAuthenticationEntryPoint;
-import kr.co.pawong.pwbe.user.infrastructure.security.CustomOAuth2UserService;
-import kr.co.pawong.pwbe.user.infrastructure.security.JwtTokenProvider;
-import kr.co.pawong.pwbe.user.infrastructure.security.OAuth2AuthenticationSuccessHandler;
-import kr.co.pawong.pwbe.user.infrastructure.security.filter.JwtFilter;
-import kr.co.pawong.pwbe.user.presentation.controller.port.UserQueryService;
+import kr.co.pawong.pwbe.user.adapter.out.security.error.CustomAuthenticationEntryPoint;
+import kr.co.pawong.pwbe.user.adapter.out.security.CustomOAuth2UserService;
+import kr.co.pawong.pwbe.user.adapter.out.security.JwtTokenProvider;
+import kr.co.pawong.pwbe.user.adapter.out.security.OAuth2AuthenticationSuccessHandler;
+import kr.co.pawong.pwbe.user.adapter.out.security.filter.JwtFilter;
+import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Slf4j
 @Configuration
@@ -30,7 +29,7 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final UserQueryService userQueryService;
+    private final QueryUserDataUseCase queryUserDataUseCase;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     public SecurityConfig(
@@ -38,14 +37,14 @@ public class SecurityConfig {
             JwtTokenProvider jwtTokenProvider,
             UserDetailsService userDetailsService,
             CustomOAuth2UserService customOAuth2UserService,
-            UserQueryService userQueryService,
+            QueryUserDataUseCase queryUserDataUseCase,
             CustomAuthenticationEntryPoint customAuthenticationEntryPoint
     ) {
         this.jwtFilter = jwtFilter;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
         this.customOAuth2UserService = customOAuth2UserService;
-        this.userQueryService = userQueryService;
+        this.queryUserDataUseCase = queryUserDataUseCase;
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
     }
 
@@ -86,7 +85,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-        return new OAuth2AuthenticationSuccessHandler(userQueryService, jwtTokenProvider);
+        return new OAuth2AuthenticationSuccessHandler(queryUserDataUseCase, jwtTokenProvider);
     }
 
     @Bean

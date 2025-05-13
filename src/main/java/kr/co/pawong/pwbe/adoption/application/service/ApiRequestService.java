@@ -22,6 +22,12 @@ import kr.co.pawong.pwbe.adoption.enums.ProcessState;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
+import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
+import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Body;
+import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Items;
+import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Response;
+import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionDataUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +46,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class ApiRequestService implements ApiRequestUseCase {
 
     private final RestTemplate restTemplate;
-    private final UpdateAdoptionDataUseCase updateAdoptionDataUseCase;
+    private final CommandAdoptionDataUseCase updateAdoptionDataUseCase;
 
     @Value("${api.service-key}")
     private String serviceKey;
