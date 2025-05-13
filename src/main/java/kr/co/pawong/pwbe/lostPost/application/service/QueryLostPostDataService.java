@@ -10,6 +10,7 @@ import kr.co.pawong.pwbe.lostPost.application.port.out.UserInfoPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
     private final Clock clock;
 
     @Override
+    @Transactional(readOnly = true)
     public List<LostPostCard> getLostPostsByUserId(Long userId) {
 
         List<LostPost> lostPosts = lostPostDataQueryPort.getLostPostsByUserId(userId);
