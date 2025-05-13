@@ -20,7 +20,7 @@ import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Body;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Items;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Response;
-import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionDataUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionDataUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class ApiRequestService implements ApiRequestUseCase {
 
     private final RestTemplate restTemplate;
-    private final UpdateAdoptionDataUseCase updateAdoptionDataUseCase;
+    private final CommandAdoptionDataUseCase updateAdoptionDataUseCase;
 
     @Value("${api.service-key}")
     private String serviceKey;
