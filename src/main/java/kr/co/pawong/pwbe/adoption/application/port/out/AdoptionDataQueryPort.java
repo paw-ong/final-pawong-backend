@@ -19,4 +19,6 @@ public interface AdoptionDataQueryPort {
     Adoption findByAdoptionIdOrThrow(Long adoptionId);
 
     List<Adoption> findTop12ActiveByNoticeEdt(LocalDate today);
+
+    List<Adoption> findAllByDesertionNo(String desertionNo);
 }

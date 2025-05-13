@@ -12,4 +12,10 @@ public interface AdoptionDataCommandPort {
 
     // Ai 관련 데이터 업데이트
     void updateAiFields(List<Adoption> adoptions);
+
+    void updateAdoption(Adoption adoption);
+
+    void saveAdoption(Adoption adoption);
+
+    void deleteAdoption(Adoption adoption);
 }

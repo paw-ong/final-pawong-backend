@@ -1,18 +1,20 @@
 package kr.co.pawong.pwbe.adoption.application.service;
 
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionAiPort;
-import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
-import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
-import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataCommandPort;
-import kr.co.pawong.pwbe.adoption.enums.ActiveState;
 import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionDataUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionAiPort;
+import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataCommandPort;
+import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
+import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
+import kr.co.pawong.pwbe.adoption.enums.ActiveState;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,15 +33,71 @@ public class UpdateAdoptionDataService implements UpdateAdoptionDataUseCase {
     private int batchSize;
 
     // AdoptionCreate -> Adoption -> Repo에 전달
+    @Transactional
     @Override
     public void saveAdoptions(List<AdoptionCreate> adoptionCreates) {
-        List<Adoption> adoptions = adoptionCreates.stream()
-                .map(Adoption::from)
-                .toList();
+        int updatedCount = 0;
+        int insertedCount = 0;
 
-        adoptionDataCommandPort.saveAdoptions(adoptions);
+        for (AdoptionCreate adoptionCreate : adoptionCreates) {
+            Optional<Adoption> existingAdoption = duplicateAdoption(adoptionCreate.getDesertionNo());
 
-        log.info("{}개의 입양 정보가 변환 및 저장되었습니다.", adoptions.size());
+            if (existingAdoption.isPresent()) {
+                Adoption adoption = existingAdoption.get();
+
+                if (adoption.getUpdTm() == null ||
+                adoptionCreate.getUpdTm() == null ||
+                adoption.getUpdTm().isBefore(adoptionCreate.getUpdTm())) {
+
+                    Adoption updatedAdoption = Adoption.from(adoptionCreate);
+
+                    updatedAdoption.setId(adoption.getAdoptionId());
+
+                    adoptionDataCommandPort.updateAdoption(updatedAdoption);
+                    updatedCount++;
+//                    log.info("유기동물 정보 업데이트: {}", adoptionCreate.getDesertionNo());
+                }
+            } else {
+                Adoption newAdoption = Adoption.from(adoptionCreate);
+
+                adoptionDataCommandPort.saveAdoption(newAdoption);
+                insertedCount++;
+//                log.info("새로운 유기동물 정보 저장: {}", adoptionCreate.getDesertionNo());
+            }
+        }
+
+        log.info("데이터 처리 완료: {} 건 삽입, {} 건 업데이트", insertedCount, updatedCount);
+    }
+
+    @Transactional
+    public Optional<Adoption> duplicateAdoption(String desertionNo) {
+        List<Adoption> duplicateAdoptions = adoptionDataQueryPort.findAllByDesertionNo(desertionNo);
+
+        if (duplicateAdoptions.size() <= 1) {
+            return duplicateAdoptions.isEmpty() ? Optional.empty() : Optional.of(duplicateAdoptions.get(0));
+        }
+
+        log.info("중복된 유기동물 정보 발견: {}, 개수: {}", desertionNo, duplicateAdoptions.size());
+
+        Adoption adoptionToKeep = findAdoptionToKeep(duplicateAdoptions);
+
+        int removedCount = 0;
+        for (Adoption adoption : duplicateAdoptions) {
+            if (!adoption.getAdoptionId().equals(adoptionToKeep.getAdoptionId())) {
+                adoptionDataCommandPort.deleteAdoption(adoption);
+                removedCount++;
+            }
+        }
+
+        log.info("중복 데이터 처리 완료: {}, 삭제된 데이터 수: {}", desertionNo, removedCount);
+
+        return Optional.of(adoptionToKeep);
+    }
+
+    private Adoption findAdoptionToKeep(List<Adoption> duplicateAdoptions) {
+        return duplicateAdoptions.stream()
+                .min(Comparator.comparing(Adoption::getAdoptionId))
+                .orElse(duplicateAdoptions.get(0));
     }
 
     /**
@@ -51,7 +109,7 @@ public class UpdateAdoptionDataService implements UpdateAdoptionDataUseCase {
         List<Adoption> adoptions = adoptionDataQueryPort.findAll();
 
         List<Adoption> activeNotProcessed = adoptions.stream()
-                .filter(adoption -> adoption.getActiveState() == ActiveState.ACTIVE
+                .filter(adoption -> adoption.getActiveState() == ActiveState.ADOPTED
                         && !adoption.isAiProcessed())
                 .toList();
 
