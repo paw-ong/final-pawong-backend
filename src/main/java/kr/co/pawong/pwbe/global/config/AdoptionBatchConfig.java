@@ -4,6 +4,7 @@ import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.repeat.RepeatStatus;
@@ -19,6 +20,7 @@ public class AdoptionBatchConfig {
     @Bean
     public Job adoptionApiJob(JobRepository jobRepository, Step adoptionApiStep) {
         return new JobBuilder("adoptionApiJob", jobRepository)
+                .incrementer(new RunIdIncrementer())
                 .start(adoptionApiStep)
                 .build();
     }
@@ -31,6 +33,7 @@ public class AdoptionBatchConfig {
                     apiRequestUseCase.fetchAndSaveAdoptions();
                     return RepeatStatus.FINISHED; // 한 번만 실행
                 }, transactionManager)
+                .allowStartIfComplete(true)
                 .build();
     }
 }
