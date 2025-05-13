@@ -1,16 +1,16 @@
 package kr.co.pawong.pwbe.lostPost.application.service;
 
-import kr.co.pawong.pwbe.lostPost.application.port.in.UpdateLostPostUseCase;
-import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostUpdatePort;
+import kr.co.pawong.pwbe.lostPost.application.port.in.CommandLostPostDataUseCase;
+import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataCommandPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LostPostUpdateService implements UpdateLostPostUseCase {
+public class CommandLostPostDataService implements CommandLostPostDataUseCase {
 
-    private final LostPostUpdatePort lostPostUpdatePort;
+    private final LostPostDataCommandPort lostPostUpdatePort;
 
     @Override
     public Long createLostPost(LostPost lostPost, Long userId) {
