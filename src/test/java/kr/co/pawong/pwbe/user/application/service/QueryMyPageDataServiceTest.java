@@ -5,9 +5,11 @@ package kr.co.pawong.pwbe.user.application.service;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 import java.util.List;
+import kr.co.pawong.pwbe.user.application.port.in.QueryBookmarkDataUseCase;
 import kr.co.pawong.pwbe.user.application.port.in.dto.MyPageLostPostResponse;
 import kr.co.pawong.pwbe.user.application.port.out.LostPostInfoPort;
 import kr.co.pawong.pwbe.user.application.port.out.dto.MyPageLostPostInfo;
+import kr.co.pawong.pwbe.user.domain.LostBookmark;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +20,9 @@ class QueryMyPageDataServiceTest {
     @BeforeEach
     void setUp() {
         LostPostInfoPort fakePort = new FakeLostPostInfoPort();
-        service = new QueryMyPageDataService(fakePort);
+        // TODO: FAKE_로 만들어서 넣어줘야함.
+        QueryBookmarkDataUseCase queryBookmarkDataUseCase = null;
+        service = new QueryMyPageDataService(fakePort, queryBookmarkDataUseCase);
     }
 
     @Test
@@ -65,6 +69,13 @@ class QueryMyPageDataServiceTest {
                     .feature("none")
                     .build();
             return List.of(info);
+        }
+
+        // TODO: 함수 오버라이딩 작성
+        @Override
+        public List<MyPageLostPostInfo> getLostAnimalsByLostPostIds(
+                List<LostBookmark> lostPostIds) {
+            return List.of();
         }
     }
 }

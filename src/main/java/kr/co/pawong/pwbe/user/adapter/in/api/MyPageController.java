@@ -25,7 +25,15 @@ public class MyPageController {
     ) {
         List<MyPageLostPostResponse> content = queryMyPageDataUseCase.getLostPostsByUserId(
                 principal.getUserId());
-        return ResponseEntity.ok(
-                new BaseMyPageResponse<>(content));
+        return ResponseEntity.ok(new BaseMyPageResponse<>(content));
+    }
+
+    @GetMapping("/lost-bookmarks")
+    public ResponseEntity<BaseMyPageResponse<MyPageLostPostResponse>> myPageLostBookmarks(
+            @AuthenticationPrincipal CustomUserDetails principal
+    ) {
+        List<MyPageLostPostResponse> content = queryMyPageDataUseCase.getBookmarkedLostPostsByUserId(
+                principal.getUserId());
+        return ResponseEntity.ok(new BaseMyPageResponse<>(content));
     }
 }

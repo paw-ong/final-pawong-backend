@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.user.adapter.out.jpa;
 
+import java.util.List;
 import java.util.Optional;
 import kr.co.pawong.pwbe.user.adapter.out.jpa.entity.LostBookmarkEntity;
 import kr.co.pawong.pwbe.user.adapter.out.jpa.repository.LostBookmarkRepository;
@@ -24,5 +25,12 @@ public class JpaLostBookmarkQueryAdapter implements LostBookmarkQueryPort {
     public Optional<LostBookmark> findByAdoptionId(long userId, long adoptionId) {
         return lostBookmarkRepository.findLostBookmarkEntityByUserIdAndAdoptionId(userId, adoptionId)
                 .map(LostBookmarkEntity::toDomain);
+    }
+
+    @Override
+    public List<LostBookmark> findByUserId(long userId) {
+        return lostBookmarkRepository.findByUserId(userId).stream()
+                .map(LostBookmarkEntity::toDomain)
+                .toList();
     }
 }

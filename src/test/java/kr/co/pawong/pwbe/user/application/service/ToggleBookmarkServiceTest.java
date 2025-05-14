@@ -3,6 +3,7 @@ package kr.co.pawong.pwbe.user.application.service;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -75,6 +76,12 @@ class ToggleBookmarkServiceTest {
                     .filter(b -> b.getUserId() == userId
                             && Objects.equals(b.getAdoptionId(), adoptionId))
                     .findFirst();
+        }
+
+        // TODO: 함수 오버라이딩 작성
+        @Override
+        public List<LostBookmark> findByUserId(long userId) {
+            return List.of();
         }
 
         @Override

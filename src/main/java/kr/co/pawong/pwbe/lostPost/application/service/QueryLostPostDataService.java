@@ -3,6 +3,7 @@ package kr.co.pawong.pwbe.lostPost.application.service;
 import java.time.Clock;
 import java.util.List;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
+import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalQuery;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostPostCardMapper;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
@@ -30,5 +31,11 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
         return lostPosts.stream()
                 .map(post -> LostPostCardMapper.toLostPostCard(post, author, clock))
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<LostPostCard> getLostAnimalsByPostIds(List<LostAnimalQuery> lostAnimalQueries) {
+        return null;
     }
 }
