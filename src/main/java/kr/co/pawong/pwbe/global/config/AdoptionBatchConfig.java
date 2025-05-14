@@ -1,13 +1,26 @@
 package kr.co.pawong.pwbe.global.config;
 
-import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
+import kr.co.pawong.pwbe.adoption.adapter.out.batch.processor.AdoptionAiProcessor;
+import kr.co.pawong.pwbe.adoption.adapter.out.batch.processor.AdoptionApiProcessor;
+import kr.co.pawong.pwbe.adoption.adapter.out.batch.processor.AdoptionEsProcessor;
+import kr.co.pawong.pwbe.adoption.adapter.out.batch.reader.AdoptionAiReader;
+import kr.co.pawong.pwbe.adoption.adapter.out.batch.reader.AdoptionApiReader;
+import kr.co.pawong.pwbe.adoption.adapter.out.batch.reader.AdoptionEsReader;
+import kr.co.pawong.pwbe.adoption.adapter.out.batch.writer.AdoptionAiWriter;
+import kr.co.pawong.pwbe.adoption.adapter.out.batch.writer.AdoptionApiWriter;
+import kr.co.pawong.pwbe.adoption.adapter.out.batch.writer.AdoptionEsWriter;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionEsDto;
+import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
+import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,22 +31,59 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class AdoptionBatchConfig {
 
     @Bean
-    public Job adoptionApiJob(JobRepository jobRepository, Step adoptionApiStep) {
+    public Job adoptionApiJob(JobRepository jobRepository,
+            Step adoptionApiStep,
+            Step aiProcessedStep,
+            Step saveEsStep) {
         return new JobBuilder("adoptionApiJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(adoptionApiStep)
+                .next(aiProcessedStep)
+                .next(saveEsStep)
+                .listener(new JobExecutionListener() {
+                    @Override
+                    public void beforeJob(JobExecution jobExecution) {
+                        jobExecution.getExecutionContext().putInt("max.items.count", 150);
+                    }
+                })
                 .build();
     }
 
     @Bean
     public Step adoptionApiStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
-            ApiRequestUseCase apiRequestUseCase) {
+            AdoptionApiReader reader,
+            AdoptionApiProcessor processor,
+            AdoptionApiWriter writer) {
         return new StepBuilder("adoptionApiStep", jobRepository)
-                .tasklet((contribution, chunkContext) -> {
-                    apiRequestUseCase.fetchAndSaveAdoptions();
-                    return RepeatStatus.FINISHED; // 한 번만 실행
-                }, transactionManager)
-                .allowStartIfComplete(true)
+                .<AdoptionApi.Item, AdoptionCreate>chunk(100, transactionManager)
+                .reader(reader)
+                .processor(processor)
+                .writer(writer)
+                .build();
+    }
+
+    @Bean
+    public Step aiProcessedStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
+            AdoptionAiReader reader,
+            AdoptionAiProcessor processor,
+            AdoptionAiWriter writer) {
+        return new StepBuilder("aiProcessedStep", jobRepository)
+                .<Adoption, Adoption>chunk(50, transactionManager)
+                .reader(reader)
+                .processor(processor)
+                .writer(writer)
+                .build();
+    }
+
+    @Bean Step saveEsStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
+            AdoptionEsReader reader,
+            AdoptionEsProcessor processor,
+            AdoptionEsWriter writer) {
+        return new StepBuilder("saveEsStep", jobRepository)
+                .<Adoption, AdoptionEsDto>chunk(50, transactionManager)
+                .reader(reader)
+                .processor(processor)
+                .writer(writer)
                 .build();
     }
 }
