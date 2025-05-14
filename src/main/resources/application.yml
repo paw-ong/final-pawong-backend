@@ -33,6 +33,3 @@ data:
     schema-management:
       create-index: false
       create-mappings: false
-adoption:
-  batch-size: 50
-
