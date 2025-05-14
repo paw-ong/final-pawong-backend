@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionDataUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Body;
@@ -22,12 +21,6 @@ import kr.co.pawong.pwbe.adoption.enums.ProcessState;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
-import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
-import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Body;
-import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Items;
-import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Response;
-import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionDataUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,62 +39,53 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class ApiRequestService implements ApiRequestUseCase {
 
     private final RestTemplate restTemplate;
-    private final CommandAdoptionDataUseCase updateAdoptionDataUseCase;
 
     @Value("${api.service-key}")
     private String serviceKey;
 
-    /**
-     * 공공데이터 API에서 유기동물 정보를 가져와 저장하는 메서드
-     */
+    private int pageNo = 14; // 원래는 1
+    private int numOfRows = 1000;
+    private List<AdoptionApi.Item> items;
+    private int index = 0;
+    private boolean dataExhausted = false;
+
+    // 공공데이터 API -> 유기동물 아이템
     @Override
-    public void fetchAndSaveAdoptions() {
-        int pageNo = 1; // 시작 페이지 번호
-        int numOfRows = 1000; // 한 페이지당 가져올 데이터 수
-        boolean hasMoreData = true; // 더 가져올 데이터가 있는지 여부
-        int totalSaved = 0; // 총 저장된 개수
+    public AdoptionApi.Item fetchNextAdoptionItem() {
+        // 현재 아이템 목록이 없거나 모든 아이템을 처리한 경우 새로운 데이터 요청
+        if (items == null || index >= items.size()) {
+            // 이미 모든 데이터를 가져온 경우 null 반환
+            if (dataExhausted) {
+                return null;
+            }
 
-        while (hasMoreData) {
-//            log.info("데이터 가져오기: 페이지 {}, 페이지당 {} 건", pageNo, numOfRows);
-
-            // 1. API에서 데이터 가져오기
+            // API에서 다음 페이지 데이터 가져오기
             AdoptionApi adoptionApi = fetchAdoptionData(pageNo, numOfRows);
 
-            // 데이터가 없거나 오류가 발생한 경우 종료
+            // 유효한 데이터가 아닌 경우 null 반환
             if (!isValidAdoptionData(adoptionApi)) {
-                log.info("더 이상 데이터가 없습니다.");
-                break;
+                dataExhausted = true;
+                return null;
             }
 
-            // 2. API 응답 데이터를 AdoptionCreate로 변환
-            List<AdoptionApi.Item> items = adoptionApi.getResponse().getBody().getItems().getItem();
-            List<AdoptionCreate> adoptionCreates = convertToAdoptionCreates(items);
+            // 응답에서 아이템 목록 추출
+            items = adoptionApi.getResponse().getBody().getItems().getItem();
+            // 다음 페이지로 이동
+            pageNo++;
+            // 인덱스 초기화
+            index = 0;
 
-            // 3. 변환된 데이터를 리스트에 추가
-            updateAdoptionDataUseCase.saveAdoptions(adoptionCreates);
-
-            totalSaved += adoptionCreates.size();
-            log.info("페이지 {} 처리 및 저장 완료: {} 건의 데이터 저장됨 (현재까지 총 {}건)",
-                    pageNo, adoptionCreates.size(), totalSaved);
-
+            // 가져온 아이템 수가 요청한 행 수보다 적으면 마지막 페이지로 간주
             if (items.size() < numOfRows) {
-                log.info("마지막 페이지 도달: 총 {} 건의 데이터 수집 완료", totalSaved);
-                hasMoreData = false;
-            } else {
-                pageNo++;
-                // API 호출 간 지연 시간 설정
-                loading(100);
+                dataExhausted = true;
             }
         }
+
+        // 현재 인덱스의 아이템 반환하고 인덱스 증가
+        return items.get(index++);
     }
 
-    /**
-     * 공공데이터 API에서 유기동물 정보를 가져오는 메서드
-     *
-     * @param pageNo    페이지 번호
-     * @param numOfRows 한 페이지당 가져올 데이터 수
-     * @return API 응답 데이터
-     */
+    // 공공데이터 API에서 유기동물 정보를 가져오는 메서드
     private AdoptionApi fetchAdoptionData(int pageNo, int numOfRows) {
         // API 요청 주소
         URI uri = UriComponentsBuilder.fromHttpUrl(
@@ -116,8 +100,6 @@ public class ApiRequestService implements ApiRequestUseCase {
                 .build(true)
                 .toUri();
 
-//        log.info("요청 주소: {}", uri.toString());
-
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -126,7 +108,6 @@ public class ApiRequestService implements ApiRequestUseCase {
         try {
             ResponseEntity<AdoptionApi> responseEntity = restTemplate.exchange(uri, HttpMethod.GET,
                     entity, AdoptionApi.class);
-            //            log.info("응답 수신 완료");
             return responseEntity.getBody();
         } catch (Exception e) {
             log.error("API 호출 중 오류 발생: {}", e.getMessage(), e);
@@ -134,14 +115,9 @@ public class ApiRequestService implements ApiRequestUseCase {
         }
     }
 
-    /**
-     * 공공데이터 API의 Item을 AdoptionCreate로 변환하는 메서드
-     * - 날짜 파싱
-     *
-     * @param items 공공데이터 API에서 받아온 Item 리스트
-     * @return 변환된 AdoptionCreate 리스트
-     */
-    private List<AdoptionCreate> convertToAdoptionCreates(List<AdoptionApi.Item> items) {
+    // 공공데이터 API item -> AdoptionCreate
+    @Override
+    public List<AdoptionCreate> convertToAdoptionCreates(List<AdoptionApi.Item> items) {
         List<AdoptionCreate> adoptionCreates = new ArrayList<>();
         // 날짜/시간 정의
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.0");
@@ -190,12 +166,7 @@ public class ApiRequestService implements ApiRequestUseCase {
         return adoptionCreates;
     }
 
-    /**
-     * API 응답 데이터의 유효성을 검사하는 메서드
-     *
-     * @param adoptionApi API 응답 데이터
-     * @return 유효한 데이터가 있으면 true, 없으면 false
-     */
+    // API 응답 데이터의 유효성을 검사하는 메서드
     private boolean isValidAdoptionData(AdoptionApi adoptionApi) {
         return Optional.ofNullable(adoptionApi)
                 .map(AdoptionApi::getResponse)
@@ -206,26 +177,7 @@ public class ApiRequestService implements ApiRequestUseCase {
                 .isPresent();
     }
 
-    /**
-     * API 호출 간 지연 시간을 설정하는 메서드
-     * @param millis 지연 시간(밀리초)
-     */
-    private void loading(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            log.warn("스레드 지연 중 인터럽트 발생");
-        }
-    }
-
-    /**
-     * 문자열을 LocalDate로 변환하는 메서드
-     *
-     * @param date      변환할 날짜 문자열
-     * @param formatter 날짜 형식
-     * @return 변환된 LocalDate 객체
-     */
+    // 문자열 -> LocalDate
     private LocalDate parseLocalDate(String date, DateTimeFormatter formatter) {
         if (date != null && !date.isEmpty()) {
             try {
@@ -237,13 +189,7 @@ public class ApiRequestService implements ApiRequestUseCase {
         return null;
     }
 
-    /**
-     * 문자열을 LocalDateTime으로 변환하는 메서드
-     *
-     * @param date      변환할 날짜 시간 문자열
-     * @param formatter 날짜 시간 형식
-     * @return 변환된 LocalDateTime 객체
-     */
+    // 문자열 -> LocalDateTime
     private LocalDateTime parseLocalDateTime(String date, DateTimeFormatter formatter) {
         if (date != null && !date.isEmpty()) {
             try {
@@ -256,12 +202,7 @@ public class ApiRequestService implements ApiRequestUseCase {
         return null;
     }
 
-    /**
-     * 문자열을 정수로 변환하는 메서드
-     *
-     * @param value 변환할 문자열
-     * @return 변환된 정수 값
-     */
+    // 문자열 -> 정수
     private Integer parseInt(String value) {
         if (value == null || value.isEmpty()) {
             return null;
@@ -275,13 +216,7 @@ public class ApiRequestService implements ApiRequestUseCase {
         }
     }
 
-    /**
-     * 문자열을 Enum으로 변환하는 메서드
-     *
-     * @param data      변환할 문자열
-     * @param enumClass Enum 클래스
-     * @return 변환된 Enum 값
-     */
+    // 문자열 -> Enum
     private <T extends Enum<T>> T convertToEnum(String data, Class<T> enumClass) {
         if (data == null) {
             return null;
