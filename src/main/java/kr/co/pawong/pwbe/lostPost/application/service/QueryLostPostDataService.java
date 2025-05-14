@@ -38,6 +38,7 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
     public LostPostDetailResponse findLostPostById(Long lostPostId) {
         LostPost lostPost = lostPostDataQueryPort.findLostPostById(lostPostId);
         LostPostDetailDto lostPostDetailDto = LostPostDetailDto.from(lostPost);
-        return new LostPostDetailResponse(lostPostDetailDto);
+        String userNickname = userInfoPort.getNicknameByUserId(lostPost.getUserId());
+        return new LostPostDetailResponse(lostPostDetailDto,userNickname);
     }
 }

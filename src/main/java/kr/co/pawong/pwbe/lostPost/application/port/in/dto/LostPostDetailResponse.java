@@ -10,4 +10,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class LostPostDetailResponse {
     private LostPostDetailDto lostPostDetailDto;
+    private String userNickname;
 }

@@ -39,7 +39,7 @@ public class LostPostDetailDto {
     private PostStatus status;      // 게시글 상태
     private String location;        // 실종장소, 발견장소
     private GeoPoint geoPoint;
-    private Long userId;            // 작성자 유저 id
+
 
     public static LostPostDetailDto from(LostPost lostPost) {
         return LostPostDetailDto.builder()
@@ -62,7 +62,6 @@ public class LostPostDetailDto {
                 .status(lostPost.getStatus())
                 .location(lostPost.getLocation())
                 .geoPoint(lostPost.getGeoPoint())
-                .userId(lostPost.getUserId())
                 .build();
     }
 }
