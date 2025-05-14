@@ -3,20 +3,16 @@
 
 ### dotenv ###
 .env
-infra/docker-compose/elasticsearch/.env
-infra/docker-compose/mysql/.env
 
 ### es, mysql data ###
-infra/docker-compose/elasticsearch/data/*
-infra/docker-compose/mysql/db/*
+infra/elasticsearch/data/*
+infra/mysql/db/*
 
 ### es, mysql data ###
-infra/docker-compose/elasticsearch/data/*
-infra/docker-compose/mysql/db/*
+infra/elasticsearch/data/*
 
 ### nginx data ###
-infra/docker-compose/nginx/logs
-infra/docker-compose/nginx/.env
+infra/nginx/logs
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
