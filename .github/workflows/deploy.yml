@@ -55,7 +55,7 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ubuntu
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          source: docker-compose.prod.yml
+          source: ./docker-compose.prod.yml
           target: /home/ubuntu/pawong/deploy/docker-compose.prod.yml
 
       - name: SSH to cloud instance and deploy
