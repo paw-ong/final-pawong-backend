@@ -44,6 +44,7 @@ services:
       - prod-net
   frontend:
     image: pawong/frontend:latest       # dockerhub에 push하는 레포 경로로
+    platform: linux/amd64
     container_name: pawong-prod-frontend
     ports:
       - "5004:80"
