@@ -28,9 +28,7 @@ services:
       - prod-net
 
   backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: pawong/backend:latest
     container_name: pawong-prod-backend
     env_file:
       - .env

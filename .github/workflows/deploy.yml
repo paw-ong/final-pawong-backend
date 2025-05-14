@@ -59,7 +59,7 @@ jobs:
             cd /home/ubuntu/pawong/deploy
 
             sudo docker-compose -f docker-compose.prod.yml stop
-            sudo docker-compose -f docker-compose.prod.yml rm -f app
+            sudo docker-compose -f docker-compose.prod.yml rm -f backend
             sudo docker rmi -f ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
 
