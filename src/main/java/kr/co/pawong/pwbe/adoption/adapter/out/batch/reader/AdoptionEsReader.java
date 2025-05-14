@@ -6,9 +6,9 @@ import kr.co.pawong.pwbe.adoption.application.port.in.QueryAdoptionDataUseCase;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.ItemReader;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 @RequiredArgsConstructor
 public class AdoptionEsReader implements ItemReader<Adoption> {
     private final QueryAdoptionDataUseCase queryAdoptionDataUseCase;
