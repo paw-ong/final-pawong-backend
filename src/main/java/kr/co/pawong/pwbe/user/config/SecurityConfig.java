@@ -9,6 +9,7 @@ import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -68,6 +69,8 @@ public class SecurityConfig {
                                 "/api/shelters/**",
                                 "/api/lost-animals/**"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/lost-posts/*").permitAll() // ⬅ 단건 조회만 허용
+                        .requestMatchers("/api/lost-posts/**").authenticated()            // ⬅ 그 외는 인증 필요
                         .anyRequest().authenticated())
 
                 // oauth2 요청만 처리
