@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.repository;
+package kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa;
 
 import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.entity.LostPostEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
