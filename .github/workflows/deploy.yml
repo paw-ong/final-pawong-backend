@@ -27,8 +27,8 @@ jobs:
             set -e
             cd /home/ubuntu/final-pawong-backend
             
-            git fetch origin develop
-            git reset --hard origin/develop
+            git fetch origin feature/#13
+            git reset --hard origin/feature/#13
             
             docker compose -f docker-compose.prod.yml down
             docker compose -f docker-compose.prod.yml up -d --build
