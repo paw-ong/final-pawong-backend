@@ -56,11 +56,10 @@ jobs:
           username: ubuntu
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            mkdir -p /home/ubuntu/pawong/deploy
             cd /home/ubuntu/pawong/deploy
 
-            sudo docker-compose stop
-            sudo docker-compose rm -f app
+            sudo docker-compose -f docker-compose.prod.yml stop
+            sudo docker-compose -f docker-compose.prod.yml rm -f app
             sudo docker rmi -f ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
 
