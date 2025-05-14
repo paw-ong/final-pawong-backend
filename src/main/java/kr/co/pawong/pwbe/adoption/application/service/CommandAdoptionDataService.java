@@ -1,24 +1,19 @@
 package kr.co.pawong.pwbe.adoption.application.service;
 
 import jakarta.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import kr.co.pawong.pwbe.adoption.application.port.in.UpdateAdoptionDataUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionDataUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionAiPort;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataCommandPort;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
-import kr.co.pawong.pwbe.adoption.enums.ActiveState;
-import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionDataUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -30,10 +25,7 @@ public class CommandAdoptionDataService implements CommandAdoptionDataUseCase {
     private final AdoptionDataQueryPort adoptionDataQueryPort;
     private final AdoptionAiPort adoptionAiPort;
 
-    @Value("${adoption.batch-size:50}")
-    private int batchSize;
-
-    // AdoptionCreate -> Adoption -> Repo에 전달
+    // Adoption 정보 저장
     @Transactional
     @Override
     public void saveAdoptions(List<AdoptionCreate> adoptionCreates) {
@@ -41,49 +33,58 @@ public class CommandAdoptionDataService implements CommandAdoptionDataUseCase {
         int insertedCount = 0;
 
         for (AdoptionCreate adoptionCreate : adoptionCreates) {
+            // 중복 데이터 확인
             Optional<Adoption> existingAdoption = duplicateAdoption(adoptionCreate.getDesertionNo());
 
             if (existingAdoption.isPresent()) {
                 Adoption adoption = existingAdoption.get();
 
-                if (adoption.getUpdTm() == null ||
-                adoptionCreate.getUpdTm() == null ||
-                adoption.getUpdTm().isBefore(adoptionCreate.getUpdTm())) {
-
+                // Adoption 데이터가 변경되었으면 업데이트
+                if (isAdoptionUpdated(adoption, adoptionCreate)) {
                     Adoption updatedAdoption = Adoption.from(adoptionCreate);
-
                     updatedAdoption.setId(adoption.getAdoptionId());
 
                     adoptionDataCommandPort.updateAdoption(updatedAdoption);
                     updatedCount++;
-//                    log.info("유기동물 정보 업데이트: {}", adoptionCreate.getDesertionNo());
                 }
             } else {
+                // 새로운 데이터 저장
                 Adoption newAdoption = Adoption.from(adoptionCreate);
 
                 adoptionDataCommandPort.saveAdoption(newAdoption);
                 insertedCount++;
-//                log.info("새로운 유기동물 정보 저장: {}", adoptionCreate.getDesertionNo());
             }
         }
 
         log.info("데이터 처리 완료: {} 건 삽입, {} 건 업데이트", insertedCount, updatedCount);
     }
 
+    // Adoption 데이터 업데이트 여부 확인
+    private boolean isAdoptionUpdated(Adoption existingAdoption, AdoptionCreate adoptionCreate) {
+        return existingAdoption.getUpdTm() == null ||
+                adoptionCreate.getUpdTm() == null ||
+                existingAdoption.getUpdTm().isBefore(adoptionCreate.getUpdTm());
+    }
+
+    // 중복되는 adoption 정보가 있는지 확인
     @Transactional
     public Optional<Adoption> duplicateAdoption(String desertionNo) {
+        // 동일한 desertionNo를 가진 모든 데이터 조회
         List<Adoption> duplicateAdoptions = adoptionDataQueryPort.findAllByDesertionNo(desertionNo);
 
+        // 중복 데이터가 없거나 하나만 있는 경우
         if (duplicateAdoptions.size() <= 1) {
             return duplicateAdoptions.isEmpty() ? Optional.empty() : Optional.of(duplicateAdoptions.get(0));
         }
 
         log.info("중복된 유기동물 정보 발견: {}, 개수: {}", desertionNo, duplicateAdoptions.size());
 
+        // 유지할 데이터 선택
         Adoption adoptionToKeep = findAdoptionToKeep(duplicateAdoptions);
 
         int removedCount = 0;
         for (Adoption adoption : duplicateAdoptions) {
+            // 중복 데이터가 있으면 하나만 남기고 제거
             if (!adoption.getAdoptionId().equals(adoptionToKeep.getAdoptionId())) {
                 adoptionDataCommandPort.deleteAdoption(adoption);
                 removedCount++;
@@ -95,74 +96,47 @@ public class CommandAdoptionDataService implements CommandAdoptionDataUseCase {
         return Optional.of(adoptionToKeep);
     }
 
+    // 중복 데이터 중 유지할 데이터 선택
     private Adoption findAdoptionToKeep(List<Adoption> duplicateAdoptions) {
         return duplicateAdoptions.stream()
+                // adoptionId가 가장 작은(가장 먼저 생성된) 데이터 유지
                 .min(Comparator.comparing(Adoption::getAdoptionId))
                 .orElse(duplicateAdoptions.get(0));
     }
 
-    /**
-     * DB에서 Adoption 도메인 객체를 모두 조회하여 ACTIVE 상태만 AI 전처리(정제) 후 refinedSpecialMark, tagsField,
-     * aiProcessed가 변경된 경우만 50개씩 정제하고 50개씩 업데이트
-     */
+    // Adoption 데이터 AI 정제
     @Override
-    public void aiProcessAdoptions() {
-        List<Adoption> adoptions = adoptionDataQueryPort.findAll();
+    public Adoption processAdoptionForBatch(Adoption adoption) {
+        // specialMark, tag 추출
+        String specialMark = adoption.extractRefinedSpecialMark();
+        String tags = adoption.extractTagsField();
 
-        List<Adoption> activeNotProcessed = adoptions.stream()
-                .filter(adoption -> adoption.getActiveState() == ActiveState.ADOPTED
-                        && !adoption.isAiProcessed())
-                .toList();
+        // AI를 이용한 specialMark, tag 정제
+        Optional<String> refinedSpecialMark = adoptionAiPort.refineSpecialMarkBatch(
+                Collections.singletonList(specialMark)).get(0);
+        Optional<List<String>> tagsList = adoptionAiPort.tagBatch(
+                Collections.singletonList(tags)).get(0);
 
-        log.info("AI로 {} 개의 활성 입양 정보 처리 중", activeNotProcessed.size());
+        // 태그 목록을 문자열로 반환
+        String tagsField = tagsList.map(list -> String.join(",", list)).orElse("");
 
-        for (int i = 0; i < activeNotProcessed.size(); i += batchSize) {
-            int end = Math.min(i + batchSize, activeNotProcessed.size());
-            List<Adoption> batch = activeNotProcessed.subList(i, end);
-
-            processBatch(batch);
+        // AI 필드가 변경되었으면 업데이트
+        if (isAiFieldChanged(adoption, refinedSpecialMark.orElse(""), tagsField)) {
+            adoption.updateAiField(refinedSpecialMark.orElse(""), tagsField);
+            return adoption;
         }
+
+        // 변경되지 않은 경우 null 반환
+        return null;
     }
 
-    private void processBatch(List<Adoption> batch) {
-        List<String> specialMarks = batch.stream()
-                .map(Adoption::extractRefinedSpecialMark)
-                .collect(Collectors.toList());
-
-        List<String> tags = batch.stream()
-                .map(Adoption::extractTagsField)
-                .collect(Collectors.toList());
-
-        List<Optional<String>> refinedSpecialMarks = adoptionAiPort.refineSpecialMarkBatch(
-                specialMarks);
-        List<Optional<List<String>>> tagsFields = adoptionAiPort.tagBatch(tags);
-
-        List<Adoption> toUpdate = new ArrayList<>();
-
-        for (int i = 0; i < batch.size(); i++) {
-            Adoption adoption = batch.get(i);
-//            log.info("AdoptionId = {}", adoption.getAdoptionId());
-
-            String refinedSpecialMark = refinedSpecialMarks.get(i).orElse("");
-            List<String> tagsList = tagsFields.get(i).orElse(Collections.emptyList());
-            String tagsField = String.join(",", tagsList);
-
-            if (isAiFieldChanged(adoption, refinedSpecialMark, tagsField)) {
-                adoption.updateAiField(refinedSpecialMark, tagsField);
-                toUpdate.add(adoption);
-            }
-        }
-
-        if (!toUpdate.isEmpty()) {
-            adoptionDataCommandPort.updateAiFields(toUpdate);
-        }
-    }
-
+    // AI 정제 필드 변경 여부 확인
     private boolean isAiFieldChanged(Adoption adoption, String refinedSpecialMark, String tagsField) {
+        // AI 처리 여부 확인
         boolean aiProcessed = (refinedSpecialMark != null && !refinedSpecialMark.isBlank()) ||
                 (tagsField != null && !tagsField.isBlank());
 
-        // Objects.equals()를 사용하여 null 안전 비교
+        // 기존 값과 새 값이 다른 경우 변경된 것으로 판단
         return aiProcessed || !Objects.equals(adoption.getRefinedSpecialMark(), refinedSpecialMark)
                 || !Objects.equals(adoption.getTagsField(), tagsField);
     }
