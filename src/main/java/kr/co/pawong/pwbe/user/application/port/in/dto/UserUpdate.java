@@ -6,8 +6,9 @@ import lombok.Getter;
 @Builder
 @Getter
 public class UserUpdate {
-  private String nickname;
-  private String region;
-  private String tel;
+
+    private String nickname;
+    private String region;
+    private String tel;
 
 }
