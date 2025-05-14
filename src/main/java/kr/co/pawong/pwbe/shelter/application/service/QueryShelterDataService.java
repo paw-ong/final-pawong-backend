@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.shelter.application.service;
 
+import kr.co.pawong.pwbe.shelter.application.port.in.QueryCareNmUseCase;
 import kr.co.pawong.pwbe.shelter.domain.Shelter;
 import kr.co.pawong.pwbe.shelter.application.port.out.ShelterDataQueryPort;
 import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterDetailDto;
@@ -7,10 +8,11 @@ import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterInfoDto;
 import kr.co.pawong.pwbe.shelter.application.port.in.QueryShelterDataUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class QueryShelterDataService implements QueryShelterDataUseCase {
+public class QueryShelterDataService implements QueryShelterDataUseCase, QueryCareNmUseCase {
 
     private final ShelterDataQueryPort shelterDataQueryPort;
 
@@ -32,5 +34,15 @@ public class QueryShelterDataService implements QueryShelterDataUseCase {
         Shelter shelter = shelterDataQueryPort.findByCareRegNoOrThrow(careRegNo);
 
         return ShelterDetailDto.from(shelter);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public String getShelterCareNmByCareRegNo(String careRegNo) {
+        String careNm = shelterDataQueryPort.findByCareRegNoOrThrow(careRegNo).getCareNm();
+        if (careNm == null) {
+            return careNm = "";
+        }
+        return careNm;
     }
 }
