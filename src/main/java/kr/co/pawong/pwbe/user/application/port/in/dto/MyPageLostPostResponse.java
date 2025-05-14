@@ -17,4 +17,5 @@ public record MyPageLostPostResponse(
         String createdAt,
         String feature
 ) {
+
 }

@@ -5,5 +5,6 @@ import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.entity.LostPostEnt
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LostPostJpaRepository extends JpaRepository<LostPostEntity, Long> {
+
     List<LostPostEntity> findByUserId(Long userId);
 }

@@ -17,7 +17,7 @@ public class GeoPointEmbeddable {
     private BigDecimal longitude;
 
     public GeoPointEmbeddable(GeoPoint loc) {
-        this.latitude  = loc.getLatitude();
+        this.latitude = loc.getLatitude();
         this.longitude = loc.getLongitude();
     }
 

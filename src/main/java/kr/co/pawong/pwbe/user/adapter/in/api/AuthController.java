@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
-  private final AuthUseCase authUseCase;
+    private final AuthUseCase authUseCase;
 
-  @PostMapping("/signup")
-  public ResponseEntity<AuthResponse> signUp(
-      @RequestBody SignUpRequest signUpRequest,
-      Authentication authentication
-  ) {
-    CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
+    @PostMapping("/signup")
+    public ResponseEntity<AuthResponse> signUp(
+            @RequestBody SignUpRequest signUpRequest,
+            Authentication authentication
+    ) {
+        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
 
-    Long userId = principal.getUserId();
-    return ResponseEntity.ok(authUseCase.signUp(userId, signUpRequest.update()));
-  }
+        Long userId = principal.getUserId();
+        return ResponseEntity.ok(authUseCase.signUp(userId, signUpRequest.update()));
+    }
 
 }

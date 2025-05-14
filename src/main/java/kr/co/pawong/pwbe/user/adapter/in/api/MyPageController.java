@@ -23,7 +23,8 @@ public class MyPageController {
     public ResponseEntity<BaseMyPageResponse<MyPageLostPostResponse>> myPageLostPosts(
             @AuthenticationPrincipal CustomUserDetails principal
     ) {
-        List<MyPageLostPostResponse> content = queryMyPageDataUseCase.getLostPostsByUserId(principal.getUserId());
+        List<MyPageLostPostResponse> content = queryMyPageDataUseCase.getLostPostsByUserId(
+                principal.getUserId());
         return ResponseEntity.ok(
                 new BaseMyPageResponse<>(content));
     }

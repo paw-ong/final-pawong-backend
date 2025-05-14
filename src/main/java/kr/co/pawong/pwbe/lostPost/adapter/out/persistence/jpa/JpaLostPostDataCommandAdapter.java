@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-    @RequiredArgsConstructor
+@RequiredArgsConstructor
 public class JpaLostPostDataCommandAdapter implements LostPostDataCommandPort {
 
     private final LostPostJpaRepository lostPostJpaRepository;

@@ -16,4 +16,6 @@ public record MyPageLostPostInfo(
         String kindNm,
         String createdAt,
         String feature
-) {}
+) {
+
+}

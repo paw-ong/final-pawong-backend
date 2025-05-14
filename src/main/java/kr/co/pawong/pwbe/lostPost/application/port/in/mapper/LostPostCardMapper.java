@@ -12,7 +12,7 @@ public class LostPostCardMapper {
 
     /**
      * @param lostPost - 변환할 LostPost
-     * @param author - 작성자 닉네임
+     * @param author   - 작성자 닉네임
      */
     public static LostPostCard toLostPostCard(
             LostPost lostPost, String author, Clock clock) {
