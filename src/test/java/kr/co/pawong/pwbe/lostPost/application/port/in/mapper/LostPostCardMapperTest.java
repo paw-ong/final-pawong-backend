@@ -34,6 +34,7 @@ class LostPostCardMapperTest {
         LostPost lostPost = LostPost.builder()
                 .lostPostId(1L)
                 .postType(PostType.LOST)
+                .imageUrl("https://www.aaa.com")
                 .date(LocalDate.of(2025, 4, 5))
                 .location("Seoul")
                 .upKindNm(UpKindNm.개)
@@ -49,9 +50,9 @@ class LostPostCardMapperTest {
         assertThat(card.postId()).isEqualTo(1L);
         assertThat(card.postType()).isEqualTo("LOST");
         assertThat(card.author()).isEqualTo("Alice");
+        assertThat(card.imageUrl()).isEqualTo("https://www.aaa.com");
         assertThat(card.happenedDate()).isEqualTo("2025-04-05");
         assertThat(card.happenedPlace()).isEqualTo("Seoul");
-        assertThat(card.upKindNm()).isEqualTo("개");
         assertThat(card.kindNm()).isEqualTo("Poodle");
         assertThat(card.createdAt()).isEqualTo("2분 전");
         assertThat(card.feature()).isEqualTo("white spot");

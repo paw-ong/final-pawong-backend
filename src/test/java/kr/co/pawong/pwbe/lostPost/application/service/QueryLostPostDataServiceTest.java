@@ -52,7 +52,6 @@ class QueryLostPostDataServiceTest {
         assertThat(card.author()).isEqualTo("fake-nick");
         assertThat(card.happenedDate()).isEqualTo("2025-05-01");
         assertThat(card.happenedPlace()).isEqualTo("Seoul");
-        assertThat(card.upKindNm()).isEqualTo("개");
         assertThat(card.kindNm()).isEqualTo("푸들");
         assertThat(card.createdAt()).isEqualTo("12일 전");    // FakeTimeUtils 기준
         assertThat(card.feature()).isEqualTo("흰 점이 있음");

@@ -14,9 +14,9 @@ class LostPostMapperTest {
                 .postId(42L)
                 .postType("LOST")
                 .author("Alice")
+                .imageUrl("https://www.aaa.com")
                 .happenedDate("2025-05-13")
                 .happenedPlace("Seoul")
-                .upKindNm("DOG")
                 .kindNm("Poodle")
                 .createdAt("2025-05-13 12:12:02")
                 .feature("white spot on tail")
@@ -29,9 +29,9 @@ class LostPostMapperTest {
         assertThat(info.postId()).isEqualTo(42L);
         assertThat(info.postType()).isEqualTo("LOST");
         assertThat(info.author()).isEqualTo("Alice");
+        assertThat(info.imageUrl()).isEqualTo("https://www.aaa.com");
         assertThat(info.happenedDate()).isEqualTo("2025-05-13");
         assertThat(info.happenedPlace()).isEqualTo("Seoul");
-        assertThat(info.upKindNm()).isEqualTo("DOG");
         assertThat(info.kindNm()).isEqualTo("Poodle");
         assertThat(info.createdAt()).isEqualTo("2025-05-13 12:12:02");
         assertThat(info.feature()).isEqualTo("white spot on tail");

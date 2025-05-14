@@ -8,9 +8,9 @@ import lombok.Builder;
  * @param postId        // LostPost Id
  * @param postType      // LOST, FOUND, FOSTER
  * @param author        // 작성자 닉네임
- * @param happenedDate  // 실종 일시 or 발견 일시 - yyyy-MM-dd 형식
+ * @param imageUrl      // 이미지 url
+ * @param happenedDate  // 실종 일자 or 발견 일자 - yyyy-MM-dd 형식
  * @param happenedPlace // 실종 장소 or 발견 장소
- * @param upKindNm      // 개, 고양이, 기타
  * @param kindNm        // 상세 품종
  * @param createdAt     // 글 작성 일자 - 3초 전, 3개월 전 형식
  * @param feature       // 동물 특징
@@ -21,9 +21,9 @@ public record LostPostCard(
         long postId,
         String postType,
         String author,
+        String imageUrl,
         String happenedDate,
         String happenedPlace,
-        String upKindNm,
         String kindNm,
         String createdAt,
         String feature,

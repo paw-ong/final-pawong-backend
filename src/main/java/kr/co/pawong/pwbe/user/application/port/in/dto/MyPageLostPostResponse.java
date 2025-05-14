@@ -10,6 +10,7 @@ public record MyPageLostPostResponse(
         Long postId,
         String postType,
         String author,
+        String imageUrl,
         String happenedDate,
         String happenedPlace,
         String upKindNm,

@@ -17,6 +17,7 @@ public class MyPageMapper {
                 .postId(myPageLostPostInfo.postId())
                 .postType(myPageLostPostInfo.postType())
                 .author(myPageLostPostInfo.author())
+                .imageUrl(myPageLostPostInfo.imageUrl())
                 .happenedDate(myPageLostPostInfo.happenedDate())
                 .happenedPlace(myPageLostPostInfo.happenedPlace())
                 .upKindNm(myPageLostPostInfo.upKindNm())

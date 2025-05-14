@@ -15,6 +15,7 @@ class MyPageMapperTest {
                 .postId(99L)
                 .postType("FOUND")
                 .author("Bob")
+                .imageUrl("https://www.aaa.com")
                 .happenedDate("2025-04-01")
                 .happenedPlace("Busan")
                 .upKindNm("CAT")
@@ -30,6 +31,7 @@ class MyPageMapperTest {
         assertThat(response.postId()).isEqualTo(99L);
         assertThat(response.postType()).isEqualTo("FOUND");
         assertThat(response.author()).isEqualTo("Bob");
+        assertThat(response.imageUrl()).isEqualTo("https://www.aaa.com");
         assertThat(response.happenedDate()).isEqualTo("2025-04-01");
         assertThat(response.happenedPlace()).isEqualTo("Busan");
         assertThat(response.upKindNm()).isEqualTo("CAT");
