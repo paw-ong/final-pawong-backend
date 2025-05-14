@@ -6,8 +6,9 @@ import lombok.Getter;
 @Builder
 @Getter
 public class UserCreate {
-  private Long socialId;
-  private String nickname;
-  private String profileImage;
+
+    private Long socialId;
+    private String nickname;
+    private String profileImage;
 
 }
