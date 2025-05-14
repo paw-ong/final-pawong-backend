@@ -1,21 +1,20 @@
 package kr.co.pawong.pwbe.adoption.application.service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionAiPort;
-import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
-import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionEsDto;
-import kr.co.pawong.pwbe.adoption.application.port.out.dto.RegionInfoDto;
-import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionEngineCommandPort;
-import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataCommandPort;
 import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionEngineUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.in.QueryAdoptionDataUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionAiPort;
+import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataCommandPort;
+import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionEngineCommandPort;
+import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionEsDto;
+import kr.co.pawong.pwbe.adoption.application.port.out.dto.RegionInfoDto;
+import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,91 +26,84 @@ public class CommandAdoptionEngineService implements CommandAdoptionEngineUseCas
     private final AdoptionAiPort adoptionAiPort;
     private final QueryAdoptionDataUseCase queryAdoptionDataUseCase;
 
-    @Value("${adoption.batch-size:50}")
-    private int batchSize;
-
-    // 전달받은 Adoption 리스트에 대해 임베딩 및 임베딩 완료 여부 설정,
-    // shelter에서 가져온 지역 정보와 같이 ES에 저장 후 RDB에 isEmbedded 업데이트
-    // TODO: 이후 ES와 RDB에 원자적 저장 보장하기
+    // 임베딩
     @Override
-    public void saveAdoptionToEs(List<Adoption> adoptions) {
-        List<Adoption> adoptionsToEmbed = adoptions.stream()
-                .filter(adoption -> adoption.isAiProcessed() && !adoption.isEmbedded())
-                .toList();
-
-        List<List<Adoption>> batches = splitIntoBatches(adoptionsToEmbed,batchSize);
-
-        for (List<Adoption> batch : batches) {
-            processBatch(batch);
-        }
-
-        List<AdoptionEsDto> adoptionEsDtos = adoptions.stream()
-                .map(adoption -> {
-                    RegionInfoDto regionInfoDto = RegionInfoDto.from(queryAdoptionDataUseCase.findShelterInfoByAdoptionId(
-                            adoption.getAdoptionId()));
-
-                    return AdoptionEsDto.from(adoption, regionInfoDto);
-                })
-                .toList();
-
-        // 임베딩이 포함된 Adoption 리스트를 Repo에 전달
-        adoptionEngineCommandPort.saveAdoptionToEs(adoptionEsDtos);
-
-        // 임베딩 완료 상태를 DB에도 반영
-        adoptionDataCommandPort.updateIsEmbedded(adoptions);
-    }
-
-    private void processBatch(List<Adoption> batch) {
-        List<String> combinedFields = new ArrayList<>();
-        List<Adoption> adoptionsToEmbed = new ArrayList<>();
-
-        for (Adoption adoption : batch) {
+    public AdoptionEsDto processAdoptionForEs(Adoption adoption) {
+        try {
+            // 임베딩 필드 생성
             String combinedField = Stream.of(adoption.getRefinedSpecialMark(),
                             adoption.getTagsField())
                     .filter(field -> field != null && !field.isBlank())
                     .collect(Collectors.joining(","));
 
-            // 임베딩할 필드가 비어있지 않은 경우만 임베딩 대상에 추가
-            if (!combinedField.isBlank()) {
-                combinedFields.add(combinedField);
-                adoptionsToEmbed.add(adoption);
-            } else {
-                log.warn("Adoption ID {} has no valid fields to embed", adoption.getAdoptionId());
+            // 임베딩할 내용이 없는 경우 null 반환
+            if (combinedField.isBlank()) {
+                log.warn("Adoption ID {}: 임베딩할 필드가 없습니다.", adoption.getAdoptionId());
+                return null;
             }
-        }
 
-        if (!combinedFields.isEmpty()) {
+            // 임베딩 처리
+            Optional<float[]> embedding = adoptionAiPort.embedBatch(
+                    Collections.singletonList(combinedField)).get(0);
+
+            // 임베딩 성공 시 adoption 세팅
+            if (embedding.isPresent()) {
+                adoption.embed(embedding.get());
+            } else {
+                log.error("Adoption ID {}: 임베딩에 실패했습니다.", adoption.getAdoptionId());
+                return null;
+            }
+
+            // 지역 정보 조회 및 DTO 생성
+            RegionInfoDto regionInfoDto = RegionInfoDto.from(queryAdoptionDataUseCase.findShelterInfoByAdoptionId(
+                    adoption.getAdoptionId()));
+
+            return AdoptionEsDto.from(adoption, regionInfoDto);
+        } catch (Exception e) {
+            log.error("Error processing adoption ID {}: {}", adoption.getAdoptionId(), e.getMessage());
             try {
-                List<Optional<float[]>> embeddings = adoptionAiPort.embedBatch(combinedFields);
+                // 오류 발생 시 단일 임베딩 시도
+                String combinedField = Stream.of(adoption.getRefinedSpecialMark(), adoption.getTagsField())
+                        .filter(field -> field != null && !field.isBlank())
+                        .collect(Collectors.joining(","));
 
-                for (int i = 0; i < adoptionsToEmbed.size(); i++) {
-                    Optional<float[]> embedding = embeddings.get(i);
-                    if (embedding.isPresent()) {
-                        adoptionsToEmbed.get(i).embed(embedding.get());
-                    } else {
-                        log.error("Failed to embed adoption ID {}", adoptionsToEmbed.get(i).getAdoptionId());
-                    }
-                }
-            } catch (Exception e) {
-                log.error("Error during batch embedding: {}", e.getMessage());
-                for (int i = 0; i < adoptionsToEmbed.size(); i++) {
-                    try {
-                        float[] embedding = adoptionAiPort.embed(combinedFields.get(i));
-                        adoptionsToEmbed.get(i).embed(embedding);
-                    } catch (Exception e1) {
-                        log.error("Error embedding adoption ID {}: {}", adoptionsToEmbed.get(i).getAdoptionId(), e1.getMessage());
-                    }
-                }
+                float[] embedding = adoptionAiPort.embed(combinedField);
+                adoption.embed(embedding);
+
+                RegionInfoDto regionInfoDto = RegionInfoDto.from(queryAdoptionDataUseCase.findShelterInfoByAdoptionId(
+                        adoption.getAdoptionId()));
+
+                return AdoptionEsDto.from(adoption, regionInfoDto);
+            } catch (Exception e1) {
+                // 시도 실패 시 null 반환
+                log.error("Fallback embedding also failed for ID {}: {}",
+                        adoption.getAdoptionId(), e1.getMessage());
+                return null;
             }
         }
     }
 
-    private <T> List<List<T>> splitIntoBatches(List<T> list, int batchSize) {
-        List<List<T>> batches = new ArrayList<>();
-        for (int i = 0; i < list.size(); i += batchSize) {
-            int endIndex = Math.min(i + batchSize, list.size());
-            batches.add(list.subList(i, endIndex));
+    // AdoptionEsDto -> ES에 저장, RDB -> IsEmbedded 업데이트
+    @Override
+    public void saveEsAndUpdateIsEmbedded(List<AdoptionEsDto> adoptionEsDtos) {
+        if (adoptionEsDtos.isEmpty()) {
+            return;
         }
-        return batches;
+
+        try {
+            log.info("ES에 저장 시작: {} 개의 아이템", adoptionEsDtos.size());
+            adoptionEngineCommandPort.saveAdoptionToEs(adoptionEsDtos);
+            log.info("ES에 저장 완료");
+
+            // 처리된 ID 목록 수집
+            List<Long> processedIds = adoptionEsDtos.stream()
+                    .map(AdoptionEsDto::getAdoptionId)
+                    .toList();
+
+            // 임베딩 완료 상태를 RDB에 업데이트
+            adoptionDataCommandPort.updateIsEmbeddedByIds(processedIds);
+        } catch (Exception e) {
+            log.error("Elasticsearch 저장 중 오류 발생: {}", e.getMessage(), e);
+        }
     }
 }
