@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.user.adapter.out.jpa;
 
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.USER_NOT_FOUND;
+
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.user.adapter.out.jpa.repository.UserJpaRepository;
 import kr.co.pawong.pwbe.user.domain.User;
@@ -20,7 +21,7 @@ public class UserDataQueryAdapter implements UserDataQueryPort {
         return userJpaRepository.findByUserId(userId)
                 .map(UserEntity::toDomain)
                 .orElseThrow(() ->
-                                new BaseException(USER_NOT_FOUND)
+                        new BaseException(USER_NOT_FOUND)
                 );
     }
 
