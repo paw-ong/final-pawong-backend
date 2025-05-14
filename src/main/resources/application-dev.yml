@@ -54,6 +54,6 @@ cloud:
   aws:
     region: ${AWS_REGION}
     s3:
-      accessKey: ${AWS_ACCESS_KEY_ID}
-      secretKey: ${AWS_SECRET_ACCESS_KEY_ID}
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY_ID}
       bucket-name: ${BUCKET_NAME}
