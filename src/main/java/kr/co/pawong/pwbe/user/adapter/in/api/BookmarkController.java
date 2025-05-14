@@ -25,4 +25,14 @@ public class BookmarkController {
         boolean bookmarked = toggleBookmarkUseCase.toggleLostPostBookmark(principal.getUserId(), lostPostId);
         return ResponseEntity.ok(new BookmarkResponse(bookmarked));
     }
+
+    @PostMapping("/adoptions/{adoptionId}/toggle")
+    public ResponseEntity<BookmarkResponse> toggleAdoptionPostBookmark(
+            @AuthenticationPrincipal CustomUserDetails principal,
+            @PathVariable Long adoptionId
+    ) {
+        // 북마크 토글 후 북마크 상태 받아오기
+        boolean bookmarked = toggleBookmarkUseCase.toggleLostAdoptionBookmark(principal.getUserId(), adoptionId);
+        return ResponseEntity.ok(new BookmarkResponse(bookmarked));
+    }
 }
