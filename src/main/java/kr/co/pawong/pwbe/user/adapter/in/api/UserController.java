@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-  private final QueryUserDataUseCase queryUserDataUseCase;
+    private final QueryUserDataUseCase queryUserDataUseCase;
 
-  @PermitAll
-  @GetMapping("/me")
-  public ResponseEntity<UserResponse> getUser(
-      Authentication authentication
-  ) {
-    CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
-    Long userId = principal.getUserId();
-    UserResponse userResponse = new UserResponse(queryUserDataUseCase.getUser(userId));
+    @PermitAll
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getUser(
+            Authentication authentication
+    ) {
+        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
+        Long userId = principal.getUserId();
+        UserResponse userResponse = new UserResponse(queryUserDataUseCase.getUser(userId));
 
-    return ResponseEntity.ok(userResponse);
-  }
+        return ResponseEntity.ok(userResponse);
+    }
 
 }

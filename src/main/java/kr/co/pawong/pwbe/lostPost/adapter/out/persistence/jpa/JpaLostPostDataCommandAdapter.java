@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa;
 
 import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.entity.LostPostEntity;
+import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.repository.LostPostJpaRepository;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataCommandPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import lombok.RequiredArgsConstructor;

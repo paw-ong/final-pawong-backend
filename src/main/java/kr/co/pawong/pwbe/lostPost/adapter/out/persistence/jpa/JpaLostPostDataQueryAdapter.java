@@ -1,9 +1,10 @@
 package kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa;
 
+import java.util.List;
 import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.entity.LostPostEntity;
+import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.repository.LostPostJpaRepository;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,10 @@ public class JpaLostPostDataQueryAdapter implements LostPostDataQueryPort {
                 .get().toDomain();
     }
 
+    @Override
+    public List<LostPost> getLostPostsByUserId(Long userId) {
+        return lostPostJpaRepository.findByUserId(userId).stream()
+                .map(LostPostEntity::toDomain)
+                .toList();
+    }
 }
