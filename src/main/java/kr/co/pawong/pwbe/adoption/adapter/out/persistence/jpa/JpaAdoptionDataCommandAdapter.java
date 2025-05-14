@@ -17,41 +17,16 @@ public class JpaAdoptionDataCommandAdapter implements AdoptionDataCommandPort {
 
     private final AdoptionJpaRepository adoptionJpaRepository;
 
-    /**
-     * Adoption 도메인 리스트를 AdoptionEntity로 변환하여 DB에 저장합니다.
-     *
-     * @param adoptions 저장할 Adoption 리스트
-     */
+    // adoptionId를 기준으로 임베딩 여부 DB에 업데이트
     @Override
-    public void saveAdoptions(List<Adoption> adoptions) {
-        List<AdoptionEntity> adoptionEntities = adoptions.stream()
-                .map(AdoptionEntity::from)
-                .toList();
-
-        adoptionJpaRepository.saveAll(adoptionEntities);
-        log.info("{}개의 입양 정보가 저장되었습니다.", adoptions.size());
-    }
-
-    /**
-     * 전달받은 Adoption 리스트 각각의 embeddingDone 값을 adoptionId 기준으로 부분 업데이트합니다.
-     *
-     * @param adoptions embeddingDone 값을 반영할 Adoption 리스트
-     */
-    @Override
-    @Transactional
-    public void updateIsEmbedded(List<Adoption> adoptions) {
-        for (Adoption adoption : adoptions) {
-            adoptionJpaRepository.updateIsEmbedded(adoption.getAdoptionId(), adoption.isEmbedded());
+    public void updateIsEmbeddedByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return;
         }
+        adoptionJpaRepository.updateIsEmbeddedByIds(ids);
     }
 
-    /**
-     * 전달받은 Adoption 리스트의 refinedSpecialMark, tagsField, aiProcessed 값을
-     * adoptionId 기준으로 DB에 부분 업데이트합니다.
-     * (10개씩 등 batch로 호출 가능)
-     *
-     * @param adoptions 업데이트할 Adoption 리스트
-     */
+    // 전달받은 Adoption 리스트의 refinedSpecialMark, tagsField, aiProcessed 값을 adoptionId 기준으로 DB에 업데이트
     @Override
     @Transactional
     public void updateAiFields(List<Adoption> adoptions) {
