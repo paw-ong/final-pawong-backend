@@ -1,6 +1,5 @@
 package kr.co.pawong.pwbe.user.domain;
 
-import kr.co.pawong.pwbe.user.adapter.out.jpa.entity.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,4 +11,18 @@ public class LostBookmark {
     private Long userId;
     private Long lostPostId;
     private Long adoptionId;
+
+    public static LostBookmark createByLostPostId(long userId, long lostPostId) {
+        return LostBookmark.builder()
+                .userId(userId)
+                .lostPostId(lostPostId)
+                .build();
+    }
+
+    public static LostBookmark createByAdoptionId(long userId, long adoptionId) {
+        return LostBookmark.builder()
+                .userId(userId)
+                .adoptionId(adoptionId)
+                .build();
+    }
 }

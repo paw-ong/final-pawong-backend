@@ -5,5 +5,10 @@ public interface ToggleBookmarkUseCase {
     /**
      * LostPost 북마크 토글
      */
-    boolean toggleLostPostBookmark(Long userId, Long lostPostId);
+    boolean toggleLostPostBookmark(long userId, long lostPostId);
+
+    /**
+     * Adoption Lost 북마크 토글
+     */
+    boolean toggleLostAdoptionBookmark(long userId, long adoptionId);
 }

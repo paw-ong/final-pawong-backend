@@ -5,7 +5,7 @@ import kr.co.pawong.pwbe.user.domain.LostBookmark;
 
 public interface LostBookmarkQueryPort {
 
-    Optional<LostBookmark> findLostBookmarkByLostPostId(long userId, long lostPostId);
+    Optional<LostBookmark> findByLostPostId(long userId, long lostPostId);
 
-    Optional<LostBookmark> findLostBookmarkByAdoptionId(long userId, long adoptionId);
+    Optional<LostBookmark> findByAdoptionId(long userId, long adoptionId);
 }

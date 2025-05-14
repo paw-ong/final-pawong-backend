@@ -10,18 +10,18 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class LostBookmarkQueryAdapter implements LostBookmarkQueryPort {
+public class JpaLostBookmarkQueryAdapter implements LostBookmarkQueryPort {
 
     private final LostBookmarkRepository lostBookmarkRepository;
 
     @Override
-    public Optional<LostBookmark> findLostBookmarkByLostPostId(long userId, long lostPostId) {
+    public Optional<LostBookmark> findByLostPostId(long userId, long lostPostId) {
         return lostBookmarkRepository.findLostBookmarkEntityByUserIdAndLostPostId(userId, lostPostId)
                 .map(LostBookmarkEntity::toDomain);
     }
 
     @Override
-    public Optional<LostBookmark> findLostBookmarkByAdoptionId(long userId, long adoptionId) {
+    public Optional<LostBookmark> findByAdoptionId(long userId, long adoptionId) {
         return lostBookmarkRepository.findLostBookmarkEntityByUserIdAndAdoptionId(userId, adoptionId)
                 .map(LostBookmarkEntity::toDomain);
     }

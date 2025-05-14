@@ -20,6 +20,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "LostBookmarks")
+// TODO: 제약조건 추가해야 됨 (외래키 제약조건 + lostPostId와 adoptionId 제약 조건)
+// TODO: 그리고 없는 userId나 lostPostId, adoptionId에 대해 데이터 insert시에 발생하는 에러 예외처리 해야 됨
 public class LostBookmarkEntity {
 
     @Id
@@ -32,6 +34,7 @@ public class LostBookmarkEntity {
     private Long adoptionId;
 
     public static LostBookmarkEntity of(LostBookmark lostBookmark) {
+
         return LostBookmarkEntity.builder()
                 .bookmarkId(lostBookmark.getBookmarkId())
                 .userId(lostBookmark.getUserId())
