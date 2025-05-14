@@ -49,16 +49,6 @@ jobs:
     needs: build
 
     steps:
-      - name: Copy docker-compose.prod.yml to cloud instance
-        uses: appleboy/scp-action@v0.1.5
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ubuntu
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          source: "docker-compose.prod.yml"
-          target: "/home/ubuntu/pawong/deploy"
-          strip_components: 0
-
       - name: SSH to cloud instance and deploy
         uses: appleboy/ssh-action@v0.1.6
         with:
