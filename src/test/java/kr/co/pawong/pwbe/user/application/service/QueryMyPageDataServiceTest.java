@@ -73,8 +73,8 @@ class QueryMyPageDataServiceTest {
 
         // TODO: 함수 오버라이딩 작성
         @Override
-        public List<MyPageLostPostInfo> getLostAnimalsByLostPostIds(
-                List<LostBookmark> lostPostIds) {
+        public List<MyPageLostPostInfo> getLostAnimalsByIds(
+                List<LostBookmark> lostIds) {
             return List.of();
         }
     }

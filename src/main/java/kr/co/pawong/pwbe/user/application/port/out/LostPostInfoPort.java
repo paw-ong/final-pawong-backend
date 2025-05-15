@@ -8,5 +8,5 @@ public interface LostPostInfoPort {
 
     List<MyPageLostPostInfo> getLostPostsByUserId(Long userId);
 
-    List<MyPageLostPostInfo> getLostAnimalsByLostPostIds(List<LostBookmark> lostPostIds);
+    List<MyPageLostPostInfo> getLostAnimalsByIds(List<LostBookmark> lostIds);
 }

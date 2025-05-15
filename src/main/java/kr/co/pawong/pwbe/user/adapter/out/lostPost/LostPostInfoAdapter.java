@@ -31,9 +31,9 @@ public class LostPostInfoAdapter implements LostPostInfoPort {
 
     @Override
     @Transactional(readOnly = true)
-    public List<MyPageLostPostInfo> getLostAnimalsByLostPostIds(List<LostBookmark> lostPostIds) {
+    public List<MyPageLostPostInfo> getLostAnimalsByIds(List<LostBookmark> lostIds) {
         // dto 변환
-        List<LostAnimalQuery> queryDtoList = lostPostIds.stream()
+        List<LostAnimalQuery> queryDtoList = lostIds.stream()
                 .map(LostAnimalQueryMapper::toLostAnimalQuery)
                 .toList();
         // LostPost 도메인으로 요청

@@ -32,7 +32,7 @@ public class QueryMyPageDataService implements QueryMyPageDataUseCase {
     @Override
     @Transactional(readOnly = true)
     public List<MyPageLostPostResponse> getBookmarkedLostPostsByUserId(Long userId) {
-        List<MyPageLostPostInfo> myPageLostPosts = lostPostInfoPort.getLostAnimalsByLostPostIds(
+        List<MyPageLostPostInfo> myPageLostPosts = lostPostInfoPort.getLostAnimalsByIds(
                 queryBookmarkDataUseCase.getBookmarksByUserId(userId)
         );
 
