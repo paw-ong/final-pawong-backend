@@ -3,10 +3,8 @@ name: CI/CD Deploy Backend
 on:
   push:
     branches:
-      - feature/#13
-  pull_request:
-    branches:
       - main
+      - develop
 
 jobs:
   build-and-deploy:
