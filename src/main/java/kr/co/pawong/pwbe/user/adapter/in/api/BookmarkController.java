@@ -1,7 +1,5 @@
 package kr.co.pawong.pwbe.user.adapter.in.api;
 
-import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.LOST_ANIMAL_TYPE_MISSING_ERROR;
-
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.user.adapter.in.api.dto.response.BookmarkResponse;
 import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
@@ -21,20 +19,22 @@ public class BookmarkController {
     private final ToggleBookmarkUseCase toggleBookmarkUseCase;
 
     @PostMapping("/lost-animals/{id}/toggle")
-    public ResponseEntity<BookmarkResponse> toggleLostPostBookmark(
-            @RequestParam(required = false) String type,
+    public ResponseEntity<BookmarkResponse> toggleLostPostsBookmark(
             @AuthenticationPrincipal CustomUserDetails principal,
             @PathVariable Long id
     ) {
-        boolean bookmarked;
         // 북마크 토글 후 북마크 상태 받아오기
-        if (type.equals("lost-posts")) {
-            bookmarked = toggleBookmarkUseCase.toggleLostPostBookmark(principal.getUserId(), id);
-        } else if (type.equals("lost-adoptions")) {
-            bookmarked = toggleBookmarkUseCase.toggleLostAdoptionBookmark(principal.getUserId(), id);
-        } else {
-            throw new BaseException(LOST_ANIMAL_TYPE_MISSING_ERROR);
-        }
+        boolean bookmarked = toggleBookmarkUseCase.toggleLostPostBookmark(principal.getUserId(), id);
+        return ResponseEntity.ok(new BookmarkResponse(bookmarked));
+    }
+
+    @PostMapping("/lost-animals/lost-adoptions/{id}/toggle")
+    public ResponseEntity<BookmarkResponse> toggleLostAdoptionBookmark(
+            @AuthenticationPrincipal CustomUserDetails principal,
+            @PathVariable Long id
+    ) {
+        // 북마크 토글 후 북마크 상태 받아오기
+        boolean bookmarked = toggleBookmarkUseCase.toggleLostAdoptionBookmark(principal.getUserId(), id);
         return ResponseEntity.ok(new BookmarkResponse(bookmarked));
     }
 
