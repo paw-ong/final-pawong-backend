@@ -18,7 +18,7 @@ public class BookmarkController {
 
     private final ToggleBookmarkUseCase toggleBookmarkUseCase;
 
-    @PostMapping("/lost-animals/{id}/toggle")
+    @PostMapping("/lost-animals/lost-posts/{id}/toggle")
     public ResponseEntity<BookmarkResponse> toggleLostPostsBookmark(
             @AuthenticationPrincipal CustomUserDetails principal,
             @PathVariable Long id
