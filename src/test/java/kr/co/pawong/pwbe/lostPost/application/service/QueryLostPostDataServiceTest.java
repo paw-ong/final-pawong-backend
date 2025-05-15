@@ -29,14 +29,14 @@ class QueryLostPostDataServiceTest {
         // Fake 구현체들로 Service를 직접 생성
         LostPostDataQueryPort fakeLostPostPort = new FakeLostPostDataQueryPort();
         UserInfoPort fakeUserInfoPort = new FakeUserInfoPort();
-        // TODO: 이후 추가
-        LostAdoptionDataQueryPort fakeLostAdoptionDataQueryPort = null;
         Clock fixedClock = Clock.fixed(FIXED_LDT.atZone(ZoneId.systemDefault()).toInstant(),
                 ZoneId.systemDefault());
 
         service = new QueryLostPostDataService(
                 fakeLostPostPort,
-                fakeLostAdoptionDataQueryPort,
+                // TODO: 이후 추가
+                null,
+                null,
                 fakeUserInfoPort,
                 fixedClock
         );

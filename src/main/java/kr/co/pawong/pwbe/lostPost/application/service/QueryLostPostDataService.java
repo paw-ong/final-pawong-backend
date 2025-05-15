@@ -1,7 +1,6 @@
 package kr.co.pawong.pwbe.lostPost.application.service;
 
 import java.time.Clock;
-import java.util.ArrayList;
 import java.util.List;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalQuery;
@@ -55,16 +54,10 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
     @Override
     @Transactional(readOnly = true)
     public List<LostPostCard> getLostAnimalsByIds(List<LostAnimalQuery> lostAnimalQueries) {
-        List<LostPostCard> result = new ArrayList<>();
 
-        for (LostAnimalQuery lostAnimalQuery : lostAnimalQueries) {
-            // 데이터 가져오기
-            result.add(
-                    convertToLostPostCard(lostAnimalQuery)
-            );
-        }
-
-        return result;
+        return lostAnimalQueries.stream()
+                .map(this::convertToLostPostCard)
+                .toList();
     }
 
     private LostPostCard convertToLostPostCard(LostAnimalQuery lostAnimalQuery) {

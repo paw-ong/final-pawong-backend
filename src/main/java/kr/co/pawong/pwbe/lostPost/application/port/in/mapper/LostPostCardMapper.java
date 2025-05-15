@@ -34,15 +34,15 @@ public class LostPostCardMapper {
 
     /**
      * @param lostAdoption - 변환할 LostAdoption
-     * @param author   - 작성자 닉네임
+     * @param shelter   - 작성자 닉네임
      */
     public static LostPostCard toLostPostCard(
-            LostAdoption lostAdoption, String author, Clock clock) {
+            LostAdoption lostAdoption, String shelter, Clock clock) {
 
         return LostPostCard.builder()
                 .postId(lostAdoption.getAdoptionId())
                 .postType(PostType.FOSTER.name())
-                .author(author)
+                .author(shelter)
                 .imageUrl(lostAdoption.getPopfile1())
                 .happenedDate(TimeUtils.formatDate(lostAdoption.getHappenDt()))
                 .happenedPlace(null)
@@ -51,4 +51,5 @@ public class LostPostCardMapper {
                 .feature(lostAdoption.getSpecialMark())
                 .build();
     }
+
 }
