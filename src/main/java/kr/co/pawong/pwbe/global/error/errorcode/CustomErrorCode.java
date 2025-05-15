@@ -29,7 +29,7 @@ public enum CustomErrorCode implements ErrorCode {
      */
     USER_NOT_FOUND(NOT_FOUND, "유저가 존재하지 않습니다."),
     ADOPTION_NOT_FOUND(NOT_FOUND, "유기동물 정보가 없습니다."),
-
+    LOST_NOT_FOUND(NOT_FOUND, "게시글이 존재하지 않습니다."),
     /**
      * 500 SERVER_ERROR
      */
