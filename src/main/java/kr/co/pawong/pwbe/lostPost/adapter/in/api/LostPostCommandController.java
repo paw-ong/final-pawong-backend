@@ -33,4 +33,13 @@ public class LostPostCommandController {
                 .status(HttpStatus.CREATED)
                 .body(new LostPostCreateResponse(createdId));
     }
+
+    @DeleteMapping("/lost-posts/{postId}")
+    public ResponseEntity<Long> deleteLostPost(
+            @PathVariable("postId") Long postId,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        lostPostUpdateUseCase.deleteLostPost(postId, userDetails.getUserId());
+        return ResponseEntity.ok(postId);
+    }
 }

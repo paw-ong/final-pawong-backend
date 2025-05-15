@@ -43,14 +43,4 @@ public class LostPost {
         this.createdAt = LocalDateTime.now();
         this.status = PostStatus.ACTIVE;
     }
-
-    public void update() {
-        this.updatedAt = LocalDateTime.now();
-        this.status = PostStatus.ACTIVE;
-    }
-
-    public void delete() {
-        this.deletedAt = LocalDateTime.now();
-        this.status = PostStatus.DELETED;
-    }
 }

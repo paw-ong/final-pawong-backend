@@ -1,5 +1,7 @@
 package kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.entity;
 
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.FORBIDDEN_POST_MODIFY;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
+import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import kr.co.pawong.pwbe.lostPost.enums.PostStatus;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
@@ -135,4 +138,18 @@ public class LostPostEntity {
                 .userId(this.userId)
                 .build();
     }
+
+    public void update() {
+        this.updatedAt = LocalDateTime.now();
+        this.status = PostStatus.ACTIVE;
+    }
+
+    public void deleteBy(Long userId) {
+        if(!this.userId.equals(userId)) {
+            throw new BaseException(FORBIDDEN_POST_MODIFY);
+        }
+        this.deletedAt = LocalDateTime.now();
+        this.status = PostStatus.DELETED;
+    }
+
 }
