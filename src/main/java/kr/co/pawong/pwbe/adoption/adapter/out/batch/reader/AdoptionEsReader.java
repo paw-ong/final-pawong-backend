@@ -5,10 +5,12 @@ import java.util.List;
 import kr.co.pawong.pwbe.adoption.application.port.in.QueryAdoptionDataUseCase;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.stereotype.Component;
 
 @Component
+@StepScope
 @RequiredArgsConstructor
 public class AdoptionEsReader implements ItemReader<Adoption> {
     private final QueryAdoptionDataUseCase queryAdoptionDataUseCase;
