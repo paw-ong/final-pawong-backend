@@ -37,7 +37,7 @@ public class LostPostInfoAdapter implements LostPostInfoPort {
                 .map(LostAnimalQueryMapper::toLostAnimalQuery)
                 .toList();
         // LostPost 도메인으로 요청
-        List<LostPostCard> lostPostCards = queryLostPostDataUseCase.getLostAnimalsByPostIds(
+        List<LostPostCard> lostPostCards = queryLostPostDataUseCase.getLostAnimalsByIds(
                 queryDtoList);
         return lostPostCards.stream()
                 .map(LostPostMapper::toMyPostLostPostInfo)

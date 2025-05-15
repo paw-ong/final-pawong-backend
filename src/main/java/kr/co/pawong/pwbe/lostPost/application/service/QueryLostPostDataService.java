@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.lostPost.application.service;
 
 import java.time.Clock;
+import java.util.ArrayList;
 import java.util.List;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalQuery;
@@ -9,6 +10,7 @@ import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailDto;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailResponse;
 import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostPostCardMapper;
 import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostPostDetailMapper;
+import kr.co.pawong.pwbe.lostPost.application.port.out.LostAdoptionDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.UserInfoPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class QueryLostPostDataService implements QueryLostPostDataUseCase {
 
     private final LostPostDataQueryPort lostPostDataQueryPort;
+    private final LostAdoptionDataQueryPort lostAdoptionDataQueryPort;
     private final UserInfoPort userInfoPort;
     private final Clock clock;
 
@@ -48,7 +51,25 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
 
     @Override
     @Transactional(readOnly = true)
-    public List<LostPostCard> getLostAnimalsByPostIds(List<LostAnimalQuery> lostAnimalQueries) {
-        return null;
+    public List<LostPostCard> getLostAnimalsByIds(List<LostAnimalQuery> lostAnimalQueries) {
+        List<LostPostCard> result = new ArrayList<>();
+
+        for (LostAnimalQuery lostAnimalQuery : lostAnimalQueries) {
+            // 이름 얻어오기
+            String author = userInfoPort.getNicknameByUserId(lostAnimalQuery.userId());
+            // 데이터 가져오기
+            result.add(
+                switch (lostAnimalQuery.type()) {
+                    // Lost Post 가져오기
+                    case LOST_POST -> LostPostCardMapper.toLostPostCard(
+                            lostPostDataQueryPort.findLostPostByIdOrThrow(lostAnimalQuery.id()), author, clock);
+                    // Lost Adoption 가져오기
+                    case LOST_ADOPTION -> LostPostCardMapper.toLostPostCard(
+                            lostAdoptionDataQueryPort.findAdoptionById(lostAnimalQuery.id()), author, clock);
+                }
+            );
+        }
+
+        return result;
     }
 }

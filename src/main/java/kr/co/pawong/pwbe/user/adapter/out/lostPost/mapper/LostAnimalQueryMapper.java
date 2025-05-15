@@ -13,11 +13,13 @@ public class LostAnimalQueryMapper {
             return LostAnimalQuery.builder()
                     .type(LostType.LOST_POST)
                     .id(lostBookmark.getLostPostId())
+                    .userId(lostBookmark.getUserId())
                     .build();
         } else {
             return LostAnimalQuery.builder()
                     .type(LostType.LOST_ADOPTION)
                     .id(lostBookmark.getAdoptionId())
+                    .userId(lostBookmark.getUserId())
                     .build();
         }
     }

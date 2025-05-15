@@ -9,8 +9,8 @@ public interface QueryLostPostDataUseCase {
 
     List<LostPostCard> getLostPostsByUserId(Long userId);
 
-    List<LostPostCard> getLostAnimalsByPostIds(List<LostAnimalQuery> lostAnimalQueries);
-
     LostPostDetailResponse findLostPostById(Long lostPostId);
+
+    List<LostPostCard> getLostAnimalsByIds(List<LostAnimalQuery> lostAnimalQueries);
 
 }
