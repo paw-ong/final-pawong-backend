@@ -7,6 +7,6 @@ public interface LostPostDataQueryPort {
 
     List<LostPost> getLostPostsByUserId(Long userId);
 
-    LostPost findLostPostById(Long lostPostId);
+    LostPost findLostPostByIdOrThrow(Long lostPostId);
 
 }

@@ -87,7 +87,7 @@ class QueryLostPostDataServiceTest {
         }
 
         @Override
-        public LostPost findLostPostById(Long lostPostId) {
+        public LostPost findLostPostByIdOrThrow(Long lostPostId) {
             if (lostPostId.equals(123L)) {
                 LostPost lp = LostPost.builder()
                         .lostPostId(555L)

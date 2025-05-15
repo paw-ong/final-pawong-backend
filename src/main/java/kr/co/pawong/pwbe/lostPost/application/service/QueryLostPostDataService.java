@@ -37,7 +37,7 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
     @Override
     public LostPostDetailResponse findLostPostById(Long lostPostId) {
 
-        LostPost lostPost = lostPostDataQueryPort.findLostPostById(lostPostId);
+        LostPost lostPost = lostPostDataQueryPort.findLostPostByIdOrThrow(lostPostId);
         String author = userInfoPort.getNicknameByUserId(lostPost.getUserId());
 
         LostPostDetailDto lostPostDetailDto = LostPostDetailMapper.toModel(lostPost, author, clock);
