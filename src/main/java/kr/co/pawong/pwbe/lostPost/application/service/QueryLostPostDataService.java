@@ -12,7 +12,9 @@ import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostPostCardMapper;
 import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostPostDetailMapper;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAdoptionDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
+import kr.co.pawong.pwbe.lostPost.application.port.out.ShelterCareNmPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.UserInfoPort;
+import kr.co.pawong.pwbe.lostPost.domain.LostAdoption;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
 
     private final LostPostDataQueryPort lostPostDataQueryPort;
     private final LostAdoptionDataQueryPort lostAdoptionDataQueryPort;
+    private final ShelterCareNmPort shelterCareNmPort;
     private final UserInfoPort userInfoPort;
     private final Clock clock;
 
@@ -55,21 +58,34 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
         List<LostPostCard> result = new ArrayList<>();
 
         for (LostAnimalQuery lostAnimalQuery : lostAnimalQueries) {
-            // 이름 얻어오기
-            String author = userInfoPort.getNicknameByUserId(lostAnimalQuery.userId());
             // 데이터 가져오기
             result.add(
-                switch (lostAnimalQuery.type()) {
-                    // Lost Post 가져오기
-                    case LOST_POST -> LostPostCardMapper.toLostPostCard(
-                            lostPostDataQueryPort.findLostPostByIdOrThrow(lostAnimalQuery.id()), author, clock);
-                    // Lost Adoption 가져오기
-                    case LOST_ADOPTION -> LostPostCardMapper.toLostPostCard(
-                            lostAdoptionDataQueryPort.findAdoptionById(lostAnimalQuery.id()), author, clock);
-                }
+                    convertToLostPostCard(lostAnimalQuery)
             );
         }
 
         return result;
+    }
+
+    private LostPostCard convertToLostPostCard(LostAnimalQuery lostAnimalQuery) {
+        return switch (lostAnimalQuery.type()) {
+            // Lost Post 가져오기
+            case LOST_POST -> {
+                LostPost lostPost = lostPostDataQueryPort.findLostPostByIdOrThrow(
+                        lostAnimalQuery.id());
+                // 작성자 이름 조회
+                String author = userInfoPort.getNicknameByUserId(lostPost.getUserId());
+                yield LostPostCardMapper.toLostPostCard(lostPost, author, clock);
+            }
+            // Lost Adoption 가져오기
+            case LOST_ADOPTION -> {
+                LostAdoption lostAdoption = lostAdoptionDataQueryPort.findAdoptionById(
+                        lostAnimalQuery.id());
+                // 보호소 이름 조회
+                String shelter = shelterCareNmPort.getShelterCareNmByCareRegNo(
+                        lostAdoption.getCareRegNo());
+                yield LostPostCardMapper.toLostPostCard(lostAdoption, shelter, clock);
+            }
+        };
     }
 }
