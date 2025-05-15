@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.shelter.application.service;
 
+import java.util.Optional;
 import kr.co.pawong.pwbe.shelter.application.port.in.QueryCareNmUseCase;
 import kr.co.pawong.pwbe.shelter.domain.Shelter;
 import kr.co.pawong.pwbe.shelter.application.port.out.ShelterDataQueryPort;
@@ -39,10 +40,8 @@ public class QueryShelterDataService implements QueryShelterDataUseCase, QueryCa
     @Override
     @Transactional(readOnly = true)
     public String getShelterCareNmByCareRegNo(String careRegNo) {
-        String careNm = shelterDataQueryPort.findByCareRegNoOrThrow(careRegNo).getCareNm();
-        if (careNm == null) {
-            return careNm = "";
-        }
-        return careNm;
+        return Optional.ofNullable(shelterDataQueryPort.findByCareRegNoOrThrow(careRegNo))
+                .map(Shelter::getCareNm)
+                .orElse("");
     }
 }
