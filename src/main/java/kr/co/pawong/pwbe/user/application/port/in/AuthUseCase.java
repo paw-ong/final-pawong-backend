@@ -6,6 +6,8 @@ import kr.co.pawong.pwbe.user.application.port.in.dto.UserUpdate;
 import kr.co.pawong.pwbe.user.application.port.in.dto.AuthResponse;
 
 public interface AuthUseCase {
-  User createOrGetUser(UserCreate userCreate);
-  AuthResponse signUp(Long userId, UserUpdate userUpdate);
+
+    User createOrGetUser(UserCreate userCreate);
+
+    AuthResponse signUp(Long userId, UserUpdate userUpdate);
 }

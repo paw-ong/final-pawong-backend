@@ -5,15 +5,16 @@ import lombok.Getter;
 
 @Getter
 public class SignUpRequest {
-  private String nickname;
-  private String region;
-  private String tel;
 
-  public UserUpdate update() {
-    return UserUpdate.builder()
-        .nickname(nickname)
-        .region(region)
-        .tel(tel)
-        .build();
-  }
+    private String nickname;
+    private String region;
+    private String tel;
+
+    public UserUpdate update() {
+        return UserUpdate.builder()
+                .nickname(nickname)
+                .region(region)
+                .tel(tel)
+                .build();
+    }
 }
