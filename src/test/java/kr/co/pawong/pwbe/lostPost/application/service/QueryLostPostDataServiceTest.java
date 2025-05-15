@@ -85,6 +85,24 @@ class QueryLostPostDataServiceTest {
             }
             return List.of();
         }
+
+        @Override
+        public LostPost findLostPostByIdOrThrow(Long lostPostId) {
+            if (lostPostId.equals(123L)) {
+                LostPost lp = LostPost.builder()
+                        .lostPostId(555L)
+                        .postType(PostType.FOUND)
+                        .date(LocalDate.of(2025, 5, 1))
+                        .location("Seoul")
+                        .upKindNm(UpKindNm.개)
+                        .kindNm("푸들")
+                        .specialMark("흰 점이 있음")
+                        .createdAt(LocalDateTime.of(2025,5,1,10,0,0))
+                        .build();
+                return lp;
+            }
+            return null;
+        }
     }
 
     /** userId == 123L 일 때만 고정 닉네임을 반환 */
