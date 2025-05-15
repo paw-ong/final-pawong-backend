@@ -10,6 +10,8 @@ public interface LostPostDataQueryPort {
 
     List<LostPost> getLostPostsByUserId(Long userId);
 
+    LostPost findLostPostByIdOrThrow(Long lostPostId);
+
     Page<LostPost> getLostPostsByPostTypePaged(Pageable pageable, PostType type);
 
 }
