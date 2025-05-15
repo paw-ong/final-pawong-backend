@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class QueryAdoptionDataService implements QueryAdoptionDataUseCase {
+public class  QueryAdoptionDataService implements QueryAdoptionDataUseCase {
 
     private final AdoptionDataQueryPort adoptionDataQueryPort;
 

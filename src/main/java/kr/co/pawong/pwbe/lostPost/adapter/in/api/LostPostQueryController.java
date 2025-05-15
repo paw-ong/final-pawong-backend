@@ -20,15 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class LostPostQueryController {
 
-    private final QueryLostPostDataUseCase lostPostQueryUseCase;
+    private final QueryLostPostDataUseCase queryLostPostDataUseCase;
 
+    // slice 방식 (무한 스크롤)
     @GetMapping("")
-    public ResponseEntity<List<LostPostCard>> getLostPosts(
-            @RequestParam(value = "type", required = false) PostType type
-    ) {
+    public ResponseEntity<SliceLostPostSearchResponses> getSlicedLostPosts(
+            @PageableDefault(page = 0, size = 20, sort = "lostPostId", direction = Sort.Direction.DESC) Pageable pageable,
+            @RequestParam(value = "type", required = false) PostType type ) {
 
-            List<LostPostCard> lostPostCards= lostPostQueryUseCase.getLostPostsByPostType(type);
-            return ResponseEntity.ok(lostPostCards);
+        SliceLostPostSearchResponses responses = queryLostPostDataUseCase.fetchSlicedLostPosts(pageable,type);
+        return ResponseEntity.ok(responses);
 
     }
 
