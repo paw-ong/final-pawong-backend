@@ -1,6 +1,5 @@
 package kr.co.pawong.pwbe.user.adapter.in.api;
 
-import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.user.adapter.in.api.dto.response.BookmarkResponse;
 import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
 import kr.co.pawong.pwbe.user.application.port.in.ToggleBookmarkUseCase;
@@ -9,10 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/api/users/bookmarks")
+@RestController
+@RequestMapping("/api/users/bookmarks")
 @RequiredArgsConstructor
 public class BookmarkController {
 
