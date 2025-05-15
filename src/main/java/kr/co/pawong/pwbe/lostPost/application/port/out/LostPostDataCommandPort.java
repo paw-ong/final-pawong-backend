@@ -6,6 +6,8 @@ public interface LostPostDataCommandPort {
 
     LostPost saveLostPost(LostPost LostPost);
 
-    void updateDeleteStatus(Long postId, Long userId);
+    LostPost updateLostPostOrThrow(Long postId, LostPost lostPost, Long userId);
+
+    void modifyDeleteStatusOrThrow(Long postId, Long userId);
 
 }

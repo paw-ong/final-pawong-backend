@@ -139,9 +139,27 @@ public class LostPostEntity {
                 .build();
     }
 
-    public void update() {
+    public LostPostEntity updateBy(LostPost lostPost, Long userId) {
+        if(!this.userId.equals(userId)) {
+            throw new BaseException(FORBIDDEN_POST_MODIFY);
+        }
+        this.postType = lostPost.getPostType();
+        this.date = lostPost.getDate();
+        this.upKindNm = lostPost.getUpKindNm();
+        this.upKindCd = lostPost.getUpKindCd();
+        this.kindNm = lostPost.getKindNm();
+        this.color = lostPost.getColor();
+        this.sexCd = lostPost.getSexCd();
+        this.age = lostPost.getAge();
+        this.imageUrl = lostPost.getImageUrl();
+        this.specialMark = lostPost.getSpecialMark();
+        this.content = lostPost.getContent();
+        this.rfidCd = lostPost.getRfidCd();
+        this.location = lostPost.getLocation();
+        this.geoPoint = new GeoPointEmbeddable(lostPost.getGeoPoint());
         this.updatedAt = LocalDateTime.now();
         this.status = PostStatus.ACTIVE;
+        return this;
     }
 
     public void deleteBy(Long userId) {

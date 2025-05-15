@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.lostPost.adapter.in.api;
 
 import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.request.LostPostCreateRequest;
+import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.request.LostPostUpdateRequest;
 import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.response.LostPostCreateResponse;
 import kr.co.pawong.pwbe.lostPost.application.port.in.CommandLostPostDataUseCase;
 import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
@@ -11,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +36,19 @@ public class LostPostCommandController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new LostPostCreateResponse(createdId));
+    }
+
+    @PutMapping("/lost-posts/{postId}")
+    public ResponseEntity<Long> updateLostPost(
+            @PathVariable("postId") Long postId,
+            @RequestBody LostPostUpdateRequest lostPostUpdate,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        return ResponseEntity.ok(
+                lostPostUpdateUseCase.updateLostPost(
+                        postId,
+                        lostPostUpdate.toDomain(),
+                        userDetails.getUserId()));
     }
 
     @DeleteMapping("/lost-posts/{postId}")

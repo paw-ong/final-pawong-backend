@@ -19,10 +19,15 @@ public class CommandLostPostDataService implements CommandLostPostDataUseCase {
         return lostPostUpdatePort.saveLostPost(lostPost).getLostPostId();
     }
 
+    @Override
+    @Transactional
+    public Long updateLostPost(Long postId, LostPost lostPost, Long userId) {
+        return lostPostUpdatePort.updateLostPostOrThrow(postId, lostPost, userId).getLostPostId();
+    }
 
     @Override
     @Transactional
     public void deleteLostPost(Long postId, Long userId) {
-        lostPostUpdatePort.updateDeleteStatus(postId, userId);
+        lostPostUpdatePort.modifyDeleteStatusOrThrow(postId, userId);
     }
 }

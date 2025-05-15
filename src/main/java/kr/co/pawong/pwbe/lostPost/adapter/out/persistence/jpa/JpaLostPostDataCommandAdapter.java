@@ -7,6 +7,7 @@ import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.entity.LostPostEnt
 import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.repository.LostPostJpaRepository;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataCommandPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
+import kr.co.pawong.pwbe.lostPost.enums.PostStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -24,8 +25,16 @@ public class JpaLostPostDataCommandAdapter implements LostPostDataCommandPort {
     }
 
     @Override
-    public void updateDeleteStatus(Long postId, Long userId) {
-        lostPostJpaRepository.getByLostPostId(postId)
+    public LostPost updateLostPostOrThrow(Long postId, LostPost lostPost, Long userId) {
+        return lostPostJpaRepository.findByLostPostIdAndStatus(postId, PostStatus.ACTIVE)
+                .orElseThrow(() -> new BaseException(LOSTPOST_NOT_FOUND))
+                .updateBy(lostPost, userId)
+                .toDomain();
+    }
+
+    @Override
+    public void modifyDeleteStatusOrThrow(Long postId, Long userId) {
+        lostPostJpaRepository.findByLostPostIdAndStatus(postId, PostStatus.ACTIVE)
                 .orElseThrow(() -> new BaseException(LOSTPOST_NOT_FOUND))
                 .deleteBy(userId);
     }
