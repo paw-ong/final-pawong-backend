@@ -8,6 +8,7 @@ import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostPostCardMapper;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.UserInfoPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
+import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,4 +32,19 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
                 .map(post -> LostPostCardMapper.toLostPostCard(post, author, clock))
                 .toList();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<LostPostCard> getLostPostsByPostType(PostType postType){
+
+        List<LostPost> lostPosts = lostPostDataQueryPort.getLostPostsByPostType(postType);
+
+        return lostPosts.stream()
+                .map(post -> {
+                    String author = userInfoPort.getNicknameByUserId(post.getUserId());
+                    return LostPostCardMapper.toLostPostCard(post, author, clock);
+                })
+                .toList();
+    }
+
 }

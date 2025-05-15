@@ -5,6 +5,7 @@ import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.entity.LostPostEnt
 import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.repository.LostPostJpaRepository;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
+import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +18,13 @@ public class JpaLostPostDataQueryAdapter implements LostPostDataQueryPort {
     @Override
     public List<LostPost> getLostPostsByUserId(Long userId) {
         return lostPostJpaRepository.findByUserId(userId).stream()
+                .map(LostPostEntity::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<LostPost> getLostPostsByPostType(PostType postType){
+        return lostPostJpaRepository.findByPostType(postType).stream()
                 .map(LostPostEntity::toDomain)
                 .toList();
     }
