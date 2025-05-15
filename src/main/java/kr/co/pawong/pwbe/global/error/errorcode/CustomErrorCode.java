@@ -16,6 +16,7 @@ public enum CustomErrorCode implements ErrorCode {
      * 400 BAD_REQUEST
      */
     REQUEST_ERROR(BAD_REQUEST, "입력값이 잘못되었습니다."),
+    LOST_ANIMAL_TYPE_MISSING_ERROR(BAD_REQUEST, "실종 동물 타입이 필요합니다."),
 
     /**
      * 401 UNAUTHORIZED
