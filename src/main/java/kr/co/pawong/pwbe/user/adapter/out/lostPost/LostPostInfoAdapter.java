@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.user.adapter.out.lostPost;
 
 import java.util.List;
+import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostAnimalDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalQuery;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class LostPostInfoAdapter implements LostPostInfoPort {
 
     private final QueryLostPostDataUseCase queryLostPostDataUseCase;
+    private final QueryLostAnimalDataUseCase queryLostAnimalDataUseCase;
 
     @Override
     @Transactional(readOnly = true)
@@ -37,7 +39,7 @@ public class LostPostInfoAdapter implements LostPostInfoPort {
                 .map(LostAnimalQueryMapper::toLostAnimalQuery)
                 .toList();
         // LostPost 도메인으로 요청
-        List<LostPostCard> lostPostCards = queryLostPostDataUseCase.getLostAnimalsByIds(
+        List<LostPostCard> lostPostCards = queryLostAnimalDataUseCase.getLostAnimalsByIds(
                 queryDtoList);
         return lostPostCards.stream()
                 .map(LostPostMapper::toMyPostLostPostInfo)
