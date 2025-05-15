@@ -6,7 +6,6 @@ import kr.co.pawong.pwbe.adoption.enums.SexCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
 import kr.co.pawong.pwbe.lostPost.domain.GeoPoint;
-import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import kr.co.pawong.pwbe.lostPost.enums.PostStatus;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import lombok.AllArgsConstructor;
@@ -22,9 +21,8 @@ public class LostPostDetailDto {
 
     private Long lostPostId;        // 실종게시글 id
     private PostType postType;      // 실종(LOST), 발견(FOUND), 보호(FOSTER)
-    private LocalDate date;         // 실종날짜, 발견날짜
+    private String date;         // 실종날짜, 발견날짜
     private UpKindNm upKindNm;      // 축종명
-    private UpKindCd upKindCd;      // 축종코드
     private String kindNm;          // 품종명
     private String color;           // 색상
     private SexCd sexCd;            // 성별
@@ -39,29 +37,6 @@ public class LostPostDetailDto {
     private PostStatus status;      // 게시글 상태
     private String location;        // 실종장소, 발견장소
     private GeoPoint geoPoint;
+    String author; // 작성자
 
-
-    public static LostPostDetailDto from(LostPost lostPost) {
-        return LostPostDetailDto.builder()
-                .lostPostId(lostPost.getLostPostId())
-                .postType(lostPost.getPostType())
-                .date(lostPost.getDate())
-                .upKindNm(lostPost.getUpKindNm())
-                .upKindCd(lostPost.getUpKindCd())
-                .kindNm(lostPost.getKindNm())
-                .color(lostPost.getColor())
-                .sexCd(lostPost.getSexCd())
-                .age(lostPost.getAge())
-                .imageUrl(lostPost.getImageUrl())
-                .specialMark(lostPost.getSpecialMark())
-                .content(lostPost.getContent())
-                .rfidCd(lostPost.getRfidCd())
-                .createdAt(lostPost.getCreatedAt())
-                .updatedAt(lostPost.getUpdatedAt())
-                .deletedAt(lostPost.getDeletedAt())
-                .status(lostPost.getStatus())
-                .location(lostPost.getLocation())
-                .geoPoint(lostPost.getGeoPoint())
-                .build();
-    }
 }

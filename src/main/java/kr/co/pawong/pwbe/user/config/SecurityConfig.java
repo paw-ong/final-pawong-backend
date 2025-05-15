@@ -69,7 +69,7 @@ public class SecurityConfig {
                                 "/api/shelters/**",
                                 "/api/lost-animals/**"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/lost-posts/*").permitAll() // ⬅ 단건 조회만 허용
+                        .requestMatchers(HttpMethod.GET, "/api/lost-animals/*").permitAll() // ⬅ 단건 조회만 허용
                         .requestMatchers("/api/lost-posts/**").authenticated()            // ⬅ 그 외는 인증 필요
                         .anyRequest().authenticated())
 
