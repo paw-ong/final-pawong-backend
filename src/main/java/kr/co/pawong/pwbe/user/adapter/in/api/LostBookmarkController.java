@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/users/bookmarks")
+@RequestMapping("/api/users/bookmarks/lost-animals")
 @RequiredArgsConstructor
-public class BookmarkController {
+public class LostBookmarkController {
 
     private final ToggleBookmarkUseCase toggleBookmarkUseCase;
 
-    @PostMapping("/lost-animals/lost-posts/{id}/toggle")
+    @PostMapping("/lost-posts/{id}/toggle")
     public ResponseEntity<BookmarkResponse> toggleLostPostsBookmark(
             @AuthenticationPrincipal CustomUserDetails principal,
             @PathVariable Long id
@@ -28,7 +28,7 @@ public class BookmarkController {
         return ResponseEntity.ok(new BookmarkResponse(bookmarked));
     }
 
-    @PostMapping("/lost-animals/lost-adoptions/{id}/toggle")
+    @PostMapping("/lost-adoptions/{id}/toggle")
     public ResponseEntity<BookmarkResponse> toggleLostAdoptionBookmark(
             @AuthenticationPrincipal CustomUserDetails principal,
             @PathVariable Long id
