@@ -14,8 +14,6 @@ import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionEsDto;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
@@ -40,12 +38,6 @@ public class AdoptionBatchConfig {
                 .start(adoptionApiStep)
                 .next(aiProcessedStep)
                 .next(saveEsStep)
-                .listener(new JobExecutionListener() {
-                    @Override
-                    public void beforeJob(JobExecution jobExecution) {
-                        jobExecution.getExecutionContext().putInt("max.items.count", 150);
-                    }
-                })
                 .build();
     }
 
