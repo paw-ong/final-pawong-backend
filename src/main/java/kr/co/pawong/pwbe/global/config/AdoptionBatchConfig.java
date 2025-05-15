@@ -67,7 +67,8 @@ public class AdoptionBatchConfig {
                 .build();
     }
 
-    @Bean Step saveEsStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
+    @Bean
+    public Step saveEsStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
             AdoptionEsReader reader,
             AdoptionEsProcessor processor,
             AdoptionEsWriter writer) {
