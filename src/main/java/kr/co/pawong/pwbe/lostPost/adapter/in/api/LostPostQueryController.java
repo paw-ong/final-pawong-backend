@@ -31,6 +31,6 @@ public class LostPostQueryController {
             LostAdoptionDetailResponse response = queryLostAdoptionDataUseCase.findAdoptionById(Id);
             return ResponseEntity.ok(response);
         }
-        return null;
+        return ResponseEntity.badRequest().body("유효하지 않은 type 파라미터입니다.");
     }
 }
