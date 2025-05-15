@@ -15,10 +15,10 @@ public class CommandLostPostDataService implements CommandLostPostDataUseCase {
 
     @Override
     public Long createLostPost(LostPost lostPost, Long userId) {
-        lostPost.writtenBy(userId);
-        lostPost.create();
+        lostPost.createBy(userId);
         return lostPostUpdatePort.saveLostPost(lostPost).getLostPostId();
     }
+
 
     @Override
     @Transactional

@@ -35,11 +35,8 @@ public class LostPost {
     private GeoPoint geoPoint;
     private Long userId;            // 작성자 유저 id
 
-    public void writtenBy(Long userId) {
+    public void createBy(Long userId) {
         this.userId = userId;
-    }
-
-    public void create() {
         this.createdAt = LocalDateTime.now();
         this.status = PostStatus.ACTIVE;
     }
