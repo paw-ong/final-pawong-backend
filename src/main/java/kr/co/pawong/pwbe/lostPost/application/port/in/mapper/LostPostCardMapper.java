@@ -45,7 +45,7 @@ public class LostPostCardMapper {
                 .author(shelter)
                 .imageUrl(lostAdoption.getPopfile1())
                 .happenedDate(TimeUtils.formatDate(lostAdoption.getHappenDt()))
-                .happenedPlace(null)
+                .happenedPlace(lostAdoption.getHappenPlace())
                 .kindNm(lostAdoption.getKindNm())
                 .createdAt(TimeUtils.formatDateAgo(lostAdoption.getNoticeSdt(), clock))
                 .feature(lostAdoption.getSpecialMark())

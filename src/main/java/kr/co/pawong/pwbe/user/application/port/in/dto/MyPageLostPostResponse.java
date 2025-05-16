@@ -13,7 +13,6 @@ public record MyPageLostPostResponse(
         String imageUrl,
         String happenedDate,
         String happenedPlace,
-        String upKindNm,
         String kindNm,
         String createdAt,
         String feature
