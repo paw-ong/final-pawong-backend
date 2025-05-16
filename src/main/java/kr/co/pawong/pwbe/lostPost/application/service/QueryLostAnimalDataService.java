@@ -58,7 +58,7 @@ public class QueryLostAnimalDataService implements QueryLostAnimalDataUseCase {
                 String shelter = shelterCareNmPort.getShelterCareNmByCareRegNo(
                         lostAdoption.getCareRegNo());
                 // 유저 북마크 여부
-                boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(lostAnimalQuery.userId(),
+                boolean bookmarked = bookmarkInfoPort.existsByUserIdAndAdoptionId(lostAnimalQuery.userId(),
                         lostAnimalQuery.id());
                 yield LostPostCardMapper.toLostPostCard(lostAdoption, shelter, bookmarked, clock);
             }

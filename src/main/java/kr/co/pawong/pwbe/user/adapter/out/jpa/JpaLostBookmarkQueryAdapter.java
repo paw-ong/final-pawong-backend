@@ -43,10 +43,10 @@ public class JpaLostBookmarkQueryAdapter implements LostBookmarkQueryPort {
     }
 
     @Override
-    public boolean lostAdoptionBookmarkExists(Long userId, long bookmarkId) {
+    public boolean lostAdoptionBookmarkExists(Long userId, long adoptionId) {
         if (userId == null) {
             return false;
         }
-        return lostBookmarkRepository.existsByUserIdAndLostPostId(userId, bookmarkId);
+        return lostBookmarkRepository.existsByUserIdAndAdoptionId(userId, adoptionId);
     }
 }
