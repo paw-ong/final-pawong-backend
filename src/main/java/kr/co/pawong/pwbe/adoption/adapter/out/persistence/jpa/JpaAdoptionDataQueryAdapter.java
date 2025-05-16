@@ -79,7 +79,7 @@ public class JpaAdoptionDataQueryAdapter implements AdoptionDataQueryPort {
 
     @Override
     public List<Adoption> findByActiveStateInAndAiProcessedFalse() {
-        List<AdoptionEntity> entities = adoptionJpaRepository.findByActiveStateInAndAiProcessedFalse(
+        List<AdoptionEntity> entities = adoptionJpaRepository.findByActiveStateInAndIsAiProcessedFalse(
                 List.of(ActiveState.ADOPTED, ActiveState.MISSING));
 
         return entities.stream()
