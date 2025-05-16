@@ -33,9 +33,9 @@ public class EsAdoptionEngineCommandAdapter implements AdoptionEngineCommandPort
                 return;
             }
 
-            // ADOPTED 상태의 Adoption -> AdoptionDocument
+            // ADOPTABLE 상태의 Adoption -> AdoptionDocument
             List<IndexQuery> queries = adoptionEsDtos.stream()
-                    .filter(adoptionEsDto -> ActiveState.ADOPTED == adoptionEsDto.getActiveState())
+                    .filter(adoptionEsDto -> ActiveState.ADOPTABLE == adoptionEsDto.getActiveState())
                     .map(adoptionEsDto -> {
                         try {
                             // Adoption -> AdoptionDocument
@@ -65,7 +65,7 @@ public class EsAdoptionEngineCommandAdapter implements AdoptionEngineCommandPort
 
             // ES에 벌크 저장
             elasticsearchOperations.bulkIndex(queries, INDEX);
-            log.info("{}개의 ADOPTED 상태 동물 데이터가 Elasticsearch에 성공적으로 저장되었습니다.", queries.size());
+            log.info("{}개의 ADOPTABLE 상태 동물 데이터가 Elasticsearch에 성공적으로 저장되었습니다.", queries.size());
 
         } catch (Exception e) {
             log.error("Elasticsearch 벌크 저장 중 오류 발생: {}", e.getMessage(), e);

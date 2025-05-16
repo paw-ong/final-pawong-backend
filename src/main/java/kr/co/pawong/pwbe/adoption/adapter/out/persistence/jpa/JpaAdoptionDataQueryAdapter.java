@@ -55,7 +55,7 @@ public class JpaAdoptionDataQueryAdapter implements AdoptionDataQueryPort {
     @Override
     public List<Adoption> findTop12ActiveByNoticeEdt(LocalDate today) {
         return adoptionJpaRepository.findTop12ByActiveStateAndNoticeEdtGreaterThanEqualOrderByNoticeEdtAsc(
-                        ActiveState.ADOPTED, today)
+                        ActiveState.ADOPTABLE, today)
                 .stream()
                 .map(AdoptionEntity::toModel)
                 .collect(Collectors.toList());
@@ -80,7 +80,7 @@ public class JpaAdoptionDataQueryAdapter implements AdoptionDataQueryPort {
     @Override
     public List<Adoption> findByActiveStateInAndAiProcessedFalse() {
         List<AdoptionEntity> entities = adoptionJpaRepository.findByActiveStateInAndIsAiProcessedFalse(
-                List.of(ActiveState.ADOPTED, ActiveState.MISSING));
+                List.of(ActiveState.ADOPTABLE, ActiveState.MISSING));
 
         return entities.stream()
                 .map(AdoptionEntity::toModel)

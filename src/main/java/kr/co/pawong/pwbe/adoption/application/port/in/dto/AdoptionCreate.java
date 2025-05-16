@@ -45,7 +45,7 @@ public class AdoptionCreate {
      * ProcessState, NoticeEdt 값에 따라 ActiveState를 갱신하는 메서드
      * - ProcessState가 PROTECTED가 아니면 ActiveState를 CLOSED
      * - NoticeEdt가 Today와 같거나 그 이후이면 MISSING
-     * - NoticeEdt가 Today 전이면 ADOPTED
+     * - NoticeEdt가 Today 전이면 ADOPTABLE
      */
     public void updateActiveState() {
         LocalDate today = LocalDate.now();
@@ -59,7 +59,7 @@ public class AdoptionCreate {
                 this.activeState = ActiveState.MISSING;
             }
             if (this.getNoticeEdt().isBefore(today)) {
-                this.activeState = ActiveState.ADOPTED;
+                this.activeState = ActiveState.ADOPTABLE;
             }
         }
     }
