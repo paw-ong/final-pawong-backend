@@ -5,6 +5,7 @@ import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataCommandPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,8 +15,19 @@ public class CommandLostPostDataService implements CommandLostPostDataUseCase {
 
     @Override
     public Long createLostPost(LostPost lostPost, Long userId) {
-        lostPost.writtenBy(userId);
-        lostPost.create();
+        lostPost.createBy(userId);
         return lostPostUpdatePort.saveLostPost(lostPost).getLostPostId();
+    }
+
+    @Override
+    @Transactional
+    public Long updateLostPost(Long postId, LostPost lostPost, Long userId) {
+        return lostPostUpdatePort.updateLostPostOrThrow(postId, lostPost, userId).getLostPostId();
+    }
+
+    @Override
+    @Transactional
+    public void deleteLostPost(Long postId, Long userId) {
+        lostPostUpdatePort.modifyDeleteStatusOrThrow(postId, userId);
     }
 }
