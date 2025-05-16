@@ -42,7 +42,7 @@ public class CommandAdoptionDataService implements CommandAdoptionDataUseCase {
                 // Adoption 데이터가 변경되었으면 업데이트
                 if (isAdoptionUpdated(adoption, adoptionCreate)) {
                     Adoption updatedAdoption = Adoption.from(adoptionCreate);
-                    updatedAdoption.setId(adoption.getAdoptionId());
+                    updatedAdoption.initId(adoption.getAdoptionId());
 
                     adoptionDataCommandPort.updateAdoption(updatedAdoption);
                     updatedCount++;
@@ -67,8 +67,7 @@ public class CommandAdoptionDataService implements CommandAdoptionDataUseCase {
     }
 
     // 중복되는 adoption 정보가 있는지 확인
-    @Transactional
-    public Optional<Adoption> duplicateAdoption(String desertionNo) {
+    private Optional<Adoption> duplicateAdoption(String desertionNo) {
         // 동일한 desertionNo를 가진 모든 데이터 조회
         List<Adoption> duplicateAdoptions = adoptionDataQueryPort.findAllByDesertionNo(desertionNo);
 
