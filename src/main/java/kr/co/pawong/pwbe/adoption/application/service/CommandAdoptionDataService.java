@@ -1,7 +1,6 @@
 package kr.co.pawong.pwbe.adoption.application.service;
 
 import jakarta.transaction.Transactional;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -105,23 +104,20 @@ public class CommandAdoptionDataService implements CommandAdoptionDataUseCase {
 
     // Adoption 데이터 AI 정제
     @Override
-    public Adoption processAdoptionForBatch(Adoption adoption) {
+    public Adoption processAdoption(Adoption adoption) {
         // specialMark, tag 추출
         String specialMark = adoption.extractRefinedSpecialMark();
         String tags = adoption.extractTagsField();
 
         // AI를 이용한 specialMark, tag 정제
-        Optional<String> refinedSpecialMark = adoptionAiPort.refineSpecialMarkBatch(
-                Collections.singletonList(specialMark)).get(0);
-        Optional<List<String>> tagsList = adoptionAiPort.tagBatch(
-                Collections.singletonList(tags)).get(0);
-
+        String refinedSpecialMark = adoptionAiPort.refineSpecialMark(specialMark);
+        List<String> tagsList = adoptionAiPort.tag(tags);
         // 태그 목록을 문자열로 반환
-        String tagsField = tagsList.map(list -> String.join(",", list)).orElse("");
+        String tagsField = String.join(",", tagsList);
 
         // AI 필드가 변경되었으면 업데이트
-        if (isAiFieldChanged(adoption, refinedSpecialMark.orElse(""), tagsField)) {
-            adoption.updateAiField(refinedSpecialMark.orElse(""), tagsField);
+        if (isAiFieldChanged(adoption, refinedSpecialMark, tagsField)) {
+            adoption.updateAiField(refinedSpecialMark, tagsField);
             return adoption;
         }
 

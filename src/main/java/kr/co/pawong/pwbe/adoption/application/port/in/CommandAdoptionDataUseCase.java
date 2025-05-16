@@ -8,5 +8,5 @@ public interface CommandAdoptionDataUseCase {
 
     void saveAdoptions(List<AdoptionCreate> adoptionCreates);
 
-    Adoption processAdoptionForBatch(Adoption adoption);
+    Adoption processAdoption(Adoption adoption);
 }

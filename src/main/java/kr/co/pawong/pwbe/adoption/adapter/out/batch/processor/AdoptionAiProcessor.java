@@ -13,6 +13,6 @@ public class AdoptionAiProcessor implements ItemProcessor<Adoption, Adoption> {
     @Override
     public Adoption process(Adoption adoption) {
         // AI 정제
-        return commandAdoptionDataUseCase.processAdoptionForBatch(adoption);
+        return commandAdoptionDataUseCase.processAdoption(adoption);
     }
 }
