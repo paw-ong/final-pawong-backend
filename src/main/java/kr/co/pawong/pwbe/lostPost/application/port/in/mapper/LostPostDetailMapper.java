@@ -18,7 +18,7 @@ public class LostPostDetailMapper {
                 .color(lostPost.getColor())
                 .sexCd(lostPost.getSexCd())
                 .age(lostPost.getAge())
-                .imageUrl(lostPost.getImageUrl())
+                .imageUrl(lostPost.getImageKey())
                 .specialMark(lostPost.getSpecialMark())
                 .content(lostPost.getContent())
                 .rfidCd(lostPost.getRfidCd())
