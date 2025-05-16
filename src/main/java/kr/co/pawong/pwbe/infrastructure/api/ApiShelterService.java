@@ -42,7 +42,7 @@ public class ApiShelterService {
     @Value("${api.service-key}")
     private String serviceKey;
 
-    @Value("${api-url.shelter-key}")
+    @Value("${api-url.shelter}")
     private String apiUrl;
 
     public List<ShelterCreate> saveShelters() {
