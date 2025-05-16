@@ -27,19 +27,19 @@ public class S3StorageAdapter implements S3StoragePort {
     /**
      * S3로부터 이미지를 저장할 수 있는 URL를 받아옵니다
      *
-     * @param key
+     * @param objectKey
      * @param contentType
      * @param expires
      * @return
      */
     @Override
-    public PresignUrlResponse presignUpload(String key, String contentType, Duration expires) {
+    public PresignUrlResponse presignUpload(String objectKey, String contentType, Duration expires) {
         PresignedPutObjectRequest presigned = getPresignedPutObjectRequest(expires,
-                getPutObjectRequest(key, contentType));
+                getPutObjectRequest(objectKey, contentType));
         return new PresignUrlResponse(
                 presigned.url().toString(),
                 getStringStringMap(presigned),
-                key,
+                objectKey,
                 Instant.now().plus(expires)     // 만료 시간 객체 생성
         );
     }
@@ -80,14 +80,14 @@ public class S3StorageAdapter implements S3StoragePort {
     /**
      * S3에 업로드할 객체의 버킷, 키, 그리고 MIME 타입 조건을 담은 요청 객체를 만듭니다
      *
-     * @param key
+     * @param objectKey
      * @param contentType
      * @return
      */
-    private PutObjectRequest getPutObjectRequest(String key, String contentType) {
+    private PutObjectRequest getPutObjectRequest(String objectKey, String contentType) {
         return PutObjectRequest.builder()
                 .bucket(bucketName)
-                .key(key)
+                .key(objectKey)
                 .contentType(contentType)
                 .build();
     }
