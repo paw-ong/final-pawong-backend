@@ -1,7 +1,5 @@
 package kr.co.pawong.pwbe.infrastructure.api;
 
-import static kr.co.pawong.pwbe.global.util.ApiDataUtils.parseIntAge;
-
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -199,7 +197,7 @@ private boolean isValidAdoptionData(AdoptionApi adoptionApi) {
     }
 
     // 문자열 -> 정수
-    private Integer parseInt(String value) {
+    private Integer parseIntAge(String value) {
         if (value == null || value.isEmpty()) {
             return null;
         }
