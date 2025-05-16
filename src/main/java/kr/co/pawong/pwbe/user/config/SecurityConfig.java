@@ -1,14 +1,15 @@
 package kr.co.pawong.pwbe.user.config;
 
-import kr.co.pawong.pwbe.user.infrastructure.security.error.CustomAuthenticationEntryPoint;
-import kr.co.pawong.pwbe.user.infrastructure.security.CustomOAuth2UserService;
-import kr.co.pawong.pwbe.user.infrastructure.security.JwtTokenProvider;
-import kr.co.pawong.pwbe.user.infrastructure.security.OAuth2AuthenticationSuccessHandler;
-import kr.co.pawong.pwbe.user.infrastructure.security.filter.JwtFilter;
-import kr.co.pawong.pwbe.user.presentation.controller.port.UserQueryService;
+import kr.co.pawong.pwbe.user.adapter.out.security.error.CustomAuthenticationEntryPoint;
+import kr.co.pawong.pwbe.user.adapter.out.security.CustomOAuth2UserService;
+import kr.co.pawong.pwbe.user.adapter.out.security.JwtTokenProvider;
+import kr.co.pawong.pwbe.user.adapter.out.security.OAuth2AuthenticationSuccessHandler;
+import kr.co.pawong.pwbe.user.adapter.out.security.filter.JwtFilter;
+import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -29,7 +30,7 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final UserQueryService userQueryService;
+    private final QueryUserDataUseCase queryUserDataUseCase;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     public SecurityConfig(
@@ -37,14 +38,14 @@ public class SecurityConfig {
             JwtTokenProvider jwtTokenProvider,
             UserDetailsService userDetailsService,
             CustomOAuth2UserService customOAuth2UserService,
-            UserQueryService userQueryService,
+            QueryUserDataUseCase queryUserDataUseCase,
             CustomAuthenticationEntryPoint customAuthenticationEntryPoint
     ) {
         this.jwtFilter = jwtFilter;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
         this.customOAuth2UserService = customOAuth2UserService;
-        this.userQueryService = userQueryService;
+        this.queryUserDataUseCase = queryUserDataUseCase;
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
     }
 
@@ -68,6 +69,8 @@ public class SecurityConfig {
                                 "/api/shelters/**",
                                 "/api/lost-animals/**"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/lost-animals/*").permitAll() // ⬅ 단건 조회만 허용
+                        .requestMatchers("/api/lost-posts/**").authenticated()            // ⬅ 그 외는 인증 필요
                         .anyRequest().authenticated())
 
                 // oauth2 요청만 처리
@@ -85,7 +88,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-        return new OAuth2AuthenticationSuccessHandler(userQueryService, jwtTokenProvider);
+        return new OAuth2AuthenticationSuccessHandler(queryUserDataUseCase, jwtTokenProvider);
     }
 
     @Bean

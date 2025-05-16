@@ -4,7 +4,7 @@ import kr.co.pawong.pwbe.favorites.application.service.FavoritesService;
 import kr.co.pawong.pwbe.favorites.application.service.dto.FavoritesRequest;
 import kr.co.pawong.pwbe.favorites.presentation.dto.response.FavoritesListResponse;
 import kr.co.pawong.pwbe.favorites.presentation.dto.response.FavoritesResponse;
-import kr.co.pawong.pwbe.user.infrastructure.security.CustomUserDetails;
+import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

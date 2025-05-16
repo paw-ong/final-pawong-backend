@@ -9,7 +9,7 @@ import kr.co.pawong.pwbe.favorites.application.service.dto.FavoritesRequest;
 import kr.co.pawong.pwbe.favorites.application.service.port.FavoritesRepository;
 import kr.co.pawong.pwbe.favorites.presentation.dto.response.FavoritesListResponse;
 import kr.co.pawong.pwbe.favorites.presentation.dto.response.FavoritesResponse;
-import kr.co.pawong.pwbe.user.application.service.port.UserQueryRepository;
+import kr.co.pawong.pwbe.user.application.port.out.UserDataQueryPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import java.util.List;
 public class FavoritesServiceImpl implements FavoritesService {
 
     private final FavoritesRepository favoritesRepository;
-    private final UserQueryRepository userQueryRepository;
+    private final UserDataQueryPort userDataQueryPort;
     private final AdoptionDataQueryPort adoptionDataQueryPort;
 
     // toggle 방식의 찜 (이미 찜을 한 경우 찜 취소. 찜을 안한 경우 찜.)
@@ -35,7 +35,7 @@ public class FavoritesServiceImpl implements FavoritesService {
         final Long adoptionId = request.getAdoptionId();
 
         // 1) User 존재 검증 (없으면 IllegalArgumentException)
-        userQueryRepository.findByUserIdOrThrow(userId);
+        userDataQueryPort.findByUserIdOrThrow(userId);
 
         // 2) Adoption 존재 검증 (없으면 EntityNotFoundException 등)
         adoptionDataQueryPort.findByIdOrThrow(adoptionId);
@@ -63,7 +63,7 @@ public class FavoritesServiceImpl implements FavoritesService {
     @Override
     @Transactional(readOnly = true)
     public FavoritesListResponse findAllByUserId(Long userId) {
-        userQueryRepository.findByUserIdOrThrow(userId);   // 유저가 존재하는지 먼저 검증
+        userDataQueryPort.findByUserIdOrThrow(userId);   // 유저가 존재하는지 먼저 검증
         List<Favorites> favoritesList = favoritesRepository.findAllByUserId(userId);
         List<AdoptionCard> adoptionCards = mapFavoritesListToAdoptionCards(favoritesList);
         return FavoritesListResponse.builder()
@@ -79,7 +79,7 @@ public class FavoritesServiceImpl implements FavoritesService {
         Long adoptionId = request.getAdoptionId();
 
         // 유저와 공고 존재 검증
-        userQueryRepository.findByUserIdOrThrow(userId);
+        userDataQueryPort.findByUserIdOrThrow(userId);
         adoptionDataQueryPort.findByIdOrThrow(adoptionId);
 
         // 사용자가 해당 공고를 찜했는지 확인 (존재하면 true, 없으면 false)
