@@ -33,3 +33,6 @@ data:
     schema-management:
       create-index: false
       create-mappings: false
+api-url:
+  adoption: ${ADOPTION_URL}
+  shelter: ${SHELTER_URL}

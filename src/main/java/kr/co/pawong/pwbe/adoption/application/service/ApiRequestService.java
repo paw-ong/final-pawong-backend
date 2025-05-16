@@ -44,6 +44,9 @@ public class ApiRequestService implements ApiRequestUseCase {
     @Value("${api.service-key}")
     private String serviceKey;
 
+    @Value("${api-url.adoption}")
+    private String apiUrl;
+
     private int pageNo = 14; // 원래는 1
     private int numOfRows = 1000;
     private List<AdoptionApi.Item> items;
@@ -89,8 +92,7 @@ public class ApiRequestService implements ApiRequestUseCase {
     // 공공데이터 API에서 유기동물 정보를 가져오는 메서드
     private AdoptionApi fetchAdoptionData(int pageNo, int numOfRows) {
         // API 요청 주소
-        URI uri = UriComponentsBuilder.fromHttpUrl(
-                        "https://apis.data.go.kr/1543061/abandonmentPublicService_v2/abandonmentPublic_v2")
+        URI uri = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .queryParam("serviceKey",
                         serviceKey)
                 .queryParam("numOfRows", numOfRows)
