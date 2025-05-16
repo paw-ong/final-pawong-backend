@@ -77,4 +77,13 @@ public class JpaAdoptionDataQueryAdapter implements AdoptionDataQueryPort {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<Adoption> findByActiveStateInAndAiProcessedFalse() {
+        List<AdoptionEntity> entities = adoptionJpaRepository.findByActiveStateInAndAiProcessedFalse(
+                List.of(ActiveState.ADOPTED, ActiveState.MISSING));
+
+        return entities.stream()
+                .map(AdoptionEntity::toModel)
+                .collect(Collectors.toList());
+    }
 }

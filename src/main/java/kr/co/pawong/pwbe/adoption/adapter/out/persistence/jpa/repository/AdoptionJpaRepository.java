@@ -73,4 +73,7 @@ public interface AdoptionJpaRepository extends JpaRepository<AdoptionEntity, Lon
     @Modifying
     @Query("UPDATE AdoptionEntity a SET a.isEmbedded = true WHERE a.adoptionId IN :ids")
     void updateIsEmbeddedByIds(@Param("ids") List<Long> ids);
+
+    // ActiveState가 MISSING, ADOPTED인 것과 IsProcessed가 False
+    List<AdoptionEntity> findByActiveStateInAndAiProcessedFalse(List<ActiveState> activeStates);
 }

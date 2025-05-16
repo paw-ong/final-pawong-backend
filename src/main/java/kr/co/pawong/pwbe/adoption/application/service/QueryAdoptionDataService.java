@@ -3,18 +3,16 @@ package kr.co.pawong.pwbe.adoption.application.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
+import kr.co.pawong.pwbe.adoption.application.port.in.QueryAdoptionDataUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCard;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionDetailDto;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionDetailResponse;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionRecommendResponses;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.SliceAdoptionSearchResponses;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
 import kr.co.pawong.pwbe.adoption.application.port.out.ShelterInfoPort;
 import kr.co.pawong.pwbe.adoption.application.service.support.AdoptionCardMapper;
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionRecommendResponses;
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionDetailResponse;
-import kr.co.pawong.pwbe.adoption.application.port.in.QueryAdoptionDataUseCase;
-import kr.co.pawong.pwbe.adoption.enums.ActiveState;
+import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +32,7 @@ public class QueryAdoptionDataService implements QueryAdoptionDataUseCase {
     // AI 정제할 adoption 조회
     @Override
     public List<Adoption> findActiveNotProcessedAdoptions() {
-        return adoptionDataQueryPort.findAll().stream()
-                .filter(adoption -> (adoption.getActiveState() == ActiveState.ADOPTED
-                        || adoption.getActiveState() == ActiveState.MISSING)
-                        && !adoption.isAiProcessed())
-                .toList();
+        return adoptionDataQueryPort.findByActiveStateInAndAiProcessedFalse();
     }
 
     // 임베딩할 adoption 조회
