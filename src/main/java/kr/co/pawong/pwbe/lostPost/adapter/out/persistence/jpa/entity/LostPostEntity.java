@@ -64,7 +64,7 @@ public class LostPostEntity {
     private Integer age;            // 나이
 
     @Column(columnDefinition = "TEXT")
-    private String imageUrl;        // 이미지 url
+    private String imageKey;        // 이미지 Object key
 
     @Column(nullable = false)
     private String specialMark;     // 동물 특징
@@ -100,7 +100,7 @@ public class LostPostEntity {
                 .color(lostPost.getColor())
                 .sexCd(lostPost.getSexCd())
                 .age(lostPost.getAge())
-                .imageUrl(lostPost.getImageUrl())
+                .imageKey(lostPost.getImageKey())
                 .specialMark(lostPost.getSpecialMark())
                 .content(lostPost.getContent())
                 .rfidCd(lostPost.getRfidCd())
@@ -125,7 +125,7 @@ public class LostPostEntity {
                 .color(this.color)
                 .sexCd(this.sexCd)
                 .age(this.age)
-                .imageUrl(this.imageUrl)
+                .imageKey(this.imageKey)
                 .specialMark(this.specialMark)
                 .content(this.content)
                 .rfidCd(this.rfidCd)
@@ -151,7 +151,7 @@ public class LostPostEntity {
         this.color = lostPost.getColor();
         this.sexCd = lostPost.getSexCd();
         this.age = lostPost.getAge();
-        this.imageUrl = lostPost.getImageUrl();
+        this.imageKey = lostPost.getImageKey();
         this.specialMark = lostPost.getSpecialMark();
         this.content = lostPost.getContent();
         this.rfidCd = lostPost.getRfidCd();
