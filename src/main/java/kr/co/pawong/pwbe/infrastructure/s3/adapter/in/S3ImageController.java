@@ -5,7 +5,7 @@ import kr.co.pawong.pwbe.infrastructure.s3.adapter.in.dto.request.PresignUrlRequ
 import kr.co.pawong.pwbe.infrastructure.s3.adapter.in.dto.response.PresignUrlResponse;
 import kr.co.pawong.pwbe.infrastructure.s3.application.port.in.ImageStorageUseCase;
 import kr.co.pawong.pwbe.infrastructure.s3.util.StorageUtil;
-import kr.co.pawong.pwbe.user.infrastructure.security.CustomUserDetails;
+import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
