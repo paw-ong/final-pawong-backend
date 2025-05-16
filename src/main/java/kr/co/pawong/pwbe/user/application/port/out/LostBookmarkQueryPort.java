@@ -11,4 +11,8 @@ public interface LostBookmarkQueryPort {
     Optional<LostBookmark> findByAdoptionId(long userId, long adoptionId);
 
     List<LostBookmark> findByUserId(long userId);
+
+    boolean lostPostBookmarkExists(Long userId, long lostPostId);
+
+    boolean lostAdoptionBookmarkExists(Long userId, long bookmarkId);
 }

@@ -33,4 +33,20 @@ public class JpaLostBookmarkQueryAdapter implements LostBookmarkQueryPort {
                 .map(LostBookmarkEntity::toDomain)
                 .toList();
     }
+
+    @Override
+    public boolean lostPostBookmarkExists(Long userId, long lostPostId) {
+        if (userId == null) {
+            return false;
+        }
+        return lostBookmarkRepository.existsByUserIdAndLostPostId(userId, lostPostId);
+    }
+
+    @Override
+    public boolean lostAdoptionBookmarkExists(Long userId, long bookmarkId) {
+        if (userId == null) {
+            return false;
+        }
+        return lostBookmarkRepository.existsByUserIdAndLostPostId(userId, bookmarkId);
+    }
 }

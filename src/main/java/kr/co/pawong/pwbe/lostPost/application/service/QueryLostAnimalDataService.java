@@ -6,6 +6,7 @@ import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostAnimalDataUseCase
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalQuery;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostPostCardMapper;
+import kr.co.pawong.pwbe.lostPost.application.port.out.BookmarkInfoPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAdoptionDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.ShelterCareNmPort;
@@ -24,6 +25,7 @@ public class QueryLostAnimalDataService implements QueryLostAnimalDataUseCase {
     private final LostPostDataQueryPort lostPostDataQueryPort;
     private final ShelterCareNmPort shelterCareNmPort;
     private final UserInfoPort userInfoPort;
+    private final BookmarkInfoPort bookmarkInfoPort;
     private final Clock clock;
 
     @Override
@@ -43,7 +45,10 @@ public class QueryLostAnimalDataService implements QueryLostAnimalDataUseCase {
                         lostAnimalQuery.id());
                 // 작성자 이름 조회
                 String author = userInfoPort.getNicknameByUserId(lostPost.getUserId());
-                yield LostPostCardMapper.toLostPostCard(lostPost, author, clock);
+                // 유저 북마크 여부
+                boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(lostAnimalQuery.userId(),
+                        lostAnimalQuery.id());
+                yield LostPostCardMapper.toLostPostCard(lostPost, author, bookmarked, clock);
             }
             // Lost Adoption 가져오기
             case LOST_ADOPTION -> {
@@ -52,7 +57,10 @@ public class QueryLostAnimalDataService implements QueryLostAnimalDataUseCase {
                 // 보호소 이름 조회
                 String shelter = shelterCareNmPort.getShelterCareNmByCareRegNo(
                         lostAdoption.getCareRegNo());
-                yield LostPostCardMapper.toLostPostCard(lostAdoption, shelter, clock);
+                // 유저 북마크 여부
+                boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(lostAnimalQuery.userId(),
+                        lostAnimalQuery.id());
+                yield LostPostCardMapper.toLostPostCard(lostAdoption, shelter, bookmarked, clock);
             }
         };
     }

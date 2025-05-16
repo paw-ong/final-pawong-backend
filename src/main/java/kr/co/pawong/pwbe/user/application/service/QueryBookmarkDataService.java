@@ -19,4 +19,14 @@ public class QueryBookmarkDataService implements QueryBookmarkDataUseCase {
     public List<LostBookmark> getBookmarksByUserId(long userId) {
         return lostBookmarkQueryPort.findByUserId(userId);
     }
+
+    @Override
+    public boolean lostPostBookmarkExists(Long userId, long lostPostId) {
+        return lostBookmarkQueryPort.lostPostBookmarkExists(userId, lostPostId);
+    }
+
+    @Override
+    public boolean lostAdoptionBookmarkExists(Long userId, long bookmarkId) {
+        return lostBookmarkQueryPort.lostAdoptionBookmarkExists(userId, bookmarkId);
+    }
 }

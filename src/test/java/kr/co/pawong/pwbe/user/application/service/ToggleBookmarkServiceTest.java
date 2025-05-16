@@ -85,6 +85,16 @@ class ToggleBookmarkServiceTest {
         }
 
         @Override
+        public boolean lostPostBookmarkExists(Long userId, long lostPostId) {
+            return false;
+        }
+
+        @Override
+        public boolean lostAdoptionBookmarkExists(Long userId, long bookmarkId) {
+            return false;
+        }
+
+        @Override
         public LostBookmark save(LostBookmark bookmark) {
             LostBookmark newBookmark = LostBookmark.builder()
                     .bookmarkId(seq++)

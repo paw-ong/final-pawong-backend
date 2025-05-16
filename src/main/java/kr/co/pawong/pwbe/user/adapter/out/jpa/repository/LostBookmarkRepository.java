@@ -13,4 +13,8 @@ public interface LostBookmarkRepository extends JpaRepository<LostBookmarkEntity
     Optional<LostBookmarkEntity> findLostBookmarkEntityByUserIdAndAdoptionId(Long userId, Long adoptionId);
 
     List<LostBookmarkEntity> findByUserId(Long userId);
+
+    boolean existsByUserIdAndLostPostId(Long userId, Long lostPostId);
+
+    boolean existsByUserIdAndAdoptionId(Long userId, Long adoptionId);
 }

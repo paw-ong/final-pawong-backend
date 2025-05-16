@@ -7,4 +7,8 @@ public interface QueryBookmarkDataUseCase {
 
     List<LostBookmark> getBookmarksByUserId(long userId);
 
+    boolean lostPostBookmarkExists(Long userId, long lostPostId);
+
+    boolean lostAdoptionBookmarkExists(Long userId, long bookmarkId);
+
 }
