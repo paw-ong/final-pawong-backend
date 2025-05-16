@@ -52,15 +52,15 @@ public class AdoptionCreate {
 
         if (this.getProcessState() != ProcessState.PROTECTED) {
             this.activeState = ActiveState.CLOSED;
+            return;
         }
 
-        if (this.getProcessState() == ProcessState.PROTECTED) {
-            if (this.getNoticeEdt() == null || this.getNoticeEdt().isEqual(today) || this.getNoticeEdt().isAfter(today)) {
-                this.activeState = ActiveState.MISSING;
-            }
-            if (this.getNoticeEdt().isBefore(today)) {
-                this.activeState = ActiveState.ADOPTABLE;
-            }
+        if (this.getNoticeEdt() == null || this.getNoticeEdt().isEqual(today) || this.getNoticeEdt().isAfter(today)) {
+            this.activeState = ActiveState.MISSING;
+            return;
+        }
+        if (this.getNoticeEdt().isBefore(today)) {
+            this.activeState = ActiveState.ADOPTABLE;
         }
     }
 }
