@@ -1,12 +1,13 @@
 package kr.co.pawong.pwbe.adoption.application.service;
 
+import static kr.co.pawong.pwbe.global.util.ApiDataUtils.parseIntAge;
+
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -117,65 +118,58 @@ public class ApiRequestService implements ApiRequestUseCase {
 
     // 공공데이터 API item -> AdoptionCreate
     @Override
-    public List<AdoptionCreate> convertToAdoptionCreates(List<AdoptionApi.Item> items) {
-        List<AdoptionCreate> adoptionCreates = new ArrayList<>();
+    public AdoptionCreate convertToAdoptionCreate(AdoptionApi.Item item) {
         // 날짜/시간 정의
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.0");
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-        for (AdoptionApi.Item item : items) {
-            // 날짜 및 시간 데이터 파싱
-            LocalDate happenDt = parseLocalDate(item.getHappenDt(), dateFormatter);
-            LocalDate noticeSdt = parseLocalDate(item.getNoticeSdt(), dateFormatter);
-            LocalDate noticeEdt = parseLocalDate(item.getNoticeEdt(), dateFormatter);
-            LocalDateTime updTm = parseLocalDateTime(item.getUpdTm(), dateTimeFormatter);
+        // 날짜 및 시간 데이터 파싱
+        LocalDate happenDt = parseLocalDate(item.getHappenDt(), dateFormatter);
+        LocalDate noticeSdt = parseLocalDate(item.getNoticeSdt(), dateFormatter);
+        LocalDate noticeEdt = parseLocalDate(item.getNoticeEdt(), dateFormatter);
+        LocalDateTime updTm = parseLocalDateTime(item.getUpdTm(), dateTimeFormatter);
 
-            // AdoptionCreate 생성 및 전처리
-            AdoptionCreate adoptionCreate = AdoptionCreate.builder()
-                    .desertionNo(item.getDesertionNo())
-                    .happenDt(happenDt)
-                    .happenPlace(item.getHappenPlace())
-                    .upKindCd(UpKindCd.fromValue(item.getUpKindCd()))
-                    .upKindNm(convertToEnum(item.getUpKindNm(), UpKindNm.class))
-                    .kindCd(item.getKindCd())
-                    .kindNm(item.getKindNm())
-                    .colorCd(item.getColorCd())
-                    .age(parseInt(item.getAge()))
-                    .weight(item.getWeight())
-                    .noticeNo(item.getNoticeNo())
-                    .noticeSdt(noticeSdt)
-                    .noticeEdt(noticeEdt)
-                    .popfile1(item.getPopfile1())
-                    .popfile2(item.getPopfile2())
-                    .processState(ProcessState.fromValue(item.getProcessState()))
-                    .sexCd(convertToEnum(item.getSexCd(), SexCd.class))
-                    .neuterYn(convertToEnum(item.getNeuterYn(), NeuterYn.class))
-                    .specialMark(item.getSpecialMark())
-                    .careRegNo(item.getCareRegNo())
-                    .updTm(updTm)
-                    .build();
+        // AdoptionCreate 생성 및 전처리
+        AdoptionCreate adoptionCreate = AdoptionCreate.builder()
+                .desertionNo(item.getDesertionNo())
+                .happenDt(happenDt)
+                .happenPlace(item.getHappenPlace())
+                .upKindCd(UpKindCd.fromValue(item.getUpKindCd()))
+                .upKindNm(convertToEnum(item.getUpKindNm(), UpKindNm.class))
+                .kindCd(item.getKindCd())
+                .kindNm(item.getKindNm())
+                .colorCd(item.getColorCd())
+                .age(parseIntAge(item.getAge()))
+                .weight(item.getWeight())
+                .noticeNo(item.getNoticeNo())
+                .noticeSdt(noticeSdt)
+                .noticeEdt(noticeEdt)
+                .popfile1(item.getPopfile1())
+                .popfile2(item.getPopfile2())
+                .processState(ProcessState.fromValue(item.getProcessState()))
+                .sexCd(convertToEnum(item.getSexCd(), SexCd.class))
+                .neuterYn(convertToEnum(item.getNeuterYn(), NeuterYn.class))
+                .specialMark(item.getSpecialMark())
+                .careRegNo(item.getCareRegNo())
+                .updTm(updTm)
+                .build();
 
-            // ActiveState 설정
-            adoptionCreate.updateActiveState();
+        // ActiveState 설정
+        adoptionCreate.updateActiveState();
 
-            // 리스트에 추가
-            adoptionCreates.add(adoptionCreate);
-        }
-
-        // AdoptionCreate 리스트 변환
-        return adoptionCreates;
+        return adoptionCreate;
     }
 
-    // API 응답 데이터의 유효성을 검사하는 메서드
-    private boolean isValidAdoptionData(AdoptionApi adoptionApi) {
-        return Optional.ofNullable(adoptionApi)
-                .map(AdoptionApi::getResponse)
-                .map(Response::getBody)
-                .map(Body::getItems)
-                .map(Items::getItem)
-                .filter(items -> !items.isEmpty())
-                .isPresent();
-    }
+// API 응답 데이터의 유효성을 검사
+private boolean isValidAdoptionData(AdoptionApi adoptionApi) {
+    return Optional.ofNullable(adoptionApi)
+            .map(AdoptionApi::getResponse)
+            .map(Response::getBody)
+            .map(Body::getItems)
+            .map(Items::getItem)
+            .filter(items -> !items.isEmpty())
+            .isPresent();
+}
 
     // 문자열 -> LocalDate
     private LocalDate parseLocalDate(String date, DateTimeFormatter formatter) {
