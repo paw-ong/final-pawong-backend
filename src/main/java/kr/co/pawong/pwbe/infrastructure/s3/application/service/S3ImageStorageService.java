@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.stream.Collectors;
 import kr.co.pawong.pwbe.infrastructure.s3.adapter.in.dto.response.PresignUrlResponse;
-import kr.co.pawong.pwbe.infrastructure.s3.application.port.in.CommandImageStorageUseCase;
+import kr.co.pawong.pwbe.infrastructure.s3.application.port.in.ImageStorageUseCase;
 import kr.co.pawong.pwbe.infrastructure.s3.application.port.out.ImageStoragePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequ
 
 @Service
 @RequiredArgsConstructor
-public class S3ImageStorageService implements CommandImageStorageUseCase {
+public class S3ImageStorageService implements ImageStorageUseCase {
 
     private final ImageStoragePort storagePort;
 
@@ -37,6 +37,7 @@ public class S3ImageStorageService implements CommandImageStorageUseCase {
         );
     }
 
+
     /**
      * Map<String, List<String>> → Map<String, String> 변환 (첫 번째 값만 사용)
      *
@@ -53,6 +54,5 @@ public class S3ImageStorageService implements CommandImageStorageUseCase {
                         e -> e.getValue().getFirst()
                 ));
     }
-
 
 }

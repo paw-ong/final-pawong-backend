@@ -3,7 +3,7 @@ package kr.co.pawong.pwbe.infrastructure.s3.adapter.in;
 import java.time.Duration;
 import kr.co.pawong.pwbe.infrastructure.s3.adapter.in.dto.request.PresignUrlRequest;
 import kr.co.pawong.pwbe.infrastructure.s3.adapter.in.dto.response.PresignUrlResponse;
-import kr.co.pawong.pwbe.infrastructure.s3.application.port.in.CommandImageStorageUseCase;
+import kr.co.pawong.pwbe.infrastructure.s3.application.port.in.ImageStorageUseCase;
 import kr.co.pawong.pwbe.infrastructure.s3.util.StorageUtil;
 import kr.co.pawong.pwbe.user.infrastructure.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class S3ImageController {
 
-    private final CommandImageStorageUseCase imageStorageUseCase;
+    private final ImageStorageUseCase imageStorageUseCase;
     private final StorageUtil storageUtilService;
 
     @PostMapping("/presign-upload")
