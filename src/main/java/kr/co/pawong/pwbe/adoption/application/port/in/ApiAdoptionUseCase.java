@@ -3,7 +3,7 @@ package kr.co.pawong.pwbe.adoption.application.port.in;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
 
-public interface ApiRequestUseCase {
+public interface ApiAdoptionUseCase {
 
     AdoptionCreate convertToAdoptionCreate(AdoptionApi.Item item);
 

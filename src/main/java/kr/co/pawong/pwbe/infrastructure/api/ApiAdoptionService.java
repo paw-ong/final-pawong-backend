@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.ApiAdoptionUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCareDto;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
 import kr.co.pawong.pwbe.adoption.application.port.out.ShelterCommandPort;
@@ -40,7 +40,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ApiAdoptionService implements ApiRequestUseCase {
+public class ApiAdoptionService implements ApiAdoptionUseCase {
 
     private final RestTemplate restTemplate;
     private final ShelterCommandPort shelterCommandPort;
