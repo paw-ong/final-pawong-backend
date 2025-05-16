@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
       args:
         ELK_VERSION: ${ELK_VERSION}
-    container_name: pawong-dev-elasticsearch
+    container_name: pawong-local-elasticsearch
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=${ES_JAVA_OPTS}
@@ -29,7 +29,7 @@ services:
 
   kibana:
     image: kibana:${ELK_VERSION}
-    container_name: pawong-dev-kibana
+    container_name: pawong-local-kibana
     depends_on:
       - elasticsearch
     ports:
@@ -41,7 +41,7 @@ services:
 
   nginx:
     image: nginx:latest
-    container_name: pawong-dev-nginx
+    container_name: pawong-local-nginx
     ports:
       - "80:80"
     volumes:

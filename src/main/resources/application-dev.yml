@@ -25,4 +25,4 @@ spring:
       secret-key: ${JWT_SECRET_KEY}
     base-url: ${BASE_URL}
   elasticsearch:
-    uris: http://localhost:9200
+    uris: ${ELASTICSEARCH_URI}
