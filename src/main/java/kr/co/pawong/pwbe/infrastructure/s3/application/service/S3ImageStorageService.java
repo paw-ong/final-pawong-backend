@@ -5,19 +5,17 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.stream.Collectors;
 import kr.co.pawong.pwbe.infrastructure.s3.adapter.in.dto.response.PresignUrlResponse;
-import kr.co.pawong.pwbe.infrastructure.s3.application.port.in.S3StorageUseCase;
-import kr.co.pawong.pwbe.infrastructure.s3.application.port.out.S3StoragePort;
+import kr.co.pawong.pwbe.infrastructure.s3.application.port.in.CommandImageStorageUseCase;
+import kr.co.pawong.pwbe.infrastructure.s3.application.port.out.ImageStoragePort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 
 @Service
 @RequiredArgsConstructor
-public class S3StorageService implements S3StorageUseCase {
+public class S3ImageStorageService implements CommandImageStorageUseCase {
 
-    private final S3StoragePort storagePort;
+    private final ImageStoragePort storagePort;
 
 
     /**

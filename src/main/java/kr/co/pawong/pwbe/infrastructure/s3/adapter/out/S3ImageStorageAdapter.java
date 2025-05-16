@@ -2,24 +2,17 @@ package kr.co.pawong.pwbe.infrastructure.s3.adapter.out;
 
 import java.net.URL;
 import java.time.Duration;
-import java.time.Instant;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import kr.co.pawong.pwbe.infrastructure.s3.adapter.in.dto.response.PresignUrlResponse;
-import kr.co.pawong.pwbe.infrastructure.s3.application.port.out.S3StoragePort;
+import kr.co.pawong.pwbe.infrastructure.s3.application.port.out.ImageStoragePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 
 @Repository
 @RequiredArgsConstructor
-public class S3StorageAdapter implements S3StoragePort {
+public class S3ImageStorageAdapter implements ImageStoragePort {
 
     private final S3Presigner presigner;
 
