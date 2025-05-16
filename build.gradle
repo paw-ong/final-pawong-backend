@@ -22,6 +22,13 @@ configurations {
 repositories {
     mavenCentral()
 }
+
+dependencyManagement {
+    imports {
+        mavenBom "software.amazon.awssdk:bom:2.31.8"
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -48,9 +55,11 @@ dependencies {
     // WebClient 사용을 위한 WebFlux
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
-    //Spring Batch
-    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    // AWS S3
+    implementation 'software.amazon.awssdk:s3'
 
+    // Spring Batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
 
     // test
