@@ -8,4 +8,6 @@ public interface ApiRequestUseCase {
     AdoptionCreate convertToAdoptionCreate(AdoptionApi.Item item);
 
     AdoptionApi.Item fetchNextAdoptionItem();
+
+    void extractAndProcessShelterInfo(AdoptionApi.Item item);
 }

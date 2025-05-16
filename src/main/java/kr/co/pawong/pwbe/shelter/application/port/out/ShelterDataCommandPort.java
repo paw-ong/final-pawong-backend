@@ -10,4 +10,6 @@ public interface ShelterDataCommandPort {
 
     List<String> findAllCareRegNos();
 
+    void saveShelter(Shelter shelter);
+
 }

@@ -13,7 +13,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCareDto;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.adoption.application.port.out.ShelterCommandPort;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Body;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Items;
@@ -41,6 +43,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class ApiAdoptionService implements ApiRequestUseCase {
 
     private final RestTemplate restTemplate;
+    private final ShelterCommandPort shelterCommandPort;
 
     @Value("${api.service-key}")
     private String serviceKey;
@@ -172,6 +175,21 @@ public class ApiAdoptionService implements ApiRequestUseCase {
                 .map(Items::getItem)
                 .filter(items -> !items.isEmpty())
                 .isPresent();
+    }
+
+    @Override
+    public void extractAndProcessShelterInfo(AdoptionApi.Item item) {
+        try {
+            // 보호소 정보 추출
+            AdoptionCareDto adoptionCareDto = AdoptionCareDto.from(item);
+
+            // 추출한 정보 처리
+            shelterCommandPort.processShelterInfo(adoptionCareDto);
+        } catch (Exception e) {
+            log.error("보호소 정보 처리 중 오류 발생: careRegNo={}, error={}",
+                    item.getCareRegNo(), e.getMessage(), e);
+            throw e;
+        }
     }
 }
 
