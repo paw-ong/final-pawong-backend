@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.in.api.batch.reader;
+package kr.co.pawong.pwbe.adoption.adapter.in.batch.reader;
 
 import java.util.Iterator;
 import java.util.List;
@@ -12,16 +12,18 @@ import org.springframework.stereotype.Component;
 @Component
 @StepScope
 @RequiredArgsConstructor
-public class AdoptionAiReader implements ItemReader<Adoption> {
+public class AdoptionEsReader implements ItemReader<Adoption> {
     private final QueryAdoptionDataUseCase queryAdoptionDataUseCase;
+    // 조회한 입양 데이터를 순차적으로 접근하기 위한 반복자 -> 다음 요소를 반환하는 데 사용
     private Iterator<Adoption> adoptionsIterator;
+    // Reader 초기화 여부
     private boolean initialized = false;
 
     @Override
     public Adoption read() {
         if (!initialized) {
-            // AI 정제할 adoption 조회
-            List<Adoption> adoptions = queryAdoptionDataUseCase.findActiveNotProcessedAdoptions();
+            // 임베딩할 adoption 조회
+            List<Adoption> adoptions = queryAdoptionDataUseCase.findAdoptionForEmbedding();
             adoptionsIterator = adoptions.iterator();
             initialized = true;
         }

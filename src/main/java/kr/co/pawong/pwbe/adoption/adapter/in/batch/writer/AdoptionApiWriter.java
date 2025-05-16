@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.in.api.batch.writer;
+package kr.co.pawong.pwbe.adoption.adapter.in.batch.writer;
 
 import java.util.ArrayList;
 import java.util.List;

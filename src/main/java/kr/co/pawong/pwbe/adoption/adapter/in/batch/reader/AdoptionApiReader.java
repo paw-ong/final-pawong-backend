@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.in.api.batch.reader;
+package kr.co.pawong.pwbe.adoption.adapter.in.batch.reader;
 
 import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;

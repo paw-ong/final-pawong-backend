@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.in.api.batch;
+package kr.co.pawong.pwbe.adoption.adapter.in.batch;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
