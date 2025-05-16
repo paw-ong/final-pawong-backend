@@ -1,7 +1,7 @@
 package kr.co.pawong.pwbe.shelter.adapter.in.api;
 
 import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterCreate;
-import kr.co.pawong.pwbe.shelter.application.service.ApiShelterService;
+import kr.co.pawong.pwbe.infrastructure.api.ApiShelterService;
 import kr.co.pawong.pwbe.shelter.application.port.in.UpdateShelterDataUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
