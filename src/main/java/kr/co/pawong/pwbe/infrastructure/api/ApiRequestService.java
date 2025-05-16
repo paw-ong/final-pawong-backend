@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.application.service;
+package kr.co.pawong.pwbe.infrastructure.api;
 
 import static kr.co.pawong.pwbe.global.util.ApiDataUtils.parseIntAge;
 
@@ -47,7 +47,7 @@ public class ApiRequestService implements ApiRequestUseCase {
     @Value("${api-url.adoption}")
     private String apiUrl;
 
-    private int pageNo = 14; // 원래는 1
+    private int pageNo = 1;
     private int numOfRows = 1000;
     private List<AdoptionApi.Item> items;
     private int index = 0;
