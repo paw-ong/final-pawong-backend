@@ -19,9 +19,11 @@ import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter
+@DynamicUpdate
 @NoArgsConstructor
 @Table(name = "Adoption")
 public class AdoptionEntity {
@@ -30,6 +32,7 @@ public class AdoptionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adoptionId; // 입양id
 
+    @Column(unique = true)
     private String desertionNo; // 구조번호
 
     private LocalDate happenDt; // 접수일
@@ -158,5 +161,36 @@ public class AdoptionEntity {
                 .isAiProcessed(this.isAiProcessed)
                 .isEmbedded(this.isEmbedded)
                 .build();
+    }
+
+    // 업데이트 메서드
+    public void update(Adoption adoption) {
+        this.happenDt = adoption.getHappenDt();
+        this.happenPlace = adoption.getHappenPlace();
+        this.upKindNm = adoption.getUpKindNm();
+        this.upKindCd = adoption.getUpKindCd();
+        this.kindNm = adoption.getKindNm();
+        this.kindCd = adoption.getKindCd();
+        this.colorCd = adoption.getColorCd();
+        this.age = adoption.getAge();
+        this.weight = adoption.getWeight();
+        this.noticeNo = adoption.getNoticeNo();
+        this.noticeSdt = adoption.getNoticeSdt();
+        this.noticeEdt = adoption.getNoticeEdt();
+        this.popfile1 = adoption.getPopfile1();
+        this.popfile2 = adoption.getPopfile2();
+        this.processState = adoption.getProcessState();
+        this.activeState = adoption.getActiveState();
+        this.sexCd = adoption.getSexCd();
+        this.neuterYn = adoption.getNeuterYn();
+        this.specialMark = adoption.getSpecialMark();
+        this.careRegNo = adoption.getCareRegNo();
+        this.updTm = adoption.getUpdTm();
+
+        // Ai 정제, 임베딩 필드 초기화
+        this.refinedSpecialMark = null;
+        this.tagsField = null;
+        this.isAiProcessed = false;
+        this.isEmbedded = false;
     }
 }

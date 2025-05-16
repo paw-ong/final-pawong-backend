@@ -1,45 +1,13 @@
 package kr.co.pawong.pwbe.adoption.adapter.in.api;
 
-import java.util.List;
-import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
-import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionEngineUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.QueryAdoptionDataUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionDataUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
 @RequestMapping("/api/adoptions")
 @RequiredArgsConstructor
 public class AdoptionCommandController {
-
-    private final ApiRequestUseCase apiRequestUseCase;
-    private final QueryAdoptionDataUseCase queryAdoptionDataUseCase;
-    private final CommandAdoptionDataUseCase updateAdoptionDataUseCase;
-    private final CommandAdoptionEngineUseCase commandAdoptionEngineUseCase;
-
-    @PostMapping("/save")
-    public ResponseEntity<Void> saveAdoptions() {
-        apiRequestUseCase.fetchAndSaveAdoptions();
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PostMapping("/save-es")
-    public ResponseEntity<Void> saveAdoptionsEs() {
-        List<Adoption> adoptions = queryAdoptionDataUseCase.getAllAdoptions();
-        commandAdoptionEngineUseCase.saveAdoptionToEs(adoptions);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/ai-preprocessing")
-    public ResponseEntity<Void> aiProcessAdoptions() {
-        updateAdoptionDataUseCase.aiProcessAdoptions();
-        return ResponseEntity.ok().build();
-    }
-
 }

@@ -48,6 +48,11 @@ dependencies {
     // WebClient 사용을 위한 WebFlux
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+    //Spring Batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
