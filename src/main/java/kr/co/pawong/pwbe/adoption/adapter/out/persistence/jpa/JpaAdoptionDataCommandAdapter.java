@@ -19,6 +19,7 @@ public class JpaAdoptionDataCommandAdapter implements AdoptionDataCommandPort {
 
     // adoptionId를 기준으로 임베딩 여부 DB에 업데이트
     @Override
+    @Transactional
     public void updateIsEmbeddedByIds(List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return;
@@ -43,6 +44,7 @@ public class JpaAdoptionDataCommandAdapter implements AdoptionDataCommandPort {
     }
 
     @Override
+    @Transactional
     public void updateAdoption(Adoption adoption) {
         adoptionJpaRepository.updateIfChanged(
                 adoption.getDesertionNo(), adoption.getHappenDt(),
