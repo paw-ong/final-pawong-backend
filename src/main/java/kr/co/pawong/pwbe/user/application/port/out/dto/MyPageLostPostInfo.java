@@ -15,7 +15,8 @@ public record MyPageLostPostInfo(
         String happenedPlace,
         String kindNm,
         String createdAt,
-        String feature
+        String feature,
+        boolean bookmarked
 ) {
 
 }

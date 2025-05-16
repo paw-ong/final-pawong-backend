@@ -15,7 +15,8 @@ public record MyPageLostPostResponse(
         String happenedPlace,
         String kindNm,
         String createdAt,
-        String feature
+        String feature,
+        boolean bookmarked
 ) {
 
 }

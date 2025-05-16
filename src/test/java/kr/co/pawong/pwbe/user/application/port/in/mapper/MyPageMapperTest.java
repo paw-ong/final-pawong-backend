@@ -21,6 +21,7 @@ class MyPageMapperTest {
                 .kindNm("Shorthair")
                 .createdAt("2025-04-01 08:30:00")
                 .feature("black and white")
+                .bookmarked(true)
                 .build();
 
         // when
@@ -36,5 +37,6 @@ class MyPageMapperTest {
         assertThat(response.kindNm()).isEqualTo("Shorthair");
         assertThat(response.createdAt()).isEqualTo("2025-04-01 08:30:00");
         assertThat(response.feature()).isEqualTo("black and white");
+        assertThat(response.bookmarked()).isTrue();
     }
 }
