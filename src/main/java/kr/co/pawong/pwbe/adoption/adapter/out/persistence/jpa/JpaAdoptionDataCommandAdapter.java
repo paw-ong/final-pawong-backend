@@ -46,28 +46,24 @@ public class JpaAdoptionDataCommandAdapter implements AdoptionDataCommandPort {
     @Override
     @Transactional
     public void updateAdoption(Adoption adoption) {
-        adoptionJpaRepository.updateIfChanged(
-                adoption.getDesertionNo(), adoption.getHappenDt(),
-                adoption.getHappenPlace(), adoption.getUpKindNm(),
-                adoption.getUpKindCd(), adoption.getKindNm(),
-                adoption.getKindCd(), adoption.getColorCd(),
-                adoption.getAge(), adoption.getWeight(),
-                adoption.getNoticeNo(), adoption.getNoticeSdt(),
-                adoption.getNoticeEdt(), adoption.getPopfile1(),
-                adoption.getPopfile2(), adoption.getProcessState(),
-                adoption.getActiveState(), adoption.getSexCd(),
-                adoption.getNeuterYn(), adoption.getSpecialMark(),
-                adoption.getCareRegNo(), adoption.getUpdTm()
-        );
+        // desertionNo로 entity 조회
+        AdoptionEntity adoptionEntity = adoptionJpaRepository.findByDesertionNo(
+                adoption.getDesertionNo())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유기동물 정보가 존재하지 않습니다.: " + adoption.getDesertionNo()));
+
+        // 업데이트 (더티 체킹)
+        adoptionEntity.update(adoption);
     }
 
     @Override
+    @Transactional
     public void saveAdoption(Adoption adoption) {
         AdoptionEntity adoptionEntity = AdoptionEntity.from(adoption);
         adoptionJpaRepository.save(adoptionEntity);
     }
 
     @Override
+    @Transactional
     public void deleteAdoption(Adoption adoption) {
         adoptionJpaRepository.deleteById(adoption.getAdoptionId());
     }
