@@ -1,14 +1,14 @@
 package kr.co.pawong.pwbe.global.config;
 
-import kr.co.pawong.pwbe.adoption.adapter.out.batch.processor.AdoptionAiProcessor;
-import kr.co.pawong.pwbe.adoption.adapter.out.batch.processor.AdoptionApiProcessor;
-import kr.co.pawong.pwbe.adoption.adapter.out.batch.processor.AdoptionEsProcessor;
-import kr.co.pawong.pwbe.adoption.adapter.out.batch.reader.AdoptionAiReader;
-import kr.co.pawong.pwbe.adoption.adapter.out.batch.reader.AdoptionApiReader;
-import kr.co.pawong.pwbe.adoption.adapter.out.batch.reader.AdoptionEsReader;
-import kr.co.pawong.pwbe.adoption.adapter.out.batch.writer.AdoptionAiWriter;
-import kr.co.pawong.pwbe.adoption.adapter.out.batch.writer.AdoptionApiWriter;
-import kr.co.pawong.pwbe.adoption.adapter.out.batch.writer.AdoptionEsWriter;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.batch.processor.AdoptionAiProcessor;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.batch.processor.AdoptionApiProcessor;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.batch.processor.AdoptionEsProcessor;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.batch.reader.AdoptionAiReader;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.batch.reader.AdoptionApiReader;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.batch.reader.AdoptionEsReader;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.batch.writer.AdoptionAiWriter;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.batch.writer.AdoptionApiWriter;
+import kr.co.pawong.pwbe.adoption.adapter.in.api.batch.writer.AdoptionEsWriter;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionEsDto;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;

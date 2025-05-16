@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.adapter.out.batch.processor;
+package kr.co.pawong.pwbe.adoption.adapter.in.api.batch.processor;
 
 import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionEngineUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionEsDto;
