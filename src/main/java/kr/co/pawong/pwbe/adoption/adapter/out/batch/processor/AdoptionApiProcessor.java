@@ -16,9 +16,9 @@ public class AdoptionApiProcessor implements ItemProcessor<AdoptionApi.Item, Ado
 
     @Override
     public AdoptionCreate process(AdoptionApi.Item item) {
-        // 보호소 정보 추출 및 처리
-        apiRequestUseCase.extractAndProcessShelterInfo(item);
-        log.debug("보호소 정보 처리 완료: careRegNo={}", item.getCareRegNo());
+//        // 보호소 정보 추출 및 처리
+//        apiRequestUseCase.extractAndProcessShelterInfo(item);
+//        log.debug("보호소 정보 처리 완료: careRegNo={}", item.getCareRegNo());
 
         return apiRequestUseCase.convertToAdoptionCreate(item);
     }
