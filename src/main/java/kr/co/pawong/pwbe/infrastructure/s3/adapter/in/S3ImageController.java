@@ -3,8 +3,7 @@ package kr.co.pawong.pwbe.infrastructure.s3.adapter.in;
 import java.time.Duration;
 import kr.co.pawong.pwbe.infrastructure.s3.adapter.in.dto.request.PresignUrlRequest;
 import kr.co.pawong.pwbe.infrastructure.s3.adapter.in.dto.response.PresignUrlResponse;
-import kr.co.pawong.pwbe.infrastructure.s3.application.port.in.S3StorageUseCase;
-import kr.co.pawong.pwbe.infrastructure.s3.application.port.out.S3StoragePort;
+import kr.co.pawong.pwbe.infrastructure.s3.application.port.in.CommandImageStorageUseCase;
 import kr.co.pawong.pwbe.infrastructure.s3.util.StorageUtil;
 import kr.co.pawong.pwbe.user.infrastructure.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/images")
 @RequiredArgsConstructor
-public class S3Controller {
+public class S3ImageController {
 
-    private final S3StorageUseCase s3StorageUseCase;
+    private final CommandImageStorageUseCase imageStorageUseCase;
     private final StorageUtil storageUtilService;
 
     @PostMapping("/presign-upload")
@@ -27,8 +26,8 @@ public class S3Controller {
             @RequestBody PresignUrlRequest req,
             @AuthenticationPrincipal CustomUserDetails user
     ) {
-        return s3StorageUseCase.presignUpload(
-                storageUtilService.createObjectKey("posts", user.getUserId(), req.fileExtension()),
+        return imageStorageUseCase.presignUpload(
+                storageUtilService.createObjectKey(req.directoryName(), user.getUserId(), req.fileExtension()),
                 req.contentType(),
                 Duration.ofMinutes(req.expiresInMinutes())
         );

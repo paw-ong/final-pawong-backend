@@ -21,7 +21,11 @@ public record PresignUrlRequest(
          * 파일의 화장자명
          * (e.g. ".png", "jpeg")
          */
-        String fileExtension
+        String fileExtension,
+        /**
+         * 파일이 저장될 디렉토리 명
+         */
+        String directoryName
 ) {
 
 }
