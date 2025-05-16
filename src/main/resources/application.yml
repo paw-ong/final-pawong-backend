@@ -5,7 +5,7 @@ spring:
     jdbc:
       initialize-schema: always
     job:
-      enabled: true # 프로젝트 실행 시 자동으로 배치 실행 안하게 하고싶으면 false로 변경
+      enabled: false # 프로젝트 실행 시 자동으로 배치 실행되게 하고 싶으면 true로 변경
   ai:
     openai:
       api-key: ${OPEN_AI_KEY}
