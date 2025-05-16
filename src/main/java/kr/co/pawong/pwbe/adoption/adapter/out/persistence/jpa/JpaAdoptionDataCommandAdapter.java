@@ -1,11 +1,14 @@
 package kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa;
 
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.ADOPTION_NOT_FOUND;
+
 import jakarta.transaction.Transactional;
 import java.util.List;
-import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
-import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataCommandPort;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.repository.AdoptionJpaRepository;
 import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.entity.AdoptionEntity;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.repository.AdoptionJpaRepository;
+import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataCommandPort;
+import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
+import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -49,7 +52,7 @@ public class JpaAdoptionDataCommandAdapter implements AdoptionDataCommandPort {
         // desertionNo로 entity 조회
         AdoptionEntity adoptionEntity = adoptionJpaRepository.findByDesertionNo(
                 adoption.getDesertionNo())
-                .orElseThrow(() -> new IllegalArgumentException("해당 유기동물 정보가 존재하지 않습니다.: " + adoption.getDesertionNo()));
+                .orElseThrow(() -> new BaseException(ADOPTION_NOT_FOUND));
 
         // 업데이트 (더티 체킹)
         adoptionEntity.update(adoption);
