@@ -1,6 +1,11 @@
 spring:
   config:
     import: optional:file:.env[.properties]
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false # 프로젝트 실행 시 자동으로 배치 실행되게 하고 싶으면 true로 변경
   ai:
     openai:
       api-key: ${OPEN_AI_KEY}
@@ -28,5 +33,6 @@ data:
     schema-management:
       create-index: false
       create-mappings: false
-adoption:
-  batch-size: 50
+api-url:
+  adoption: ${ADOPTION_URL}
+  shelter: ${SHELTER_URL}

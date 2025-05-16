@@ -1,5 +1,7 @@
 package kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.entity;
 
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.FORBIDDEN_POST_MODIFY;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
+import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import kr.co.pawong.pwbe.lostPost.enums.PostStatus;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
@@ -61,7 +64,7 @@ public class LostPostEntity {
     private Integer age;            // 나이
 
     @Column(columnDefinition = "TEXT")
-    private String imageUrl;        // 이미지 url
+    private String imageKey;        // 이미지 Object key
 
     @Column(nullable = false)
     private String specialMark;     // 동물 특징
@@ -97,7 +100,7 @@ public class LostPostEntity {
                 .color(lostPost.getColor())
                 .sexCd(lostPost.getSexCd())
                 .age(lostPost.getAge())
-                .imageUrl(lostPost.getImageUrl())
+                .imageKey(lostPost.getImageKey())
                 .specialMark(lostPost.getSpecialMark())
                 .content(lostPost.getContent())
                 .rfidCd(lostPost.getRfidCd())
@@ -122,7 +125,7 @@ public class LostPostEntity {
                 .color(this.color)
                 .sexCd(this.sexCd)
                 .age(this.age)
-                .imageUrl(this.imageUrl)
+                .imageKey(this.imageKey)
                 .specialMark(this.specialMark)
                 .content(this.content)
                 .rfidCd(this.rfidCd)
@@ -135,4 +138,36 @@ public class LostPostEntity {
                 .userId(this.userId)
                 .build();
     }
+
+    public LostPostEntity updateBy(LostPost lostPost, Long userId) {
+        if(!this.userId.equals(userId)) {
+            throw new BaseException(FORBIDDEN_POST_MODIFY);
+        }
+        this.postType = lostPost.getPostType();
+        this.date = lostPost.getDate();
+        this.upKindNm = lostPost.getUpKindNm();
+        this.upKindCd = lostPost.getUpKindCd();
+        this.kindNm = lostPost.getKindNm();
+        this.color = lostPost.getColor();
+        this.sexCd = lostPost.getSexCd();
+        this.age = lostPost.getAge();
+        this.imageKey = lostPost.getImageKey();
+        this.specialMark = lostPost.getSpecialMark();
+        this.content = lostPost.getContent();
+        this.rfidCd = lostPost.getRfidCd();
+        this.location = lostPost.getLocation();
+        this.geoPoint = new GeoPointEmbeddable(lostPost.getGeoPoint());
+        this.updatedAt = LocalDateTime.now();
+        this.status = PostStatus.ACTIVE;
+        return this;
+    }
+
+    public void deleteBy(Long userId) {
+        if(!this.userId.equals(userId)) {
+            throw new BaseException(FORBIDDEN_POST_MODIFY);
+        }
+        this.deletedAt = LocalDateTime.now();
+        this.status = PostStatus.DELETED;
+    }
+
 }

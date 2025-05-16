@@ -5,11 +5,11 @@ import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.ADOPTION_
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
-import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
-import kr.co.pawong.pwbe.adoption.enums.ActiveState;
-import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.repository.AdoptionJpaRepository;
 import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.entity.AdoptionEntity;
+import kr.co.pawong.pwbe.adoption.adapter.out.persistence.jpa.repository.AdoptionJpaRepository;
+import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
+import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
+import kr.co.pawong.pwbe.adoption.enums.ActiveState;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -55,7 +55,7 @@ public class JpaAdoptionDataQueryAdapter implements AdoptionDataQueryPort {
     @Override
     public List<Adoption> findTop12ActiveByNoticeEdt(LocalDate today) {
         return adoptionJpaRepository.findTop12ByActiveStateAndNoticeEdtGreaterThanEqualOrderByNoticeEdtAsc(
-                        ActiveState.ACTIVE, today)
+                        ActiveState.ADOPTABLE, today)
                 .stream()
                 .map(AdoptionEntity::toModel)
                 .collect(Collectors.toList());
@@ -69,4 +69,21 @@ public class JpaAdoptionDataQueryAdapter implements AdoptionDataQueryPort {
                         new BaseException(ADOPTION_NOT_FOUND));
     }
 
+    @Override
+    public List<Adoption> findAllByDesertionNo(String desertionNo) {
+        return adoptionJpaRepository.findAllByDesertionNo(desertionNo)
+                .stream()
+                .map(AdoptionEntity::toModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Adoption> findByActiveStateInAndAiProcessedFalse() {
+        List<AdoptionEntity> entities = adoptionJpaRepository.findByActiveStateInAndIsAiProcessedFalse(
+                List.of(ActiveState.ADOPTABLE, ActiveState.MISSING));
+
+        return entities.stream()
+                .map(AdoptionEntity::toModel)
+                .collect(Collectors.toList());
+    }
 }

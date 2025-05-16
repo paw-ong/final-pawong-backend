@@ -21,7 +21,7 @@ public class LostPostCardMapper {
                 .postId(lostPost.getLostPostId())
                 .postType(lostPost.getPostType().name())
                 .author(author)
-                .imageUrl(lostPost.getImageUrl())
+                .imageUrl(lostPost.getImageKey())
                 .happenedDate(TimeUtils.formatDate(lostPost.getDate()))
                 .happenedPlace(lostPost.getLocation())
                 .kindNm(lostPost.getKindNm())

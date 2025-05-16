@@ -136,4 +136,8 @@ public class Adoption {
                 this.specialMark != null ? this.specialMark : ""
         ).trim();
     }
+
+    public void initId(Long adoptionId) {
+        this.adoptionId = adoptionId;
+    }
 }
