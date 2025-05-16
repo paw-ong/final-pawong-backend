@@ -32,6 +32,7 @@ public class AdoptionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adoptionId; // 입양id
 
+    @Column(unique = true)
     private String desertionNo; // 구조번호
 
     private LocalDate happenDt; // 접수일
