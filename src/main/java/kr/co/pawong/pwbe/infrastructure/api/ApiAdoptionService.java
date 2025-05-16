@@ -1,11 +1,14 @@
 package kr.co.pawong.pwbe.infrastructure.api;
 
+import static kr.co.pawong.pwbe.global.util.ApiDataUtils.convertToEnum;
+import static kr.co.pawong.pwbe.global.util.ApiDataUtils.parseIntAge;
+import static kr.co.pawong.pwbe.global.util.TimeUtils.parseLocalDate;
+import static kr.co.pawong.pwbe.global.util.TimeUtils.parseLocalDateTime;
+
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +38,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ApiRequestService implements ApiRequestUseCase {
+public class ApiAdoptionService implements ApiRequestUseCase {
 
     private final RestTemplate restTemplate;
 
@@ -160,67 +163,15 @@ public class ApiRequestService implements ApiRequestUseCase {
         return adoptionCreate;
     }
 
-// API 응답 데이터의 유효성을 검사
-private boolean isValidAdoptionData(AdoptionApi adoptionApi) {
-    return Optional.ofNullable(adoptionApi)
-            .map(AdoptionApi::getResponse)
-            .map(Response::getBody)
-            .map(Body::getItems)
-            .map(Items::getItem)
-            .filter(items -> !items.isEmpty())
-            .isPresent();
-}
-
-    // 문자열 -> LocalDate
-    private LocalDate parseLocalDate(String date, DateTimeFormatter formatter) {
-        if (date != null && !date.isEmpty()) {
-            try {
-                return LocalDate.parse(date, formatter);
-            } catch (DateTimeParseException e) {
-                log.error("날짜 파싱 오류 ({}): {}", date, e.getMessage());
-            }
-        }
-        return null;
-    }
-
-    // 문자열 -> LocalDateTime
-    private LocalDateTime parseLocalDateTime(String date, DateTimeFormatter formatter) {
-        if (date != null && !date.isEmpty()) {
-            try {
-                return LocalDateTime.parse(date, formatter)
-                        .truncatedTo(ChronoUnit.SECONDS);
-            } catch (DateTimeParseException e) {
-                log.error("날짜 시간 파싱 오류 ({}): {}", date, e.getMessage());
-            }
-        }
-        return null;
-    }
-
-    // 문자열 -> 정수
-    private Integer parseIntAge(String value) {
-        if (value == null || value.isEmpty()) {
-            return null;
-        }
-
-        try {
-            String age = value.substring(0, 4);
-            return Integer.parseInt(age);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
-
-    // 문자열 -> Enum
-    private <T extends Enum<T>> T convertToEnum(String data, Class<T> enumClass) {
-        if (data == null) {
-            return null;
-        }
-
-        try {
-            return Enum.valueOf(enumClass, data);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
+    // API 응답 데이터의 유효성을 검사
+    private boolean isValidAdoptionData(AdoptionApi adoptionApi) {
+        return Optional.ofNullable(adoptionApi)
+                .map(AdoptionApi::getResponse)
+                .map(Response::getBody)
+                .map(Body::getItems)
+                .map(Items::getItem)
+                .filter(items -> !items.isEmpty())
+                .isPresent();
     }
 }
 
