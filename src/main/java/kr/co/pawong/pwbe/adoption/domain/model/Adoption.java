@@ -137,7 +137,7 @@ public class Adoption {
         ).trim();
     }
 
-    public void setId(Long adoptionId) {
+    public void initId(Long adoptionId) {
         this.adoptionId = adoptionId;
     }
 }
