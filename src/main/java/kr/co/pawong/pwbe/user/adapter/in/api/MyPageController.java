@@ -1,6 +1,8 @@
 package kr.co.pawong.pwbe.user.adapter.in.api;
 
 import java.util.List;
+import kr.co.pawong.pwbe.favorites.application.service.FavoritesService;
+import kr.co.pawong.pwbe.favorites.presentation.dto.response.FavoritesListResponse;
 import kr.co.pawong.pwbe.user.adapter.in.api.dto.response.BaseMyPageResponse;
 import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
 import kr.co.pawong.pwbe.user.application.port.in.dto.MyPageLostPostResponse;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MyPageController {
 
     private final QueryMyPageDataUseCase queryMyPageDataUseCase;
+    private final FavoritesService favoritesService;
 
     @GetMapping("/lost-posts")
     public ResponseEntity<BaseMyPageResponse<MyPageLostPostResponse>> myPageLostPosts(
@@ -35,5 +38,18 @@ public class MyPageController {
         List<MyPageLostPostResponse> content = queryMyPageDataUseCase.getBookmarkedLostPostsByUserId(
                 principal.getUserId());
         return ResponseEntity.ok(new BaseMyPageResponse<>(content));
+    }
+
+    /**
+     * 현재 로그인된 유저가 찜 목록을 받아오는 API
+     * TODO BaseMyPageResponse로 반환 스펙 맞추기
+     */
+    @GetMapping("/favorites")
+    public ResponseEntity<FavoritesListResponse> getFavorites(
+            @AuthenticationPrincipal CustomUserDetails principal
+    ) {
+        Long userId = principal.getUserId();
+        FavoritesListResponse response = favoritesService.findAllByUserId(userId);   // favorites가 도메인명이므로 favoritesList로 네이밍
+        return ResponseEntity.ok(response);
     }
 }
