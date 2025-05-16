@@ -16,29 +16,15 @@ public class AdoptionAiReader implements ItemReader<Adoption> {
     private final QueryAdoptionDataUseCase queryAdoptionDataUseCase;
     private Iterator<Adoption> adoptionsIterator;
     private boolean initialized = false;
-    // 테스트용
-    private int count = 0;  // 처리한 아이템 수 카운트
-    private final int maxCount = 50;  // 최대 처리 아이템 수
 
     @Override
-    public Adoption read(){
+    public Adoption read() {
         if (!initialized) {
             // AI 정제할 adoption 조회
             List<Adoption> adoptions = queryAdoptionDataUseCase.findActiveNotProcessedAdoptions();
             adoptionsIterator = adoptions.iterator();
             initialized = true;
         }
-
-        if (count >= maxCount) {
-            return null;  // 150개 이상 처리 시 null 반환하여 종료
-        }
-
-        if (adoptionsIterator.hasNext()) {
-            count++;
-            return adoptionsIterator.next();
-        } else {
-            return null;
-        }
-//        return adoptionsIterator.hasNext() ? adoptionsIterator.next() : null;
+        return adoptionsIterator.hasNext() ? adoptionsIterator.next() : null;
     }
 }

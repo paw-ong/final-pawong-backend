@@ -14,12 +14,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AdoptionEsReader implements ItemReader<Adoption> {
     private final QueryAdoptionDataUseCase queryAdoptionDataUseCase;
+    // 조회한 입양 데이터를 순차적으로 접근하기 위한 반복자 -> 다음 요소를 반환하는 데 사용
     private Iterator<Adoption> adoptionsIterator;
+    // Reader 초기화 여부
     private boolean initialized = false;
-    // 테스트용
-    private int count = 0;  // 처리한 아이템 수 카운트
-    private final int maxCount = 50;  // 최대 처리 아이템 수
-
 
     @Override
     public Adoption read() {
@@ -29,17 +27,6 @@ public class AdoptionEsReader implements ItemReader<Adoption> {
             adoptionsIterator = adoptions.iterator();
             initialized = true;
         }
-
-        if (count >= maxCount) {
-            return null;
-        }
-
-        if (adoptionsIterator.hasNext()) {
-            count++;
-            return adoptionsIterator.next();
-        } else {
-            return null;
-        }
-//        return adoptionsIterator.hasNext() ? adoptionsIterator.next() : null;
+        return adoptionsIterator.hasNext() ? adoptionsIterator.next() : null;
     }
 }
