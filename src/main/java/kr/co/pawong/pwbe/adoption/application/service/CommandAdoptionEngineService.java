@@ -1,8 +1,6 @@
 package kr.co.pawong.pwbe.adoption.application.service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionEngineUseCase;
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class CommandAdoptionEngineService implements CommandAdoptionEngineUseCase {
+
     private final AdoptionEngineCommandPort adoptionEngineCommandPort;
     private final AdoptionDataCommandPort adoptionDataCommandPort;
     private final AdoptionAiPort adoptionAiPort;
@@ -42,44 +41,26 @@ public class CommandAdoptionEngineService implements CommandAdoptionEngineUseCas
                 return null;
             }
 
-            // 임베딩 처리
-            Optional<float[]> embedding = adoptionAiPort.embedBatch(
-                    Collections.singletonList(combinedField)).get(0);
+            float[] embedding = adoptionAiPort.embed(combinedField);
 
             // 임베딩 성공 시 adoption 세팅
-            if (embedding.isPresent()) {
-                adoption.embed(embedding.get());
+            if (embedding != null && embedding.length > 0) {
+                adoption.embed(embedding);
             } else {
                 log.error("Adoption ID {}: 임베딩에 실패했습니다.", adoption.getAdoptionId());
                 return null;
             }
 
             // 지역 정보 조회 및 DTO 생성
-            RegionInfoDto regionInfoDto = RegionInfoDto.from(queryAdoptionDataUseCase.findShelterInfoByAdoptionId(
-                    adoption.getAdoptionId()));
+            RegionInfoDto regionInfoDto = RegionInfoDto.from(
+                    queryAdoptionDataUseCase.findShelterInfoByAdoptionId(
+                            adoption.getAdoptionId()));
 
             return AdoptionEsDto.from(adoption, regionInfoDto);
         } catch (Exception e) {
-            log.error("Error processing adoption ID {}: {}", adoption.getAdoptionId(), e.getMessage());
-            try {
-                // 오류 발생 시 단일 임베딩 시도
-                String combinedField = Stream.of(adoption.getRefinedSpecialMark(), adoption.getTagsField())
-                        .filter(field -> field != null && !field.isBlank())
-                        .collect(Collectors.joining(","));
-
-                float[] embedding = adoptionAiPort.embed(combinedField);
-                adoption.embed(embedding);
-
-                RegionInfoDto regionInfoDto = RegionInfoDto.from(queryAdoptionDataUseCase.findShelterInfoByAdoptionId(
-                        adoption.getAdoptionId()));
-
-                return AdoptionEsDto.from(adoption, regionInfoDto);
-            } catch (Exception e1) {
-                // 시도 실패 시 null 반환
-                log.error("Fallback embedding also failed for ID {}: {}",
-                        adoption.getAdoptionId(), e1.getMessage());
-                return null;
-            }
+            log.error("Error processing adoption ID {}: {}", adoption.getAdoptionId(),
+                    e.getMessage());
+            return null;
         }
     }
 
