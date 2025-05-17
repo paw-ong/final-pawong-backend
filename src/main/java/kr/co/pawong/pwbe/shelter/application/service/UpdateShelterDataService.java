@@ -1,18 +1,17 @@
 package kr.co.pawong.pwbe.shelter.application.service;
 
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCareDto;
+import java.util.List;
+import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionCareDto;
+import kr.co.pawong.pwbe.shelter.application.port.in.UpdateShelterDataUseCase;
+import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterCreate;
+import kr.co.pawong.pwbe.shelter.application.port.out.ShelterDataCommandPort;
 import kr.co.pawong.pwbe.shelter.application.port.out.ShelterDataQueryPort;
 import kr.co.pawong.pwbe.shelter.application.service.support.ShelterMapper;
 import kr.co.pawong.pwbe.shelter.domain.Shelter;
-import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterCreate;
-import kr.co.pawong.pwbe.shelter.application.port.out.ShelterDataCommandPort;
-import kr.co.pawong.pwbe.shelter.application.port.in.UpdateShelterDataUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -24,8 +23,8 @@ public class UpdateShelterDataService implements UpdateShelterDataUseCase {
     private final ShelterMapper shelterMapper;
 
     // ShelterCreate -> Shelter -> Repo에 전달
-    @Transactional
     @Override
+    @Transactional
     public void saveShelters(List<ShelterCreate> shelterCreates) {
         List<Shelter> shelters = shelterCreates.stream()
                 .map(Shelter::from)
@@ -35,6 +34,7 @@ public class UpdateShelterDataService implements UpdateShelterDataUseCase {
     }
 
     @Override
+    @Transactional
     public void updateShelterIfNotExist(AdoptionCareDto adoptionCareDto) {
         String careRegNo = adoptionCareDto.getCareRegNo();
         try {
