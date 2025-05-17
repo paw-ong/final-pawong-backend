@@ -2,13 +2,12 @@ package kr.co.pawong.pwbe.shelter.application.service.support;
 
 import static kr.co.pawong.pwbe.global.util.ApiDataUtils.parseAddress;
 
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCareDto;
+import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionCareDto;
 import kr.co.pawong.pwbe.shelter.domain.Shelter;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ShelterMapper {
-    public Shelter fromAdoption(AdoptionCareDto adoptionCareDto) {
+
+    public static Shelter fromAdoption(AdoptionCareDto adoptionCareDto) {
         // 주소 파싱
         String[] addressParts = parseAddress(adoptionCareDto.getCareAddr());
         String city = addressParts[0];
