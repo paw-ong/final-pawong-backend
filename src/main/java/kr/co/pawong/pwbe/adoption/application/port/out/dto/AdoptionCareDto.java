@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.application.port.in.dto;
+package kr.co.pawong.pwbe.adoption.application.port.out.dto;
 
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
 import lombok.AllArgsConstructor;
