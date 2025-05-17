@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.shelter.application.service;
+package kr.co.pawong.pwbe.infrastructure.api;
 
 import static kr.co.pawong.pwbe.global.util.ApiDataUtils.convertToEnum;
 import static kr.co.pawong.pwbe.global.util.ApiDataUtils.parseAddress;
@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterCreate;
+import kr.co.pawong.pwbe.infrastructure.api.dto.ShelterCreate;
 import kr.co.pawong.pwbe.shelter.application.port.out.ShelterDataCommandPort;
 import kr.co.pawong.pwbe.shelter.application.service.dto.ShelterApi;
 import kr.co.pawong.pwbe.shelter.enums.DivisionNm;
@@ -42,7 +42,8 @@ public class ApiShelterService {
     @Value("${api.service-key}")
     private String serviceKey;
 
-    @Value("${api-url.shelter-key}")
+    @Value("${api-url.shelter}")
+    private String apiUrl;
 
     public List<ShelterCreate> saveShelters() {
         List<ShelterCreate> allShelterCreates = new ArrayList<>();
@@ -56,8 +57,7 @@ public class ApiShelterService {
 
         while (hasMoreData) {
 
-            URI uri = UriComponentsBuilder.fromHttpUrl(
-                            "https://apis.data.go.kr/1543061/animalShelterSrvc_v2/shelterInfo_v2")
+            URI uri = UriComponentsBuilder.fromHttpUrl(apiUrl)
                     .queryParam("serviceKey", serviceKey)
                     .queryParam("numOfRows", numOfRows)
                     .queryParam("pageNo", pageNo)
