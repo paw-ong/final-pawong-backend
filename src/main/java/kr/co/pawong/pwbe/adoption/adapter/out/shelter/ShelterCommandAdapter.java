@@ -16,12 +16,6 @@ public class ShelterCommandAdapter implements ShelterCommandPort {
 
     @Override
     public void processShelterInfo(AdoptionCareDto adoptionCareDto) {
-        try {
-            updateShelterDataUseCase.updateShelterIfNotExist(adoptionCareDto);
-        } catch (Exception e) {
-            log.error("ShelterCommandAdapter - 보호소 정보 처리 중 오류 발생: careRegNo={}, error={}",
-                    adoptionCareDto.getCareRegNo(), e.getMessage(), e);
-            throw e;
-        }
+        updateShelterDataUseCase.updateShelterIfNotExist(adoptionCareDto);
     }
 }

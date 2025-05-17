@@ -20,7 +20,6 @@ public class UpdateShelterDataService implements UpdateShelterDataUseCase {
 
     private final ShelterDataQueryPort shelterDataQueryPort;
     private final ShelterDataCommandPort shelterDataCommandPort;
-    private final ShelterMapper shelterMapper;
 
     // ShelterCreate -> Shelter -> Repo에 전달
     @Override
@@ -37,20 +36,15 @@ public class UpdateShelterDataService implements UpdateShelterDataUseCase {
     @Transactional
     public void updateShelterIfNotExist(AdoptionCareDto adoptionCareDto) {
         String careRegNo = adoptionCareDto.getCareRegNo();
-        try {
-            // 보호소 번호로 기존 보호소 검색
-            boolean exists = shelterDataQueryPort.existsByCareRegNo(careRegNo);
+        // 보호소 번호로 기존 보호소 검색
+        boolean exists = shelterDataQueryPort.existsByCareRegNo(careRegNo);
 
-            // 보호소가 존재하지 않는 경우에만 새로 저장
-            if (!exists) {
-                // 매퍼를 사용하여 DTO를 도메인 객체로 변환
-                Shelter shelter = shelterMapper.fromAdoption(adoptionCareDto);
-                shelterDataCommandPort.saveShelter(shelter);
-            }
-        } catch (Exception e) {
-            log.error("보호소 정보 업데이트 중 오류 발생: careRegNo={}, error={}",
-                    careRegNo, e.getMessage(), e);
-            throw e;
+        // 보호소가 존재하지 않는 경우에만 새로 저장
+        if (!exists) {
+            // 매퍼를 사용하여 DTO를 도메인 객체로 변환
+            Shelter shelter = ShelterMapper.fromAdoption(adoptionCareDto);
+            shelterDataCommandPort.saveShelter(shelter);
         }
+
     }
 }

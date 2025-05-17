@@ -26,6 +26,7 @@ public class JpaShelterDataCommandAdapter implements ShelterDataCommandPort {
         shelterJpaRepository.saveAll(shelterEntities);
         log.info("{}개의 보호소 정보가 저장되었습니다.", shelters.size());
     }
+
     @Override
     public List<String> findAllCareRegNos() {
         return shelterJpaRepository.findAllCareRegNos();
@@ -33,15 +34,11 @@ public class JpaShelterDataCommandAdapter implements ShelterDataCommandPort {
 
     @Override
     public void saveShelter(Shelter shelter) {
-        try {
-            ShelterEntity shelterEntity = ShelterEntity.from(shelter);
-            shelterJpaRepository.save(shelterEntity);
-            log.info("보호소 정보 저장 완료: id={}, careRegNo={}, name={}",
-                    shelterEntity.getShelterId(), shelterEntity.getCareRegNo(), shelterEntity.getCareNm());
-        } catch (Exception e) {
-            log.error("보호소 정보 저장 중 오류 발생: careRegNo={}, error={}",
-                    shelter.getCareRegNo(), e.getMessage(), e);
-            throw e;
-        }
+
+        ShelterEntity shelterEntity = ShelterEntity.from(shelter);
+        shelterJpaRepository.save(shelterEntity);
+        log.info("보호소 정보 저장 완료: id={}, careRegNo={}, name={}",
+                shelterEntity.getShelterId(), shelterEntity.getCareRegNo(),
+                shelterEntity.getCareNm());
     }
 }

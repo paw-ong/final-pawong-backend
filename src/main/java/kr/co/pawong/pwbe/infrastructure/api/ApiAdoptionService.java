@@ -179,17 +179,11 @@ public class ApiAdoptionService implements ApiAdoptionUseCase {
 
     @Override
     public void extractAndProcessShelterInfo(AdoptionApi.Item item) {
-        try {
-            // 보호소 정보 추출
-            AdoptionCareDto adoptionCareDto = AdoptionCareDto.from(item);
+        // 보호소 정보 추출
+        AdoptionCareDto adoptionCareDto = AdoptionCareDto.from(item);
 
-            // 추출한 정보 처리
-            shelterCommandPort.processShelterInfo(adoptionCareDto);
-        } catch (Exception e) {
-            log.error("보호소 정보 처리 중 오류 발생: careRegNo={}, error={}",
-                    item.getCareRegNo(), e.getMessage(), e);
-            throw e;
-        }
+        // 추출한 정보 처리
+        shelterCommandPort.processShelterInfo(adoptionCareDto);
     }
 }
 
