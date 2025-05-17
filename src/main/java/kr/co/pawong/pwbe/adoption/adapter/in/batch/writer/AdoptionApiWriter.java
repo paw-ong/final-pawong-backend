@@ -3,7 +3,7 @@ package kr.co.pawong.pwbe.adoption.adapter.in.batch.writer;
 import java.util.ArrayList;
 import java.util.List;
 import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionDataUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.infrastructure.api.dto.AdoptionCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;

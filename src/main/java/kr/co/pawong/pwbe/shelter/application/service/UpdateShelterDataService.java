@@ -3,7 +3,7 @@ package kr.co.pawong.pwbe.shelter.application.service;
 import java.util.List;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionCareDto;
 import kr.co.pawong.pwbe.shelter.application.port.in.UpdateShelterDataUseCase;
-import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterCreate;
+import kr.co.pawong.pwbe.infrastructure.api.dto.ShelterCreate;
 import kr.co.pawong.pwbe.shelter.application.port.out.ShelterDataCommandPort;
 import kr.co.pawong.pwbe.shelter.application.port.out.ShelterDataQueryPort;
 import kr.co.pawong.pwbe.shelter.application.service.support.ShelterMapper;

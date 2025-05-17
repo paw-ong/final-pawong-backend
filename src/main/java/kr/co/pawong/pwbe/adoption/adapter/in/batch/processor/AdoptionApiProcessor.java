@@ -1,7 +1,7 @@
 package kr.co.pawong.pwbe.adoption.adapter.in.batch.processor;
 
 import kr.co.pawong.pwbe.adoption.application.port.in.ApiAdoptionUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.infrastructure.api.dto.AdoptionCreate;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

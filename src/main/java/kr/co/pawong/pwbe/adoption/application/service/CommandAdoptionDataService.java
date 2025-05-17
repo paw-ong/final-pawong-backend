@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import kr.co.pawong.pwbe.adoption.application.port.in.CommandAdoptionDataUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.infrastructure.api.dto.AdoptionCreate;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionAiPort;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataCommandPort;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;

@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterCreate;
+import kr.co.pawong.pwbe.infrastructure.api.dto.ShelterCreate;
 import kr.co.pawong.pwbe.shelter.application.port.out.ShelterDataCommandPort;
 import kr.co.pawong.pwbe.shelter.application.service.dto.ShelterApi;
 import kr.co.pawong.pwbe.shelter.enums.DivisionNm;

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import kr.co.pawong.pwbe.adoption.application.port.in.ApiAdoptionUseCase;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionCareDto;
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.infrastructure.api.dto.AdoptionCreate;
 import kr.co.pawong.pwbe.adoption.application.port.out.ShelterCommandPort;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Body;
