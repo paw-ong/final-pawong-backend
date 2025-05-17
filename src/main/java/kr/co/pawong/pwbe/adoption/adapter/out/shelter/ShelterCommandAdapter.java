@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.adoption.adapter.out.shelter;
 
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCareDto;
+import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionCareDto;
 import kr.co.pawong.pwbe.adoption.application.port.out.ShelterCommandPort;
 import kr.co.pawong.pwbe.shelter.application.port.in.UpdateShelterDataUseCase;
 import lombok.RequiredArgsConstructor;
