@@ -1,0 +1,18 @@
+package kr.co.pawong.pwbe.user.application.port.out;
+
+import java.util.List;
+import java.util.Optional;
+import kr.co.pawong.pwbe.user.domain.LostBookmark;
+
+public interface LostBookmarkQueryPort {
+
+    Optional<LostBookmark> findByLostPostId(long userId, long lostPostId);
+
+    Optional<LostBookmark> findByAdoptionId(long userId, long adoptionId);
+
+    List<LostBookmark> findByUserId(long userId);
+
+    boolean lostPostBookmarkExists(Long userId, long lostPostId);
+
+    boolean lostAdoptionBookmarkExists(Long userId, long bookmarkId);
+}

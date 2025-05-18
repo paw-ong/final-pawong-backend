@@ -7,4 +7,6 @@ public interface QueryMyPageDataUseCase {
 
     List<MyPageLostPostResponse> getLostPostsByUserId(Long userId);
 
+    List<MyPageLostPostResponse> getBookmarkedLostPostsByUserId(Long userId);
+
 }

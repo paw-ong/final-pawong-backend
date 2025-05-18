@@ -20,6 +20,7 @@ public class LostPostMapper {
                 .kindNm(lostPostCard.kindNm())
                 .createdAt(lostPostCard.createdAt())
                 .feature(lostPostCard.feature())
+                .bookmarked(lostPostCard.bookmarked())
                 .build();
     }
 }
