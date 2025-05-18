@@ -4,7 +4,9 @@ import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.LOST_NOT_
 
 import java.util.List;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
+import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.request.LostPostSearchRequest;
 import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.entity.LostPostEntity;
+import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.query.LostPostQueryBuilder;
 import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.jpa.repository.LostPostJpaRepository;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Repository;
 public class JpaLostPostDataQueryAdapter implements LostPostDataQueryPort {
 
     private final LostPostJpaRepository lostPostJpaRepository;
+    private final LostPostQueryBuilder lostPostQueryBuilder;
 
     @Override
     public LostPost findLostPostByIdOrThrow(Long lostPostId) {
@@ -39,6 +42,12 @@ public class JpaLostPostDataQueryAdapter implements LostPostDataQueryPort {
     @Override
     public Page<LostPost> getLostPostsByPostTypePaged(Pageable pageable, PostType type) {
         Page<LostPostEntity> entityPage = lostPostJpaRepository.findByPostType(type, pageable);
+        return entityPage.map(LostPostEntity::toDomain);
+    }
+
+    @Override
+    public Page<LostPost> searchLostPosts(Pageable pageable, LostPostSearchRequest request) {
+        Page<LostPostEntity> entityPage = lostPostQueryBuilder.buildFilterQuery(pageable, request);
         return entityPage.map(LostPostEntity::toDomain);
     }
 }
