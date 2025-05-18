@@ -21,4 +21,11 @@ public class JpaShelterDataQueryAdapter implements ShelterDataQueryPort {
                 .map(ShelterEntity::toModel)
                 .orElse(null);
     }
+
+    @Override
+    public boolean existsByCareRegNo(String careRegNo) {
+        return shelterJpaRepository.existsByCareRegNo(careRegNo);
+    }
+
+
 }

@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.application.port.in.dto;
+package kr.co.pawong.pwbe.infrastructure.api.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,15 +42,25 @@ public class AdoptionCreate {
     private LocalDateTime updTm; // 수정일
 
     /**
-     * ProcessState 값에 따라 activeState를 갱신하는 메서드.
-     * - ProcessState가 PROTECTED이면 activeState를 ACTIVE로,
-     * - 그 외에는 INACTIVE로 설정한다.
+     * ProcessState, NoticeEdt 값에 따라 ActiveState를 갱신하는 메서드
+     * - ProcessState가 PROTECTED가 아니면 ActiveState를 CLOSED
+     * - NoticeEdt가 Today와 같거나 그 이후이면 MISSING
+     * - NoticeEdt가 Today 전이면 ADOPTABLE
      */
     public void updateActiveState() {
-        if (this.getProcessState() == ProcessState.PROTECTED) {
-            this.activeState = ActiveState.ACTIVE;
-        } else {
-            this.activeState = ActiveState.INACTIVE;
+        LocalDate today = LocalDate.now();
+
+        if (this.getProcessState() != ProcessState.PROTECTED) {
+            this.activeState = ActiveState.CLOSED;
+            return;
+        }
+
+        if (this.getNoticeEdt() == null || this.getNoticeEdt().isEqual(today) || this.getNoticeEdt().isAfter(today)) {
+            this.activeState = ActiveState.MISSING;
+            return;
+        }
+        if (this.getNoticeEdt().isBefore(today)) {
+            this.activeState = ActiveState.ADOPTABLE;
         }
     }
 }

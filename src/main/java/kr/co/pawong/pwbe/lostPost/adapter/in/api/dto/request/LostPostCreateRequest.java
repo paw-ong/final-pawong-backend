@@ -21,10 +21,10 @@ public class LostPostCreateRequest {
     private String color;           // 색상
     private SexCd sexCd;            // 성별
     private Integer age;            // 나이
-    private String imageUrl;        // 이미지 url
+    private String imageKey;        // 이미지 url Object Key
     private String specialMark;     // 동물 특징
     private String content;         // 상세 내용
-    private String rfidCd;            // 마이크로 칩번호
+    private String rfidCd;          // 마이크로 칩번호
     private String location;        // 실종장소, 발견장소
     private Double latitude;        // 위도
     private Double longitude;       // 경도
@@ -39,7 +39,7 @@ public class LostPostCreateRequest {
                 .color(this.color)
                 .sexCd(this.sexCd)
                 .age(this.age)
-                .imageUrl(this.imageUrl)
+                .imageKey(this.imageKey)
                 .specialMark(this.specialMark)
                 .content(this.content)
                 .rfidCd(this.rfidCd)

@@ -4,6 +4,7 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 
 public class TimeUtils {
@@ -72,5 +73,30 @@ public class TimeUtils {
         long days   = ChronoUnit.DAYS.between(past, today);
         if (days > 0) return days + "일 전";
         return "오늘";
+    }
+
+    // 문자열 -> LocalDate
+    public static LocalDate parseLocalDate(String date, DateTimeFormatter formatter) {
+        if (date != null && !date.isEmpty()) {
+            try {
+                return LocalDate.parse(date, formatter);
+            } catch (DateTimeParseException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    // 문자열 -> LocalDateTime
+    public static LocalDateTime parseLocalDateTime(String date, DateTimeFormatter formatter) {
+        if (date != null && !date.isEmpty()) {
+            try {
+                return LocalDateTime.parse(date, formatter)
+                        .truncatedTo(ChronoUnit.SECONDS);
+            } catch (DateTimeParseException e) {
+                return null;
+            }
+        }
+        return null;
     }
 }

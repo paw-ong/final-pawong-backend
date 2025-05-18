@@ -3,7 +3,7 @@ package kr.co.pawong.pwbe.shelter.domain;
 
 import java.time.LocalDate;
 
-import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterCreate;
+import kr.co.pawong.pwbe.infrastructure.api.dto.ShelterCreate;
 import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterUpdate;
 import kr.co.pawong.pwbe.shelter.enums.DivisionNm;
 import lombok.Builder;

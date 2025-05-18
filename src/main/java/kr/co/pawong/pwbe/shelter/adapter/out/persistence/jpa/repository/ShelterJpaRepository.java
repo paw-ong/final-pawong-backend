@@ -19,4 +19,6 @@ public interface ShelterJpaRepository extends JpaRepository<ShelterEntity, Long>
     List<String> findAllCareRegNos();
 
     Optional<ShelterEntity> findByCareRegNo(String careRegNo);
+
+    boolean existsByCareRegNo(String careRegNo);
 }
