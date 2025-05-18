@@ -37,6 +37,7 @@ public class LostPostDetailDto {
     private PostStatus status;      // 게시글 상태
     private String location;        // 실종장소, 발견장소
     private GeoPoint geoPoint;
+    boolean bookmarked;             // 북마크 여부. 비로그인 상태일 경우 false
     String author; // 작성자
 
 }

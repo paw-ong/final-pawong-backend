@@ -7,7 +7,7 @@ import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 
 public class LostPostDetailMapper {
 
-    public static LostPostDetailDto toModel(LostPost lostPost, String author, Clock clock) {
+    public static LostPostDetailDto toModel(LostPost lostPost, String author, boolean bookmarked, Clock clock) {
 
         return LostPostDetailDto.builder()
                 .lostPostId(lostPost.getLostPostId())
@@ -18,7 +18,7 @@ public class LostPostDetailMapper {
                 .color(lostPost.getColor())
                 .sexCd(lostPost.getSexCd())
                 .age(lostPost.getAge())
-                .imageUrl(lostPost.getImageUrl())
+                .imageUrl(lostPost.getImageKey())
                 .specialMark(lostPost.getSpecialMark())
                 .content(lostPost.getContent())
                 .rfidCd(lostPost.getRfidCd())
@@ -29,6 +29,7 @@ public class LostPostDetailMapper {
                 .location(lostPost.getLocation())
                 .geoPoint(lostPost.getGeoPoint())
                 .author(author)
+                .bookmarked(bookmarked)
                 .build();
     }
 }

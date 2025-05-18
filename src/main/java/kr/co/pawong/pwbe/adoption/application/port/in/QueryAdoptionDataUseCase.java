@@ -12,7 +12,10 @@ import org.springframework.data.domain.Pageable;
 import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterInfoDto;
 
 public interface QueryAdoptionDataUseCase {
-    List<Adoption> getAllAdoptions();
+
+    List<Adoption> findActiveNotProcessedAdoptions();
+
+    List<Adoption> findAdoptionForEmbedding();
 
     SliceAdoptionSearchResponses fetchSlicedAdoptions(Pageable pageable);
 

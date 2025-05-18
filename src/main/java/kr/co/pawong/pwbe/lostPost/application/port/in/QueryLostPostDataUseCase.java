@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.lostPost.application.port.in;
 
 import java.util.List;
+import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalQuery;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailResponse;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.SliceLostPostSearchResponses;

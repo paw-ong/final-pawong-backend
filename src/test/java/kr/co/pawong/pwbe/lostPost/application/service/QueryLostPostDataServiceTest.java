@@ -9,8 +9,10 @@ import java.time.ZoneId;
 import java.util.List;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
+import kr.co.pawong.pwbe.lostPost.application.port.out.LostAdoptionDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.UserInfoPort;
+import kr.co.pawong.pwbe.lostPost.application.service.QueryLostPostDataServiceTest.FakeLostPostDataQueryPort.FakeUserInfoPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +34,9 @@ class QueryLostPostDataServiceTest {
 
         service = new QueryLostPostDataService(
                 fakeLostPostPort,
+                // TODO: 이후 추가
+                null,
+                null,
                 fakeUserInfoPort,
                 fixedClock
         );
@@ -68,6 +73,7 @@ class QueryLostPostDataServiceTest {
 
     /** userId == 123L 일 때만 하나의 LostPost를, 아니면 빈 리스트를 반환 */
     static class FakeLostPostDataQueryPort implements LostPostDataQueryPort {
+
         @Override
         public List<LostPost> getLostPostsByUserId(Long userId) {
             if (userId.equals(123L)) {
@@ -79,13 +85,14 @@ class QueryLostPostDataServiceTest {
                         .upKindNm(UpKindNm.개)
                         .kindNm("푸들")
                         .specialMark("흰 점이 있음")
-                        .createdAt(LocalDateTime.of(2025,5,1,10,0,0))
+                        .createdAt(LocalDateTime.of(2025, 5, 1, 10, 0, 0))
                         .build();
                 return List.of(lp);
             }
             return List.of();
         }
 
+        // TODO: 이후 구현
         @Override
         public LostPost findLostPostByIdOrThrow(Long lostPostId) {
             if (lostPostId.equals(123L)) {
@@ -97,20 +104,22 @@ class QueryLostPostDataServiceTest {
                         .upKindNm(UpKindNm.개)
                         .kindNm("푸들")
                         .specialMark("흰 점이 있음")
-                        .createdAt(LocalDateTime.of(2025,5,1,10,0,0))
+                        .createdAt(LocalDateTime.of(2025, 5, 1, 10, 0, 0))
                         .build();
                 return lp;
             }
             return null;
         }
-    }
 
-    /** userId == 123L 일 때만 고정 닉네임을 반환 */
-    static class FakeUserInfoPort implements UserInfoPort {
-        @Override
-        public String getNicknameByUserId(Long userId) {
-            return userId.equals(123L) ? "fake-nick" : "";
+        /**
+         * userId == 123L 일 때만 고정 닉네임을 반환
+         */
+        static class FakeUserInfoPort implements UserInfoPort {
+
+            @Override
+            public String getNicknameByUserId(Long userId) {
+                return userId.equals(123L) ? "fake-nick" : "";
+            }
         }
     }
-
 }

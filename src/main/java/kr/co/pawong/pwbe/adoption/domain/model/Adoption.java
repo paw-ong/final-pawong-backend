@@ -2,7 +2,7 @@ package kr.co.pawong.pwbe.adoption.domain.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.infrastructure.api.dto.AdoptionCreate;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionUpdate;
 import kr.co.pawong.pwbe.adoption.enums.ActiveState;
 import kr.co.pawong.pwbe.adoption.enums.NeuterYn;
@@ -135,5 +135,9 @@ public class Adoption {
                 this.weight != null ? this.weight : "",
                 this.specialMark != null ? this.specialMark : ""
         ).trim();
+    }
+
+    public void initId(Long adoptionId) {
+        this.adoptionId = adoptionId;
     }
 }

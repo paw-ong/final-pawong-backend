@@ -8,6 +8,7 @@ import kr.co.pawong.pwbe.lostPost.application.port.in.SearchLostPostDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostSearchResponses;
 import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostPostCardMapper;
+import kr.co.pawong.pwbe.lostPost.application.port.out.BookmarkInfoPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.UserInfoPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
@@ -22,6 +23,7 @@ public class SearchLostPostDataService implements SearchLostPostDataUseCase {
 
     private final LostPostDataQueryPort lostPostDataQueryPort;
     private final UserInfoPort userInfoPort;
+    private final BookmarkInfoPort bookmarkInfoPort;
     private final Clock clock;
 
     @Override
@@ -36,7 +38,8 @@ public class SearchLostPostDataService implements SearchLostPostDataUseCase {
         return lostPostPage.getContent().stream()
                 .map(lp -> {
                     String author = userInfoPort.getNicknameByUserId(lp.getUserId());
-                    return LostPostCardMapper.toLostPostCard(lp, author, clock);
+                    boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(lp.getUserId(), lp.getLostPostId());
+                    return LostPostCardMapper.toLostPostCard(lp, author, bookmarked, clock);
                 })
                 .collect(Collectors.toList());
     }
