@@ -23,20 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class LostPostQueryController {
 
     private final QueryLostPostDataUseCase queryLostPostDataUseCase;
-    private final QueryLostAdoptionDataUseCase queryLostAdoptionDataUseCase;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getLostDetail(
-            @PathVariable("id") Long Id,
-            @RequestParam(value = "type", required = false) String type) {
-        if (type != null && type.equals("lost-posts")) {
-            LostPostDetailResponse response = queryLostPostDataUseCase.findLostPostById(Id);
-            return ResponseEntity.ok(response);
-        } else if (type != null && type.equals("lost-adoptions")) {
-            LostAdoptionDetailResponse response = queryLostAdoptionDataUseCase.findAdoptionById(Id);
-            return ResponseEntity.ok(response);
-        }
-        return ResponseEntity.badRequest().body("유효하지 않은 type 파라미터입니다.");
+
+    @GetMapping("/lost-posts/{id}")
+    public ResponseEntity<LostPostDetailResponse> getLostDetail(
+            @PathVariable("id") Long Id) {
+        LostPostDetailResponse response = queryLostPostDataUseCase.findLostPostById(Id);
+        return ResponseEntity.ok(response);
     }
 
     // slice 방식 (무한 스크롤)
