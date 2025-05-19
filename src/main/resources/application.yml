@@ -45,6 +45,18 @@ spring:
         model: Qwen/QwQ-32B
       embedding:
         model: ai-human-lab/EEVE-Korean-10.8B-SFT-v0.1
+# 로깅
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg [traceId=%X{traceId:-}]%n"
+#
+cloud:
+  aws:
+    region: ${AWS_REGION}
+    s3:
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY_ID}
+      bucket-name: ${BUCKET_NAME}
 api:
   service-key: ${SERVICE_KEY}
 data:
