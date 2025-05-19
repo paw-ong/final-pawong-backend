@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.adoption.application.port.in.dto;
+package kr.co.pawong.pwbe.infrastructure.api.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

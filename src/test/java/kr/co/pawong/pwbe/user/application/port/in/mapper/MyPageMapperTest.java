@@ -18,10 +18,10 @@ class MyPageMapperTest {
                 .imageUrl("https://www.aaa.com")
                 .happenedDate("2025-04-01")
                 .happenedPlace("Busan")
-                .upKindNm("CAT")
                 .kindNm("Shorthair")
                 .createdAt("2025-04-01 08:30:00")
                 .feature("black and white")
+                .bookmarked(true)
                 .build();
 
         // when
@@ -34,9 +34,9 @@ class MyPageMapperTest {
         assertThat(response.imageUrl()).isEqualTo("https://www.aaa.com");
         assertThat(response.happenedDate()).isEqualTo("2025-04-01");
         assertThat(response.happenedPlace()).isEqualTo("Busan");
-        assertThat(response.upKindNm()).isEqualTo("CAT");
         assertThat(response.kindNm()).isEqualTo("Shorthair");
         assertThat(response.createdAt()).isEqualTo("2025-04-01 08:30:00");
         assertThat(response.feature()).isEqualTo("black and white");
+        assertThat(response.bookmarked()).isTrue();
     }
 }

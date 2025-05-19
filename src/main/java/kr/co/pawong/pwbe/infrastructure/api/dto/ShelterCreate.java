@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.shelter.application.port.in.dto;
+package kr.co.pawong.pwbe.infrastructure.api.dto;
 
 import kr.co.pawong.pwbe.shelter.enums.DivisionNm;
 import kr.co.pawong.pwbe.shelter.adapter.out.persistence.jpa.entity.ShelterEntity;

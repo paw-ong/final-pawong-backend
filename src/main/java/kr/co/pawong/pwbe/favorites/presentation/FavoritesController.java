@@ -12,28 +12,16 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/users/me/favorites")
+@RequestMapping("/api/users/favorites")
 @RequiredArgsConstructor
 public class FavoritesController {
 
     private final FavoritesService favoritesService;
 
     /**
-     * 현재 로그인된 유저가 찜 목록을 받아오는 API
-     */
-    @GetMapping("")
-    public ResponseEntity<FavoritesListResponse> getFavorites(
-            @AuthenticationPrincipal CustomUserDetails principal
-    ) {
-        Long userId = principal.getUserId();
-        FavoritesListResponse response = favoritesService.findAllByUserId(userId);   // favorites가 도메인명이므로 favoritesList로 네이밍
-        return ResponseEntity.ok(response);
-    }
-
-    /**
      * 현재 로그인된 유저가 adoption 공고를 토글 방식으로 찜하는 API
      */
-    @PostMapping("/{adoptionId}")
+    @PostMapping("/{adoptionId}/toggle")
     public ResponseEntity<FavoritesResponse> toggleFavorite(
             @PathVariable Long adoptionId,
             @AuthenticationPrincipal CustomUserDetails principal

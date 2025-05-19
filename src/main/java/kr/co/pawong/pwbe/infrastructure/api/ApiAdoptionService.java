@@ -1,16 +1,21 @@
 package kr.co.pawong.pwbe.infrastructure.api;
 
+import static kr.co.pawong.pwbe.global.util.ApiDataUtils.convertToEnum;
+import static kr.co.pawong.pwbe.global.util.ApiDataUtils.parseIntAge;
+import static kr.co.pawong.pwbe.global.util.TimeUtils.parseLocalDate;
+import static kr.co.pawong.pwbe.global.util.TimeUtils.parseLocalDateTime;
+
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import kr.co.pawong.pwbe.adoption.application.port.in.ApiRequestUseCase;
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.adoption.application.port.in.ApiAdoptionUseCase;
+import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionCareDto;
+import kr.co.pawong.pwbe.infrastructure.api.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.adoption.application.port.out.ShelterCommandPort;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Body;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi.Items;
@@ -35,9 +40,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ApiRequestService implements ApiRequestUseCase {
+public class ApiAdoptionService implements ApiAdoptionUseCase {
 
     private final RestTemplate restTemplate;
+    private final ShelterCommandPort shelterCommandPort;
 
     @Value("${api.service-key}")
     private String serviceKey;
@@ -160,67 +166,24 @@ public class ApiRequestService implements ApiRequestUseCase {
         return adoptionCreate;
     }
 
-// API 응답 데이터의 유효성을 검사
-private boolean isValidAdoptionData(AdoptionApi adoptionApi) {
-    return Optional.ofNullable(adoptionApi)
-            .map(AdoptionApi::getResponse)
-            .map(Response::getBody)
-            .map(Body::getItems)
-            .map(Items::getItem)
-            .filter(items -> !items.isEmpty())
-            .isPresent();
-}
-
-    // 문자열 -> LocalDate
-    private LocalDate parseLocalDate(String date, DateTimeFormatter formatter) {
-        if (date != null && !date.isEmpty()) {
-            try {
-                return LocalDate.parse(date, formatter);
-            } catch (DateTimeParseException e) {
-                log.error("날짜 파싱 오류 ({}): {}", date, e.getMessage());
-            }
-        }
-        return null;
+    // API 응답 데이터의 유효성을 검사
+    private boolean isValidAdoptionData(AdoptionApi adoptionApi) {
+        return Optional.ofNullable(adoptionApi)
+                .map(AdoptionApi::getResponse)
+                .map(Response::getBody)
+                .map(Body::getItems)
+                .map(Items::getItem)
+                .filter(items -> !items.isEmpty())
+                .isPresent();
     }
 
-    // 문자열 -> LocalDateTime
-    private LocalDateTime parseLocalDateTime(String date, DateTimeFormatter formatter) {
-        if (date != null && !date.isEmpty()) {
-            try {
-                return LocalDateTime.parse(date, formatter)
-                        .truncatedTo(ChronoUnit.SECONDS);
-            } catch (DateTimeParseException e) {
-                log.error("날짜 시간 파싱 오류 ({}): {}", date, e.getMessage());
-            }
-        }
-        return null;
-    }
+    @Override
+    public void extractAndProcessShelterInfo(AdoptionApi.Item item) {
+        // 보호소 정보 추출
+        AdoptionCareDto adoptionCareDto = AdoptionCareDto.from(item);
 
-    // 문자열 -> 정수
-    private Integer parseIntAge(String value) {
-        if (value == null || value.isEmpty()) {
-            return null;
-        }
-
-        try {
-            String age = value.substring(0, 4);
-            return Integer.parseInt(age);
-        } catch (NumberFormatException e) {
-            return null;
-        }
-    }
-
-    // 문자열 -> Enum
-    private <T extends Enum<T>> T convertToEnum(String data, Class<T> enumClass) {
-        if (data == null) {
-            return null;
-        }
-
-        try {
-            return Enum.valueOf(enumClass, data);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
+        // 추출한 정보 처리
+        shelterCommandPort.processShelterInfo(adoptionCareDto);
     }
 }
 

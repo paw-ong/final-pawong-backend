@@ -9,7 +9,7 @@ import kr.co.pawong.pwbe.adoption.adapter.in.batch.reader.AdoptionEsReader;
 import kr.co.pawong.pwbe.adoption.adapter.in.batch.writer.AdoptionAiWriter;
 import kr.co.pawong.pwbe.adoption.adapter.in.batch.writer.AdoptionApiWriter;
 import kr.co.pawong.pwbe.adoption.adapter.in.batch.writer.AdoptionEsWriter;
-import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCreate;
+import kr.co.pawong.pwbe.infrastructure.api.dto.AdoptionCreate;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionEsDto;
 import kr.co.pawong.pwbe.adoption.application.service.dto.AdoptionApi;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
