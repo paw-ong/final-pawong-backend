@@ -34,10 +34,9 @@ class QueryLostPostDataServiceTest {
 
         service = new QueryLostPostDataService(
                 fakeLostPostPort,
+                fakeUserInfoPort,
                 // TODO: 이후 추가
                 null,
-                null,
-                fakeUserInfoPort,
                 fixedClock
         );
     }

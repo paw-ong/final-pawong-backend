@@ -34,7 +34,7 @@ class LostPostCardMapperTest {
         LostPost lostPost = LostPost.builder()
                 .lostPostId(1L)
                 .postType(PostType.LOST)
-                .imageUrl("https://www.aaa.com")
+                .imageKey("https://www.aaa.com")
                 .date(LocalDate.of(2025, 4, 5))
                 .location("Seoul")
                 .upKindNm(UpKindNm.개)
