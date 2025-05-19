@@ -5,11 +5,13 @@ import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAdoptionDetailResp
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailResponse;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.SliceLostPostSearchResponses;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
+import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +35,11 @@ public class LostAdoptionQueryController {
     // slice 방식 (무한 스크롤)
     @GetMapping("/adoption")
     public ResponseEntity<SliceLostPostSearchResponses> getSlicedLostAdoptions(
-            @PageableDefault(page = 0, size = 20, sort = "lostAdoptionId", direction = Sort.Direction.DESC) Pageable pageable) {
-
-        SliceLostPostSearchResponses responses = queryLostAdoptionDataUseCase.fetchSlicedLostAdoptions(pageable);
+            @PageableDefault(page = 0, size = 20, sort = "happenDt", direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal(errorOnInvalidType = false)
+            CustomUserDetails principal) {
+        Long userId = (principal != null ? principal.getUserId() : null);
+        SliceLostPostSearchResponses responses = queryLostAdoptionDataUseCase.fetchSlicedLostAdoptions(pageable, userId);
         return ResponseEntity.ok(responses);
 
     }

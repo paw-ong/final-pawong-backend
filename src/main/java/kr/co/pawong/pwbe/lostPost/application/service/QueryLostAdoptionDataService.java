@@ -42,19 +42,19 @@ public class QueryLostAdoptionDataService implements QueryLostAdoptionDataUseCas
     }
 
     @Override
-    public SliceLostPostSearchResponses fetchSlicedLostAdoptions(Pageable pageable) {
+    public SliceLostPostSearchResponses fetchSlicedLostAdoptions(Pageable pageable, Long userId) {
         Page<LostAdoption> lostAdoptionPage = lostAdoptionDataQueryPort.getLostAdoptionsPaged(pageable);
-        List<LostPostCard> lostPostCards = mapToLostPostCards(lostAdoptionPage,clock);
+        List<LostPostCard> lostPostCards = mapToLostPostCards(lostAdoptionPage, clock, userId);
         boolean hasNext = lostAdoptionPage.hasNext();
         return new SliceLostPostSearchResponses(hasNext,lostPostCards);
     }
 
-    private List<LostPostCard> mapToLostPostCards(Page<LostAdoption> lostAdoptionPage, Clock clock) {
+    private List<LostPostCard> mapToLostPostCards(Page<LostAdoption> lostAdoptionPage, Clock clock, Long userId) {
         return lostAdoptionPage.getContent().stream()
                 .map(la -> {
-                    String shelter = .getNicknameByUserId(lp.getUserId());
-                    boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(lp.getUserId(), lp.getLostPostId());
-                    return LostPostCardMapper.toLostPostCard(lp, author, bookmarked,clock);
+                    String shelter = shelterCareNmPort.getShelterCareNmByCareRegNo(la.getCareRegNo());
+                    boolean bookmarked = bookmarkInfoPort.existsByUserIdAndAdoptionId(userId, la.getAdoptionId());
+                    return LostPostCardMapper.toLostPostCard(la, shelter, bookmarked,clock);
                 })
                 .collect(Collectors.toList());
     }

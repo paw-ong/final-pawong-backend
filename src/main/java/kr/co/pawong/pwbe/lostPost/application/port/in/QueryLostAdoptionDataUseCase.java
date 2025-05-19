@@ -10,5 +10,5 @@ public interface QueryLostAdoptionDataUseCase {
 
     LostAdoptionDetailResponse findAdoptionById(Long adoptionId);
 
-    SliceLostPostSearchResponses fetchSlicedLostAdoptions(Pageable pageable);
+    SliceLostPostSearchResponses fetchSlicedLostAdoptions(Pageable pageable, Long userId);
 }
