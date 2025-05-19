@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.lostPost.application.port.in.dto;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
@@ -27,7 +28,7 @@ public class LostPostDetailDto {
     private String color;           // 색상
     private SexCd sexCd;            // 성별
     private Integer age;                // 나이
-    private String imageUrl;        // 이미지 url
+    private URL imageUrl;        // 이미지 url
     private String specialMark;     // 동물 특징
     private String content;         // 상세 내용
     private String rfidCd;            // 마이크로 칩번호

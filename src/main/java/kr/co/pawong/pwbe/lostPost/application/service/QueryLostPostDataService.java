@@ -1,8 +1,11 @@
 package kr.co.pawong.pwbe.lostPost.application.service;
 
+import java.net.URL;
 import java.time.Clock;
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.co.pawong.pwbe.infrastructure.s3.application.port.out.ImageStoragePort;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailDto;
@@ -28,7 +31,10 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
     private final LostPostDataQueryPort lostPostDataQueryPort;
     private final UserInfoPort userInfoPort;
     private final BookmarkInfoPort bookmarkInfoPort;
+    private final ImageStoragePort imageStoragePort;
     private final Clock clock;
+    /** 다운로드 presigned URL 유효기간 (1시간) */
+    private static final Duration DOWNLOAD_URL_EXPIRE = Duration.ofMinutes(15);
 
     @Override
     @Transactional(readOnly = true)
@@ -50,8 +56,9 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
 
         LostPost lostPost = lostPostDataQueryPort.findLostPostByIdOrThrow(lostPostId);
         String author = userInfoPort.getNicknameByUserId(lostPost.getUserId());
+        URL url = imageStoragePort.presignDownload(lostPost.getImageKey(), DOWNLOAD_URL_EXPIRE);
         boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(lostPost.getUserId(), lostPost.getLostPostId());
-        LostPostDetailDto lostPostDetailDto = LostPostDetailMapper.toModel(lostPost, author, bookmarked, clock);
+        LostPostDetailDto lostPostDetailDto = LostPostDetailMapper.toModel(lostPost, author, bookmarked, clock, url);
 
         return new LostPostDetailResponse(lostPostDetailDto);
     }
