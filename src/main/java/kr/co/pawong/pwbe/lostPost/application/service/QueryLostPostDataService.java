@@ -57,18 +57,18 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
     }
 
     @Override
-    public SliceLostPostSearchResponses fetchSlicedLostPosts(Pageable pageable, PostType type) {
+    public SliceLostPostSearchResponses fetchSlicedLostPosts(Pageable pageable, PostType type, Long userId) {
         Page<LostPost> lostPostPage = lostPostDataQueryPort.getLostPostsByPostTypePaged(pageable, type);
-        List<LostPostCard> lostPostCards = mapToLostPostCards(lostPostPage,clock);
+        List<LostPostCard> lostPostCards = mapToLostPostCards(lostPostPage, clock, userId);
         boolean hasNext = lostPostPage.hasNext();
         return new SliceLostPostSearchResponses(hasNext,lostPostCards);
     }
 
-    private List<LostPostCard> mapToLostPostCards(Page<LostPost> lostPostPage, Clock clock) {
+    private List<LostPostCard> mapToLostPostCards(Page<LostPost> lostPostPage, Clock clock, Long userId) {
         return lostPostPage.getContent().stream()
                 .map(lp -> {
                     String author = userInfoPort.getNicknameByUserId(lp.getUserId());
-                    boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(lp.getUserId(), lp.getLostPostId());
+                    boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(userId, lp.getLostPostId());
                     return LostPostCardMapper.toLostPostCard(lp, author, bookmarked,clock);
                 })
                 .collect(Collectors.toList());
