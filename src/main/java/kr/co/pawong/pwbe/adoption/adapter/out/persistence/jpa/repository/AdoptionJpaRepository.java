@@ -24,7 +24,7 @@ public interface AdoptionJpaRepository extends JpaRepository<AdoptionEntity, Lon
     @Query("SELECT a.careRegNo FROM AdoptionEntity a WHERE a.adoptionId = :id")
     String findCareRegNoByAdoptionId(@Param("id") Long id);
 
-    // ActiveState = active, noticeEdt가 today와 같거나 가장 가까운 이후인 것 조회
+    // ActiveState = MISSING, noticeEdt가 today와 같거나 가장 가까운 이후인 것 조회
     List<AdoptionEntity> findTop12ByActiveStateAndNoticeEdtGreaterThanEqualOrderByNoticeEdtAsc(
             ActiveState activeState, LocalDate today);
 
