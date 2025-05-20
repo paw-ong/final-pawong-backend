@@ -1,0 +1,20 @@
+spring:
+  ai:
+    openai:
+      api-key: ${OPEN_AI_KEY}
+      chat:
+        options:
+          # Open AI model: https://platform.openai.com/docs/models
+          model: ${OPEN_AI_MODEL}
+          temperature: 1.0
+      embedding:
+        options:
+          model: text-embedding-ada-002
+    huggingface:
+      chat:
+        # huggingface에서 제공하는 API 중 'HF Inference API'을 활용.
+        url: https://router.huggingface.co/hf-inference
+        api-key: ${HUGGINGFACE_API_KEY}
+        model: Qwen/QwQ-32B
+      embedding:
+        model: ai-human-lab/EEVE-Korean-10.8B-SFT-v0.1

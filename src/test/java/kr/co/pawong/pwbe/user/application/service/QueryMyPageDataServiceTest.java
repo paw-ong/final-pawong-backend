@@ -38,7 +38,6 @@ class QueryMyPageDataServiceTest {
         assertThat(res.author()).isEqualTo("fake-author");
         assertThat(res.happenedDate()).isEqualTo("2025-05-01");
         assertThat(res.happenedPlace()).isEqualTo("FakeCity");
-        assertThat(res.upKindNm()).isEqualTo("고양이");
         assertThat(res.kindNm()).isEqualTo("Tabby");
         assertThat(res.createdAt()).isEqualTo("2025-05-01 09:00:00");
         assertThat(res.feature()).isEqualTo("none");
@@ -63,7 +62,6 @@ class QueryMyPageDataServiceTest {
                     .author("fake-author")
                     .happenedDate("2025-05-01")
                     .happenedPlace("FakeCity")
-                    .upKindNm("고양이")
                     .kindNm("Tabby")
                     .createdAt("2025-05-01 09:00:00")
                     .feature("none")
