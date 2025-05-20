@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.user.adapter.out.security;
+package kr.co.pawong.pwbe.user.adapter.in.security.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -9,6 +9,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.co.pawong.pwbe.user.adapter.in.security.dto.CustomUserDetails;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;

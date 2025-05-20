@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.user.adapter.out.security.error.exception;
+package kr.co.pawong.pwbe.user.adapter.in.security.error.exception;
 
 import kr.co.pawong.pwbe.global.error.errorcode.ErrorCode;
 import lombok.Getter;
