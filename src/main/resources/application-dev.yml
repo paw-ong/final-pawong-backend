@@ -9,10 +9,3 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-cloud:
-  aws:
-    region: ${AWS_REGION}
-    s3:
-      access-key: ${AWS_ACCESS_KEY_ID}
-      secret-key: ${AWS_SECRET_ACCESS_KEY_ID}
-      bucket-name: ${BUCKET_NAME}
