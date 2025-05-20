@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.user.adapter.out.security;
+package kr.co.pawong.pwbe.user.adapter.in.security.dto;
 
 import java.util.Collection;
 import java.util.Map;

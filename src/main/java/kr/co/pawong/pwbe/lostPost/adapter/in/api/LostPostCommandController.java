@@ -4,7 +4,7 @@ import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.request.LostPostCreateReque
 import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.request.LostPostUpdateRequest;
 import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.response.LostPostCreateResponse;
 import kr.co.pawong.pwbe.lostPost.application.port.in.CommandLostPostDataUseCase;
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
+import kr.co.pawong.pwbe.user.adapter.in.security.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
