@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   elasticsearch:
     build:
@@ -38,6 +36,39 @@ services:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     networks:
       - local-net
+
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    container_name: pawong-local-zk
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    ports:
+      - "${ZK_CLIENT_PORT:-2181}:2181"
+    volumes:
+      - ./infra/kafka/zk-data:/bitnami/zookeeper
+    networks:
+      - local-net
+
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: pawong-local-kafka
+    depends_on:
+      - zookeeper
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zk:${ZK_CLIENT_PORT:-2181}
+      - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:${KAFKA_EXTERNAL_PORT:-9092}
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:${KAFKA_EXTERNAL_PORT:-9092}
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_LOG_RETENTION_HOURS=168
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    ports:
+      - "${KAFKA_EXTERNAL_PORT:-9092}:9092"
+    volumes:
+      - ./infra/kafka/kafka-data:/bitnami/kafka
+    networks:
+      - local-net
+    restart: unless-stopped
 
   nginx:
     image: nginx:latest
