@@ -16,6 +16,6 @@ public class CommandChatRoomDataService implements CommandChatRoomDataUseCase {
     // 생성된 채팅방 id를 반환
     @Override
     public Long createChatRoom(Long senderId, ChatRoomCreateRequest request) {
-        return chatRoomDataCommandPort.createChatRoom(ChatRoom.from(senderId, request));
+        return chatRoomDataCommandPort.saveChatRoom(ChatRoom.from(senderId, request));
     }
 }

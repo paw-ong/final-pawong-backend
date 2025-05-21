@@ -13,14 +13,14 @@ public class ChatRoom {
     private Long authorId;  // 게시글 작성자 id
     private Long senderId;  // 채팅 요청자 id
     private LocalDateTime createdAt;    // 생성날짜
-    // private ??? status   // TODO: 채팅방 상태를 enum으로 관리?
+    // TODO: status
 
     public static ChatRoom from(Long senderId, ChatRoomCreateRequest request) {
         return ChatRoom.builder()
                 .senderId(senderId)
                 .authorId(request.getAuthorId())
                 .postId(request.getPostId())
+                .createdAt(LocalDateTime.now())
                 .build();
     }
-
 }

@@ -42,7 +42,7 @@ public class ChatRoomEntity {
     @Column(nullable = false)
     private LocalDateTime createdAt;    // 생성날짜
 
-    // TODO: status?
+    // TODO: status
 
     public static ChatRoomEntity from(ChatRoom chatRoom) {
         ChatRoomEntity entity = new ChatRoomEntity();

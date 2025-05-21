@@ -17,7 +17,7 @@ public class JpaChatRoomDataCommandAdapter implements ChatRoomDataCommandPort {
      * @return 생성된 chatRoomId
      */
     @Override
-    public Long createChatRoom(ChatRoom chatRoom) {
+    public Long saveChatRoom(ChatRoom chatRoom) {
         ChatRoomEntity saved = chatRoomJpaRepository.save(ChatRoomEntity.from(chatRoom));
         return saved.getChatRoomId();
     }
