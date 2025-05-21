@@ -33,7 +33,6 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
     private final BookmarkInfoPort bookmarkInfoPort;
     private final ImageStoragePort imageStoragePort;
     private final Clock clock;
-    /** 다운로드 presigned URL 유효기간 (1시간) */
     private static final Duration DOWNLOAD_URL_EXPIRE = Duration.ofMinutes(15);
 
     @Override
@@ -46,7 +45,8 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
         return lostPosts.stream()
                 .map(post -> {
                     boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(userId, post.getLostPostId());
-                    return LostPostCardMapper.toLostPostCard(post, author, bookmarked, clock);
+                    String url = imageStoragePort.presignDownload(post.getImageKey(), DOWNLOAD_URL_EXPIRE).toString();
+                    return LostPostCardMapper.toLostPostCard(post, author, bookmarked, clock, url);
                 })
                 .toList();
     }
@@ -75,8 +75,9 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
         return lostPostPage.getContent().stream()
                 .map(lp -> {
                     String author = userInfoPort.getNicknameByUserId(lp.getUserId());
+                    String url = imageStoragePort.presignDownload(lp.getImageKey(), DOWNLOAD_URL_EXPIRE).toString();
                     boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(userId, lp.getLostPostId());
-                    return LostPostCardMapper.toLostPostCard(lp, author, bookmarked,clock);
+                    return LostPostCardMapper.toLostPostCard(lp, author, bookmarked,clock,url);
                 })
                 .collect(Collectors.toList());
     }
