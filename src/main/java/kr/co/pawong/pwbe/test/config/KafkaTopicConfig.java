@@ -19,11 +19,11 @@ public class KafkaTopicConfig {
         return new KafkaAdmin(props.buildAdminProperties(sslBundles));
     }
 
-    // 애플리케이션 시작 시 my-topic 이 자동 생성됨
+    // 애플리케이션 시작 시 topic 이 자동 생성됨
     @Bean
     public NewTopic myTopic() {
         return TopicBuilder.name(TEST_TOPIC)
-                .partitions(1)
+                .partitions(2)
                 .replicas(1)
                 .build();
     }
