@@ -34,7 +34,8 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
 
         return lostPosts.stream()
                 .map(post -> {
-                    boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(userId, post.getLostPostId());
+                    boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(userId,
+                            post.getLostPostId());
                     return LostPostCardMapper.toLostPostCard(post, author, bookmarked, clock);
                 })
                 .toList();
@@ -50,6 +51,4 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
 
         return new LostPostDetailResponse(lostPostDetailDto);
     }
-
-
 }

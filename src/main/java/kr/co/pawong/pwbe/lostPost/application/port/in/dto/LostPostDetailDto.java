@@ -38,5 +38,6 @@ public class LostPostDetailDto {
     private String location;        // 실종장소, 발견장소
     private GeoPoint geoPoint;
     String author; // 작성자
+    Long authorId;  // 작성자 id
 
 }
