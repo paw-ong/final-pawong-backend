@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 이벤트 발생을 위해 테스트로 만든 컨트롤러입니다.
+ */
 @RestController
 @RequiredArgsConstructor
 public class TestController {
