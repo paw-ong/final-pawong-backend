@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.test.config;
+package kr.co.pawong.pwbe.global.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -21,7 +21,7 @@ public class KafkaTopicConfig {
 
     // 애플리케이션 시작 시 topic 이 자동 생성됨
     @Bean
-    public NewTopic myTopic() {
+    public NewTopic testTopic() {
         return TopicBuilder.name(TEST_TOPIC)
                 .partitions(2)
                 .replicas(1)
