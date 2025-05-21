@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class KafkaTestListener {
+public class KafkaTestConsumer {
 
     @KafkaListener(topics = KafkaTopicConfig.TEST_TOPIC, groupId = "test-group1")
     public void listen1_1(String message) {
