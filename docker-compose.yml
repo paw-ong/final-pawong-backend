@@ -41,11 +41,11 @@ services:
     image: bitnami/zookeeper:latest
     container_name: pawong-local-zk
     environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
+      - ALLOW_ANONYMOUS_LOGIN=yes # 개발용
     ports:
       - "${ZK_CLIENT_PORT:-2181}:2181"
     volumes:
-      - ./infra/kafka/zk-data:/bitnami/zookeeper
+      - ./infra/kafka/zk-data:/bitnami/zookeeper/data
     networks:
       - local-net
 
@@ -55,17 +55,21 @@ services:
     depends_on:
       - zookeeper
     environment:
-      - KAFKA_BROKER_ID=1
-      - KAFKA_ZOOKEEPER_CONNECT=zk:${ZK_CLIENT_PORT:-2181}
-      - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:${KAFKA_EXTERNAL_PORT:-9092}
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:${KAFKA_EXTERNAL_PORT:-9092}
-      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-      - KAFKA_LOG_RETENTION_HOURS=168
-      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=false
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_PROCESS_ROLES=broker
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_BROKER_ID=1
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:${KAFKA_EXTERNAL_PORT:-9092}
+      - ALLOW_PLAINTEXT_LISTENER=yes # 개발용
+      - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_CFG_LOG_RETENTION_HOURS=168
     ports:
       - "${KAFKA_EXTERNAL_PORT:-9092}:9092"
     volumes:
-      - ./infra/kafka/kafka-data:/bitnami/kafka
+      - ./infra/kafka/kafka-data:/bitnami/kafka/data
     networks:
       - local-net
     restart: unless-stopped
