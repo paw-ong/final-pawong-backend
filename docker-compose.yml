@@ -38,41 +38,36 @@ services:
       - local-net
 
   zookeeper:
-    image: bitnami/zookeeper:latest
+    image: confluentinc/cp-zookeeper:latest
     container_name: pawong-local-zk
     environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes # 개발용
+      ZOOKEEPER_CLIENT_PORT: ${ZK_CLIENT_PORT:-2181}
+      ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "${ZK_CLIENT_PORT:-2181}:2181"
     volumes:
-      - ./infra/kafka/zk-data:/bitnami/zookeeper/data
+      - ./infra/broker/zookeeper:/var/lib/zookeeper
     networks:
       - local-net
 
   kafka:
-    image: bitnami/kafka:latest
+    image: confluentinc/cp-kafka:latest
     container_name: pawong-local-kafka
     depends_on:
       - zookeeper
     environment:
-      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=false
-      - KAFKA_CFG_NODE_ID=1
-      - KAFKA_CFG_PROCESS_ROLES=broker
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_CFG_BROKER_ID=1
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:${KAFKA_EXTERNAL_PORT:-9092}
-      - ALLOW_PLAINTEXT_LISTENER=yes # 개발용
-      - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-      - KAFKA_CFG_LOG_RETENTION_HOURS=168
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:${KAFKA_EXTERNAL_PORT:-9092}
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
     ports:
       - "${KAFKA_EXTERNAL_PORT:-9092}:9092"
     volumes:
-      - ./infra/kafka/kafka-data:/bitnami/kafka/data
+      - ./infra/broker/kafka:/var/lib/kafka
     networks:
       - local-net
-    restart: unless-stopped
 
   nginx:
     image: nginx:latest

@@ -62,8 +62,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-batch'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
 
-    // spring kafka + KafkaAdmin
+    // kafka
     implementation 'org.springframework.boot:spring-boot-starter-kafka'
+    implementation 'org.apache.kafka:kafka-clients'
 
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
