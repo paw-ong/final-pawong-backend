@@ -1,10 +1,9 @@
 package kr.co.pawong.pwbe.lostPost.adapter.in.api;
 
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostAdoptionDataUseCase;
-import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAdoptionDetailResponse;
-import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailResponse;
+import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAdoptionDetailDto;
+import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.response.LostAdoptionDetailResponse;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.SliceLostPostSearchResponses;
-import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +14,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,8 +26,9 @@ public class LostAdoptionQueryController {
     @GetMapping("/lost-adoptions/{id}")
     public ResponseEntity<LostAdoptionDetailResponse> getLostDetail(
             @PathVariable("id") Long Id) {
-        LostAdoptionDetailResponse response = queryLostAdoptionDataUseCase.findAdoptionById(Id);
-        return ResponseEntity.ok(response);
+        LostAdoptionDetailDto lostAdoptionDetailDto = queryLostAdoptionDataUseCase.findAdoptionById(Id);
+
+        return ResponseEntity.ok(new LostAdoptionDetailResponse(lostAdoptionDetailDto));
     }
 
     // slice 방식 (무한 스크롤)

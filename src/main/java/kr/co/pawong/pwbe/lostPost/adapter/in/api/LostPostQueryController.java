@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.lostPost.adapter.in.api;
 
-import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailResponse;
+import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailDto;
+import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.response.LostPostDetailResponse;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.SliceLostPostSearchResponses;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
@@ -28,8 +29,8 @@ public class LostPostQueryController {
     @GetMapping("/lost-posts/{id}")
     public ResponseEntity<LostPostDetailResponse> getLostDetail(
             @PathVariable("id") Long Id) {
-        LostPostDetailResponse response = queryLostPostDataUseCase.findLostPostById(Id);
-        return ResponseEntity.ok(response);
+        LostPostDetailDto lostPostDetailDto = queryLostPostDataUseCase.findLostPostById(Id);
+        return ResponseEntity.ok(new LostPostDetailResponse(lostPostDetailDto));
     }
 
     // slice 방식 (무한 스크롤)

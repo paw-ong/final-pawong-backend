@@ -9,7 +9,6 @@ import kr.co.pawong.pwbe.infrastructure.s3.application.port.out.ImageStoragePort
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailDto;
-import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailResponse;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.SliceLostPostSearchResponses;
 import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostPostCardMapper;
 import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostPostDetailMapper;
@@ -52,15 +51,14 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
     }
 
     @Override
-    public LostPostDetailResponse findLostPostById(Long lostPostId) {
+    public LostPostDetailDto findLostPostById(Long lostPostId) {
 
         LostPost lostPost = lostPostDataQueryPort.findLostPostByIdOrThrow(lostPostId);
         String author = userInfoPort.getNicknameByUserId(lostPost.getUserId());
         URL url = imageStoragePort.presignDownload(lostPost.getImageKey(), DOWNLOAD_URL_EXPIRE);
         boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(lostPost.getUserId(), lostPost.getLostPostId());
-        LostPostDetailDto lostPostDetailDto = LostPostDetailMapper.toModel(lostPost, author, bookmarked, clock, url);
 
-        return new LostPostDetailResponse(lostPostDetailDto);
+        return LostPostDetailMapper.toModel(lostPost, author, bookmarked, clock, url);
     }
 
     @Override

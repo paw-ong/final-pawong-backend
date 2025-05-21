@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostAdoptionDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAdoptionDetailDto;
-import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAdoptionDetailResponse;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.SliceLostPostSearchResponses;
 import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostAdoptionDetailMapper;
@@ -14,8 +13,6 @@ import kr.co.pawong.pwbe.lostPost.application.port.out.BookmarkInfoPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAdoptionDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.ShelterCareNmPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostAdoption;
-import kr.co.pawong.pwbe.lostPost.domain.LostPost;
-import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,14 +28,12 @@ public class QueryLostAdoptionDataService implements QueryLostAdoptionDataUseCas
     private final Clock clock;
 
     @Override
-    public LostAdoptionDetailResponse findAdoptionById(Long adoptionId) {
+    public LostAdoptionDetailDto findAdoptionById(Long adoptionId) {
 
         LostAdoption lostAdoption = lostAdoptionDataQueryPort.findAdoptionById(adoptionId);
         String careNm = shelterCareNmPort.getShelterCareNmByCareRegNo(lostAdoption.getCareRegNo());
 
-        LostAdoptionDetailDto lostAdoptionDetailDto
-                = LostAdoptionDetailMapper.toModel(lostAdoption, careNm);
-        return new LostAdoptionDetailResponse(lostAdoptionDetailDto);
+        return LostAdoptionDetailMapper.toModel(lostAdoption, careNm);
     }
 
     @Override
