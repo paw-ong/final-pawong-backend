@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.test.adapter.in.messaging.kafka;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.pawong.pwbe.test.application.port.in.PrintLogUseCase;
 import kr.co.pawong.pwbe.global.config.KafkaTopicConfig;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,12 @@ import org.springframework.stereotype.Component;
 public class KafkaTestConsumer {
 
     private final PrintLogUseCase printLogUseCase;
+    private final ObjectMapper objectMapper;
 
+    /**
+     * 함수 각각이 하나의 컨슈머 입니다.
+     * groupId가 같으면 같은 컨슈머 그룹입니다.
+     */
     @KafkaListener(topics = KafkaTopicConfig.TEST_TOPIC, groupId = "test-group1")
     public void listen1_1(String message) {
         printLogUseCase.printLog("Received message test1-1: " + message);
