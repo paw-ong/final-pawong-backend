@@ -4,6 +4,7 @@ spring:
       - optional:file:.env[.properties]
       - classpath:config/ai.yml
       - classpath:config/security.yml
+      - classpath:config/kafka.yml
   batch:
     jdbc:
       initialize-schema: always
