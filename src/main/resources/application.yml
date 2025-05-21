@@ -28,3 +28,10 @@ data:
 api-url:
   adoption: ${ADOPTION_URL}
   shelter: ${SHELTER_URL}
+#logging:
+#  level:
+#    org:
+#      apache:
+#        kafka: WARN
+#      springframework:
+#        kafka: WARN
