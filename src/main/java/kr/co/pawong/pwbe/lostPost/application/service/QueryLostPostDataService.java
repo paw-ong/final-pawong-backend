@@ -3,6 +3,7 @@ package kr.co.pawong.pwbe.lostPost.application.service;
 import java.time.Clock;
 import java.util.List;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
+import kr.co.pawong.pwbe.lostPost.application.port.in.dto.ChatRoomLostPostInfo;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailDto;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailResponse;
@@ -50,5 +51,12 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
         LostPostDetailDto lostPostDetailDto = LostPostDetailMapper.toModel(lostPost, author, clock);
 
         return new LostPostDetailResponse(lostPostDetailDto);
+    }
+
+    @Override
+    public ChatRoomLostPostInfo findChatRoomLostPostInfosById(Long lostPostId) {
+        LostPost lostPost = lostPostDataQueryPort.findLostPostByIdOrThrow(lostPostId);
+        String author = userInfoPort.getNicknameByUserId(lostPost.getUserId());
+        return new ChatRoomLostPostInfo(lostPost.getLocation(), author, lostPost.getImageKey());
     }
 }
