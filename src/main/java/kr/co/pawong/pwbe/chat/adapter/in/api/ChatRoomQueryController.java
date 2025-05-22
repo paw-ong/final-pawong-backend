@@ -1,7 +1,7 @@
 package kr.co.pawong.pwbe.chat.adapter.in.api;
 
 import java.util.List;
-import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomDetail;
+import kr.co.pawong.pwbe.chat.application.port.in.dto.ChatRoomDetail;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomsResponse;
 import kr.co.pawong.pwbe.chat.application.port.in.QueryChatRoomDataUseCase;
 import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
