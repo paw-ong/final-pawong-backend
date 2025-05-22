@@ -4,6 +4,17 @@ spring:
     username: pawong
     password: pawong
     driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    username: ${MAIL_ID}
+    password: ${MAIL_APP_KEY}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl.enable: true
+          starttls.enable: false
   jpa:
     hibernate:
       # 스키마 생성/수정
