@@ -5,7 +5,7 @@ import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionCard;
 
 public interface QueryFavoritesDataUseCase {
 
-    boolean isInFavorites(Long userId, Long adoptionid);
+    boolean isInFavorites(Long userId, Long adoptionId);
 
     List<AdoptionCard> getAllFavoritesAdoptionCardsByUserId(Long userId);
 
