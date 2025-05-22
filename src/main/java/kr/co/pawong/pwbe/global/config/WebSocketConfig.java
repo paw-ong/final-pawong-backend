@@ -66,7 +66,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         authorizationChannelInterceptor.setAuthorizationEventPublisher(publisher);
 
         reg
-                .interceptors(new SecurityContextChannelInterceptor(),
+                .interceptors(
+                        new SecurityContextChannelInterceptor(),
                         authorizationChannelInterceptor)
                 .taskExecutor()
                 .corePoolSize(4)
