@@ -22,6 +22,7 @@ public enum CustomErrorCode implements ErrorCode {
     /**
      * 401 UNAUTHORIZED
      */
+    TOKEN_NOT_EXIST(UNAUTHORIZED, "토큰이 존재하지 않습니다."),
     TOKEN_INVALIDATE(UNAUTHORIZED, "토큰이 유효하지 않습니다."),
     USERNAME_NOT_FOUND(UNAUTHORIZED, "username 정보로 유저를 찾을 수 없습니다."),
 
