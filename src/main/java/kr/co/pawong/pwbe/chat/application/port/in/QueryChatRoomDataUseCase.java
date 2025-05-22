@@ -5,5 +5,8 @@ import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomDetail;
 
 public interface QueryChatRoomDataUseCase {
 
-    List<ChatRoomDetail> findAllChatRooms(Long senderId);
+    List<ChatRoomDetail> findAllChatRooms(Long userId);
+
+    boolean userExistsInChatRoom(Long userId, Long chatRoomId);
+
 }

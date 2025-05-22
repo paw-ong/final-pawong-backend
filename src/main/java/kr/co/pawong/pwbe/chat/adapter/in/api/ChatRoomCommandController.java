@@ -1,8 +1,11 @@
 package kr.co.pawong.pwbe.chat.adapter.in.api;
 
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.request.ChatRoomCreateRequest;
+import kr.co.pawong.pwbe.chat.adapter.in.api.dto.request.ChatRoomDeactivateRequest;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomCreateResponse;
+import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomDeactivateResponse;
 import kr.co.pawong.pwbe.chat.application.port.in.CommandChatRoomDataUseCase;
+import kr.co.pawong.pwbe.chat.application.port.in.QueryChatRoomDataUseCase;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
@@ -23,10 +26,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ChatRoomCommandController {
 
-    private final CommandChatRoomDataUseCase commandChatDataUseCase;
+    private final CommandChatRoomDataUseCase commandChatRoomDataUseCase;
+    private final QueryChatRoomDataUseCase queryChatRoomDataUseCase;
 
     /**
-     * @param {lostPostId, authorId} as ChatRoomCreateRequest
+     * @param {lostPostId,             authorId} as ChatRoomCreateRequest
      * @param @AuthenticationPrincipal CustomUserDetails
      * @return roomId
      */
@@ -41,7 +45,7 @@ public class ChatRoomCommandController {
             throw new BaseException(CustomErrorCode.CHATROOM_POST_ERROR);
         }
 
-        Long createdId = commandChatDataUseCase.createChatRoom(
+        Long createdId = commandChatRoomDataUseCase.createChatRoom(
                 userDetails.getUserId(),
                 chatRoomCreateRequest
         );
@@ -49,5 +53,18 @@ public class ChatRoomCommandController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ChatRoomCreateResponse(createdId));
+    }
+
+    @PostMapping("/rooms/deactivate")
+    public ResponseEntity<ChatRoomDeactivateResponse> deactivateChatRoom(
+            @RequestBody ChatRoomDeactivateRequest chatRoomDeactivateRequest,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Long userId = userDetails.getUserId();
+        Long chatRoomId = chatRoomDeactivateRequest.getChatRoomId();
+        boolean deactivated = commandChatRoomDataUseCase.deactivateChatRoom(userId, chatRoomId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ChatRoomDeactivateResponse(deactivated));
     }
 }

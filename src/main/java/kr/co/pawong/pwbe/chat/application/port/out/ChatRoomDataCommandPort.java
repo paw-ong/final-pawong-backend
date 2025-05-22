@@ -5,4 +5,6 @@ import kr.co.pawong.pwbe.chat.domain.ChatRoom;
 public interface ChatRoomDataCommandPort {
 
     Long saveChatRoom(ChatRoom chatRoom);
+
+    boolean deactivateChatRoom(Long chatRoomId);
 }

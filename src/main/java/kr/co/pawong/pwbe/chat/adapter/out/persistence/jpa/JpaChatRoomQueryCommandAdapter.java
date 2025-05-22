@@ -5,6 +5,8 @@ import kr.co.pawong.pwbe.chat.adapter.out.persistence.jpa.entity.ChatRoomEntity;
 import kr.co.pawong.pwbe.chat.adapter.out.persistence.jpa.repository.ChatRoomJpaRepository;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatRoomDataQueryPort;
 import kr.co.pawong.pwbe.chat.domain.ChatRoom;
+import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
+import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -29,5 +31,13 @@ public class JpaChatRoomQueryCommandAdapter implements ChatRoomDataQueryPort {
                         .createdAt(entity.getCreatedAt())
                         .build())
                 .toList();
+    }
+
+    @Override
+    public ChatRoom findChatRoomByIdOrThrow(Long chatRoomId) {
+        ChatRoomEntity chatRoomEntity = chatRoomJpaRepository.findById(chatRoomId)
+                .orElseThrow(() -> new BaseException(CustomErrorCode.CHATROOM_NOT_FOUND));
+
+        return chatRoomEntity.toModel();
     }
 }

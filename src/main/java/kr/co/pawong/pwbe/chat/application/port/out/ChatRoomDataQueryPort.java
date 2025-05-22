@@ -6,4 +6,6 @@ import kr.co.pawong.pwbe.chat.domain.ChatRoom;
 public interface ChatRoomDataQueryPort {
 
     List<ChatRoom> findChatRoomsByUserId(Long userId);
+
+    ChatRoom findChatRoomByIdOrThrow(Long chatRoomId);
 }
