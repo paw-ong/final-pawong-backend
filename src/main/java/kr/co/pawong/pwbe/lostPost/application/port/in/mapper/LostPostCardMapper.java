@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.lostPost.application.port.in.mapper;
 
+import java.net.URL;
 import java.time.Clock;
 import kr.co.pawong.pwbe.global.util.TimeUtils;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
@@ -17,13 +18,13 @@ public class LostPostCardMapper {
      * @param author   - 작성자 닉네임
      */
     public static LostPostCard toLostPostCard(
-            LostPost lostPost, String author, boolean bookmarked, Clock clock) {
+            LostPost lostPost, String author, boolean bookmarked, Clock clock, String url) {
 
         return LostPostCard.builder()
                 .postId(lostPost.getLostPostId())
                 .postType(lostPost.getPostType().name())
                 .author(author)
-                .imageUrl(lostPost.getImageKey())
+                .imageUrl(url)
                 .happenedDate(TimeUtils.formatDate(lostPost.getDate()))
                 .happenedPlace(lostPost.getLocation())
                 .kindNm(lostPost.getKindNm())
