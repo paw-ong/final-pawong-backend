@@ -9,4 +9,5 @@ public interface QueryChatRoomDataUseCase {
 
     boolean userExistsInChatRoom(Long userId, Long chatRoomId);
 
+    boolean chatRoomIsActive(Long chatRoomId);
 }

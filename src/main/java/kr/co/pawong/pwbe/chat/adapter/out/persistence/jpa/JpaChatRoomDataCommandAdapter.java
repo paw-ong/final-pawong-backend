@@ -23,8 +23,8 @@ public class JpaChatRoomDataCommandAdapter implements ChatRoomDataCommandPort {
     @Override
     public Long saveChatRoom(ChatRoom chatRoom) {
         try {
-            ChatRoomEntity saved = chatRoomJpaRepository.save(ChatRoomEntity.from(chatRoom));
-            return saved.getChatRoomId();
+            ChatRoomEntity savedChatRoom = chatRoomJpaRepository.save(ChatRoomEntity.from(chatRoom));
+            return savedChatRoom.getChatRoomId();
         } catch (DataIntegrityViolationException e) {
             throw new BaseException(CustomErrorCode.CHATROOM_POST_ERROR);
         }

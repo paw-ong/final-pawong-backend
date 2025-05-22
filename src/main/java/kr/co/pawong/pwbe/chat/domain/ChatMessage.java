@@ -16,4 +16,14 @@ public class ChatMessage {
     private LocalDateTime createdAt;    // 생성날짜
     private LocalDateTime readAt;       // 읽음 처리된 날짜
     private ChatMessageStatus status;   // SENT, READ
+
+    public static ChatMessage from(Long chatRoomId, Long senderId, String content) {
+        return ChatMessage.builder()
+                .chatRoomId(chatRoomId)
+                .senderId(senderId)
+                .content(content)
+                .createdAt(LocalDateTime.now())
+                .status(ChatMessageStatus.SENT)
+                .build();
+    }
 }

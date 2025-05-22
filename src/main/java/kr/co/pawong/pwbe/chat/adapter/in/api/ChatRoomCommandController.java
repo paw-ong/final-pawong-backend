@@ -5,7 +5,6 @@ import kr.co.pawong.pwbe.chat.adapter.in.api.dto.request.ChatRoomDeactivateReque
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomCreateResponse;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomDeactivateResponse;
 import kr.co.pawong.pwbe.chat.application.port.in.CommandChatRoomDataUseCase;
-import kr.co.pawong.pwbe.chat.application.port.in.QueryChatRoomDataUseCase;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatRoomCommandController {
 
     private final CommandChatRoomDataUseCase commandChatRoomDataUseCase;
-    private final QueryChatRoomDataUseCase queryChatRoomDataUseCase;
 
     /**
      * @param {lostPostId,             authorId} as ChatRoomCreateRequest
