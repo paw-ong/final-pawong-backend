@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class JpaChatRoomQueryCommandAdapter implements ChatRoomDataQueryPort {
+public class JpaChatRoomDataQueryAdapter implements ChatRoomDataQueryPort {
 
     private final ChatRoomJpaRepository chatRoomJpaRepository;
 
