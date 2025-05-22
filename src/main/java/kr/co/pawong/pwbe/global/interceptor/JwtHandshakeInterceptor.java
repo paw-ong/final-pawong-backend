@@ -1,21 +1,12 @@
 package kr.co.pawong.pwbe.global.interceptor;
 
-import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.TOKEN_INVALIDATE;
-import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.TOKEN_NOT_EXIST;
-
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.user.adapter.out.security.JwtTokenProvider;
-import kr.co.pawong.pwbe.user.adapter.out.security.error.exception.FilterAuthenticationException;
 import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
 import kr.co.pawong.pwbe.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -57,24 +48,35 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
             WebSocketHandler wsHandler,
             Map<String, Object> attributes
     ) {
+        // 폴백 통과
         String path = request.getURI().getPath();
         if (path.endsWith("/info")
-                || path.contains("/iframe.html")
                 || path.contains("/xhr_streaming")
                 || path.contains("/eventsource")
                 || path.contains("/htmlfile")
+                || path.contains("/iframe.html")
         ) {
             return true;
         }
+
+        // 폴백이 아닌 순수 GET /ws?token=… 이라도, 실제 websocket 업그레이드가 아닐 땐 통과
+        List<String> upgrade = request.getHeaders().get("Upgrade");
+        if (upgrade == null || !upgrade.contains("websocket")) {
+            return true;
+        }
+
+
         String token = UriComponentsBuilder.fromUri(request.getURI())
                 .build()
                 .getQueryParams()
                 .getFirst("token");
         if (!StringUtils.hasText(token)) {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
+            return false;
         }
         if (!jwtTokenProvider.validateToken(token)) {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
+            return false;
         }
 
         String userId = jwtTokenProvider.getUsername(token);
