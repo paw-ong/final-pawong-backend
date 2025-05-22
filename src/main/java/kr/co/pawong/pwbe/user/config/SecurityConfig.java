@@ -14,13 +14,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Slf4j
 @Configuration
@@ -49,10 +51,13 @@ public class SecurityConfig {
         this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
     }
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // JS에서 읽을 수 있도록 HttpOnly=false
+                )
 
                 // ExceptionTranslationFilter -> jwtFilter 실행
                 .addFilterAfter(jwtFilter, ExceptionTranslationFilter.class)
@@ -64,13 +69,20 @@ public class SecurityConfig {
                                 "/oauth/authorize"              // OAuth2 Authorization Endpoint
                         ).permitAll()                         // 위 경로는 인증 없이 접근 가능
                         .requestMatchers(
+                                "/ws/**",
+                                "/info",
+                                "/api/auth/csrf-token"
+                        ).permitAll()
+                        .requestMatchers(
                                 "/api/adoptions/**",
                                 "/api/adoption/**",
                                 "/api/shelters/**",
-                                "/api/lost-animals/**"
+                                "/api/lost-animals/**",
+                                "/api/auth/csrf-token"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/lost-animals/*").permitAll() // ⬅ 단건 조회만 허용
-                        .requestMatchers("/api/lost-posts/**").authenticated()            // ⬅ 그 외는 인증 필요
+                        .requestMatchers(
+                                HttpMethod.GET, "/api/lost-animals/*" // ⬅ 단건 조회만 허용
+                        ).permitAll()
                         .anyRequest().authenticated())
 
                 // oauth2 요청만 처리
@@ -92,7 +104,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
