@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.chat.application.port.out;
 
-import kr.co.pawong.pwbe.lostPost.application.port.in.dto.ChatRoomLostPostInfo;
+import kr.co.pawong.pwbe.chat.adapter.out.lostPost.dto.ChatRoomLostPostInfo;
 
 public interface ChatRoomLostPostInfoPort {
 

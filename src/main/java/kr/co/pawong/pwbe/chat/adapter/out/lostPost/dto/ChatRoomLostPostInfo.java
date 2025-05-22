@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.lostPost.application.port.in.dto;
+package kr.co.pawong.pwbe.chat.adapter.out.lostPost.dto;
 
 public record ChatRoomLostPostInfo(
         String location,    // 장소
