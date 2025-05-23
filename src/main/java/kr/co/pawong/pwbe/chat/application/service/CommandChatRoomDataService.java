@@ -5,6 +5,8 @@ import kr.co.pawong.pwbe.chat.application.port.in.CommandChatRoomDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.QueryChatRoomDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatRoomDataCommandPort;
 import kr.co.pawong.pwbe.chat.domain.ChatRoom;
+import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
+import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,6 @@ public class CommandChatRoomDataService implements CommandChatRoomDataUseCase {
         if (queryChatRoomDataUseCase.userExistsInChatRoom(userId, chatRoomId)) {
             return chatRoomDataCommandPort.deactivateChatRoomOrThrow(chatRoomId);
         }
-        return false;
+        throw new BaseException(CustomErrorCode.FORBIDDEN_CHATROOM_DEACTIVATION);
     }
 }
