@@ -20,14 +20,14 @@ public class CommandChatRoomDataService implements CommandChatRoomDataUseCase {
     @Override
     @Transactional
     public Long createChatRoom(Long senderId, ChatRoomCreateRequest request) {
-        return chatRoomDataCommandPort.saveChatRoom(ChatRoom.from(senderId, request));
+        return chatRoomDataCommandPort.saveChatRoomOrThrow(ChatRoom.from(senderId, request));
     }
 
     @Override
     @Transactional
     public boolean deactivateChatRoom(Long userId, Long chatRoomId) {
         if (queryChatRoomDataUseCase.userExistsInChatRoom(userId, chatRoomId)) {
-            return chatRoomDataCommandPort.deactivateChatRoom(chatRoomId);
+            return chatRoomDataCommandPort.deactivateChatRoomOrThrow(chatRoomId);
         }
         return false;
     }

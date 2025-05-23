@@ -21,7 +21,7 @@ public class JpaChatRoomDataCommandAdapter implements ChatRoomDataCommandPort {
      * @return 생성된 chatRoomId
      */
     @Override
-    public Long saveChatRoom(ChatRoom chatRoom) {
+    public Long saveChatRoomOrThrow(ChatRoom chatRoom) {
         try {
             ChatRoomEntity savedChatRoom = chatRoomJpaRepository.save(
                     ChatRoomEntity.from(chatRoom));
@@ -36,7 +36,7 @@ public class JpaChatRoomDataCommandAdapter implements ChatRoomDataCommandPort {
      * @return 비활성화 여부 boolean
      */
     @Override
-    public boolean deactivateChatRoom(Long chatRoomId) {
+    public boolean deactivateChatRoomOrThrow(Long chatRoomId) {
 
         ChatRoomEntity chatRoomEntity = chatRoomJpaRepository.findById(chatRoomId)
                 .orElseThrow(() -> new BaseException(CustomErrorCode.CHATROOM_NOT_FOUND));
