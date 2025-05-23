@@ -31,7 +31,7 @@ public class ChatMessageQueryController {
                 userId, roomId);
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(new ChatMessagesResponse(allMessages));
     }
 }
