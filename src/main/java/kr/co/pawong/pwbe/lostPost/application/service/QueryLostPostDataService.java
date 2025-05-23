@@ -1,9 +1,12 @@
 package kr.co.pawong.pwbe.lostPost.application.service;
 
+import java.net.URL;
 import java.time.Clock;
+import java.time.Duration;
 import java.util.List;
-import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
 import kr.co.pawong.pwbe.chat.adapter.out.lostPost.dto.ChatRoomLostPostInfo;
+import kr.co.pawong.pwbe.infrastructure.s3.application.port.out.ImageStoragePort;
+import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailDto;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailResponse;
@@ -24,6 +27,7 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
     private final LostPostDataQueryPort lostPostDataQueryPort;
     private final UserInfoPort userInfoPort;
     private final BookmarkInfoPort bookmarkInfoPort;
+    private final ImageStoragePort imageStoragePort;
     private final Clock clock;
 
     @Override
@@ -57,6 +61,8 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
     public ChatRoomLostPostInfo findChatRoomLostPostInfosById(Long lostPostId) {
         LostPost lostPost = lostPostDataQueryPort.findLostPostByIdOrThrow(lostPostId);
         String author = userInfoPort.getNicknameByUserId(lostPost.getUserId());
-        return new ChatRoomLostPostInfo(lostPost.getLocation(), author, lostPost.getImageKey());
+        URL imageUrl = imageStoragePort.presignDownload(lostPost.getImageKey(),
+                Duration.ofMinutes(15));
+        return new ChatRoomLostPostInfo(lostPost.getLocation(), author, imageUrl);
     }
 }
