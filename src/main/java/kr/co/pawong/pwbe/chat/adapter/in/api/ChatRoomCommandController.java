@@ -1,7 +1,6 @@
 package kr.co.pawong.pwbe.chat.adapter.in.api;
 
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.request.ChatRoomCreateRequest;
-import kr.co.pawong.pwbe.chat.adapter.in.api.dto.request.ChatRoomDeactivateRequest;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomCreateResponse;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomDeactivateResponse;
 import kr.co.pawong.pwbe.chat.application.port.in.CommandChatRoomDataUseCase;
@@ -12,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,14 +54,19 @@ public class ChatRoomCommandController {
                 .body(new ChatRoomCreateResponse(createdId));
     }
 
-    @PostMapping("/rooms/deactivate")
+    /**
+     *
+     * @param { chatRoomId } as ChatRoomDeactivateRequest
+     * @param userDetails
+     * @return boolean (deactivate 여부)
+     */
+    @PatchMapping("/rooms/{roomId}")
     public ResponseEntity<ChatRoomDeactivateResponse> deactivateChatRoom(
-            @RequestBody ChatRoomDeactivateRequest chatRoomDeactivateRequest,
+            @PathVariable Long roomId,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getUserId();
-        Long chatRoomId = chatRoomDeactivateRequest.getChatRoomId();
-        boolean deactivated = commandChatRoomDataUseCase.deactivateChatRoom(userId, chatRoomId);
+        boolean deactivated = commandChatRoomDataUseCase.deactivateChatRoom(userId, roomId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ChatRoomDeactivateResponse(deactivated));
