@@ -8,9 +8,6 @@
 infra/elasticsearch/data/*
 infra/mysql/db/*
 
-### es, mysql data ###
-infra/elasticsearch/data/*
-
 ### nginx data ###
 infra/nginx/logs
 
