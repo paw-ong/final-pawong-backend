@@ -23,7 +23,8 @@ public class CommandChatMessageDataService implements CommandChatMessageDataUseC
                 && queryChatRoomDataUseCase.chatRoomIsActive(chatRoomId)) {
             return chatMessageDataCommandPort.saveChatMessage(
                     ChatMessage.from(chatRoomId, senderId, content));
-            // 유저가 채팅방에 없다면 메시지 전송 권한이 없음
+            // 유저가 채팅방에 없거나, 채팅방이 비활성화된 경우 메시지를 보낼 권한이 없음
+            // TODO: 채팅방 status 관한 정책 확립
         } else {
             throw new BaseException(CustomErrorCode.FORBIDDEN_CHATMESSAGE_SENDING);
         }
