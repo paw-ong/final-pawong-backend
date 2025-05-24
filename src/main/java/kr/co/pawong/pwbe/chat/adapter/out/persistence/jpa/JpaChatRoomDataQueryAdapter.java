@@ -29,6 +29,7 @@ public class JpaChatRoomDataQueryAdapter implements ChatRoomDataQueryPort {
                         .authorId(entity.getAuthorId())
                         .senderId(entity.getSenderId())
                         .createdAt(entity.getCreatedAt())
+                        .status(entity.getStatus())
                         .build())
                 .toList();
     }

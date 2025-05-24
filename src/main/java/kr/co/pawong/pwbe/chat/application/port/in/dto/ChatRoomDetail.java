@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.chat.application.port.in.dto;
 
 import kr.co.pawong.pwbe.chat.adapter.out.lostPost.dto.ChatRoomLostPostInfo;
+import kr.co.pawong.pwbe.chat.enums.ChatRoomStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,4 +15,5 @@ public class ChatRoomDetail {
 
     private ChatRoomLostPostInfo lostPostInfo;
     private Long chatRoomId;
+    private ChatRoomStatus status;
 }

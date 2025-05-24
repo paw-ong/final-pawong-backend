@@ -15,7 +15,7 @@ public class ChatRoom {
     private Long authorId;  // 게시글 작성자 id
     private Long senderId;  // 채팅 요청자 id
     private LocalDateTime createdAt;    // 생성날짜
-    private ChatRoomStatus status;
+    private ChatRoomStatus status;  // ACTIVE, INACTIVE
 
     public static ChatRoom from(Long senderId, ChatRoomCreateRequest request) {
         return ChatRoom.builder()

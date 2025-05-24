@@ -21,13 +21,13 @@ public class QueryChatRoomDataService implements QueryChatRoomDataUseCase {
 
     // 유저가 속한 모든 채팅방을 조회해서 ChatRoomDetail 리스트로 반환
     @Override
-    public List<ChatRoomDetail> findAllChatRooms(Long userId) {
+    public List<ChatRoomDetail> findUserChatRooms(Long userId) {
         List<ChatRoom> chatRooms = chatRoomDataQueryPort.findChatRoomsByUserId(userId);
         List<ChatRoomDetail> chatRoomDetails = new ArrayList<>(chatRooms.size());
         for (ChatRoom chatRoom : chatRooms) {
             Long postId = chatRoom.getPostId();
             ChatRoomLostPostInfo lostPostInfo = lostPostInfoPort.getLostPostInfosById(postId);
-            chatRoomDetails.add(new ChatRoomDetail(lostPostInfo, chatRoom.getChatRoomId()));
+            chatRoomDetails.add(new ChatRoomDetail(lostPostInfo, chatRoom.getChatRoomId(), chatRoom.getStatus()));
         }
 
         return chatRoomDetails;

@@ -28,7 +28,7 @@ public class ChatRoomQueryController {
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getUserId();
-        List<ChatRoomDetail> allChatRooms = queryChatDataUseCase.findAllChatRooms(userId);
+        List<ChatRoomDetail> allChatRooms = queryChatDataUseCase.findUserChatRooms(userId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ChatRoomsResponse(allChatRooms));
