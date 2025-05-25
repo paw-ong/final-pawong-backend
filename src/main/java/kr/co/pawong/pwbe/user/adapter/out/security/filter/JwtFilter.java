@@ -42,6 +42,8 @@ public class JwtFilter extends OncePerRequestFilter {
                 || uri.startsWith("/api/adoption")
                 || uri.startsWith("/api/shelters")
                 || uri.startsWith("/api/lost-animals")
+                || uri.startsWith("/ws")
+                || uri.startsWith("/api/auth/csrf-token")
                 ;
     }
 
