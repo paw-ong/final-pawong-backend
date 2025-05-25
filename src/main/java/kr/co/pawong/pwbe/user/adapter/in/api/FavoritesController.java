@@ -26,7 +26,8 @@ public class FavoritesController {
             @PathVariable Long adoptionId,
             @AuthenticationPrincipal CustomUserDetails principal
     ) {
-        boolean isInFavorites = toggleFavoritesUseCase.toggleFavorites(principal.getUserId(), adoptionId);
+        boolean isInFavorites = toggleFavoritesUseCase.toggleFavorites(principal.getUserId(),
+                adoptionId);
         return ResponseEntity.ok(new FavoritesResponse(isInFavorites));
     }
 
@@ -37,7 +38,8 @@ public class FavoritesController {
             @AuthenticationPrincipal CustomUserDetails principal
     ) {
         // true: 이미 찜한 상태, false: 찜하지 않은 상태
-        boolean inFavorites = queryFavoritesDataUseCase.isInFavorites(principal.getUserId(), adoptionId);
+        boolean inFavorites = queryFavoritesDataUseCase.isInFavorites(principal.getUserId(),
+                adoptionId);
         return ResponseEntity.ok(new FavoritesResponse(inFavorites));
     }
 }

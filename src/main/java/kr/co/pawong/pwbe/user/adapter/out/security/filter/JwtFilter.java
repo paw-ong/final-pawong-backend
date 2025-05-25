@@ -6,11 +6,12 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
-import kr.co.pawong.pwbe.user.domain.User;
 import kr.co.pawong.pwbe.user.adapter.out.security.JwtTokenProvider;
 import kr.co.pawong.pwbe.user.adapter.out.security.error.exception.FilterAuthenticationException;
 import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
+import kr.co.pawong.pwbe.user.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +19,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import java.io.IOException;
 
 @Slf4j
 @Component

@@ -1,9 +1,9 @@
 package kr.co.pawong.pwbe.user.application.service;
 
-import kr.co.pawong.pwbe.user.domain.Favorites;
 import kr.co.pawong.pwbe.user.application.port.in.ToggleFavoritesUseCase;
 import kr.co.pawong.pwbe.user.application.port.out.FavoritesCommandPort;
 import kr.co.pawong.pwbe.user.application.port.out.FavoritesQueryPort;
+import kr.co.pawong.pwbe.user.domain.Favorites;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -8,8 +8,8 @@ import kr.co.pawong.pwbe.user.application.port.in.QueryFavoritesDataUseCase;
 import kr.co.pawong.pwbe.user.application.port.in.QueryMyPageDataUseCase;
 import kr.co.pawong.pwbe.user.application.port.in.dto.MyPageFavoritesResponse;
 import kr.co.pawong.pwbe.user.application.port.in.dto.MyPageLostPostResponse;
-import kr.co.pawong.pwbe.user.application.port.out.LostPostInfoPort;
 import kr.co.pawong.pwbe.user.application.port.in.mapper.MyPageMapper;
+import kr.co.pawong.pwbe.user.application.port.out.LostPostInfoPort;
 import kr.co.pawong.pwbe.user.application.port.out.dto.MyPageLostPostInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,7 +56,7 @@ public class QueryMyPageDataService implements QueryMyPageDataUseCase {
 
         List<MyPageFavoritesResponse> myPageFavoritesListResponses = new ArrayList<>(
                 adoptionCards.size());
-        for(AdoptionCard adoptionCard : adoptionCards) {
+        for (AdoptionCard adoptionCard : adoptionCards) {
             myPageFavoritesListResponses.add(new MyPageFavoritesResponse(adoptionCard));
         }
         return myPageFavoritesListResponses;

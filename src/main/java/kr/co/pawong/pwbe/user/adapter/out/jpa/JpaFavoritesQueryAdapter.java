@@ -2,10 +2,10 @@ package kr.co.pawong.pwbe.user.adapter.out.jpa;
 
 import java.util.List;
 import java.util.Optional;
-import kr.co.pawong.pwbe.user.domain.Favorites;
 import kr.co.pawong.pwbe.user.adapter.out.jpa.entity.FavoritesEntity;
 import kr.co.pawong.pwbe.user.adapter.out.jpa.repository.FavoritesJpaRepository;
 import kr.co.pawong.pwbe.user.application.port.out.FavoritesQueryPort;
+import kr.co.pawong.pwbe.user.domain.Favorites;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
