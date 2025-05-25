@@ -3,13 +3,15 @@ package kr.co.pawong.pwbe.chat.adapter.in.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.Instant;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessageDto {
+public class ChatMessageCreateRequest {
+    @Setter
     private Long roomId;
     private String sender;
     private String content;
