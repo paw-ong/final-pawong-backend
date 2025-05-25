@@ -8,8 +8,8 @@ public interface CommandChatRoomDataUseCase {
     /**
      * param 채팅방_생성_요청자ID, 게시글ID return 채팅방ID
      */
-    Long createChatRoomOrElseThrow(Long participantId, ChatRoomCreateRequest request);
+    Long createChatRoomOrThrow(Long participantId, ChatRoomCreateRequest request);
 
-    boolean deactivateChatRoomOrElseThrow(Long userId, Long chatRoomId);
+    boolean deactivateChatRoomOrThrow(Long userId, Long chatRoomId);
 
 }

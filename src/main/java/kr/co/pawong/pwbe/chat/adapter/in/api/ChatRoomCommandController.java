@@ -36,7 +36,7 @@ public class ChatRoomCommandController {
             @RequestBody ChatRoomCreateRequest chatRoomCreateRequest,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        Long createdId = commandChatRoomDataUseCase.createChatRoomOrElseThrow(
+        Long createdId = commandChatRoomDataUseCase.createChatRoomOrThrow(
                 userDetails.getUserId(),
                 chatRoomCreateRequest
         );
@@ -58,7 +58,7 @@ public class ChatRoomCommandController {
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getUserId();
-        boolean deactivated = commandChatRoomDataUseCase.deactivateChatRoomOrElseThrow(userId, roomId);
+        boolean deactivated = commandChatRoomDataUseCase.deactivateChatRoomOrThrow(userId, roomId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ChatRoomDeactivateResponse(deactivated));

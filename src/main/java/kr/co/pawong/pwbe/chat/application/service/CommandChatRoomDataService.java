@@ -22,7 +22,7 @@ public class CommandChatRoomDataService implements CommandChatRoomDataUseCase {
     // 사용자가 자신과의 채팅방을 생성하려는 경우 예외 발생
     @Override
     @Transactional
-    public Long createChatRoomOrElseThrow(Long participantId, ChatRoomCreateRequest request) {
+    public Long createChatRoomOrThrow(Long participantId, ChatRoomCreateRequest request) {
         if (participantId.equals(request.getAuthorId())) {
             throw new BaseException(CustomErrorCode.CHATROOM_POST_ERROR);
         }
@@ -33,7 +33,7 @@ public class CommandChatRoomDataService implements CommandChatRoomDataUseCase {
     // 사용자가 채팅방에 속하지 않는 경우 예외 발생
     @Override
     @Transactional
-    public boolean deactivateChatRoomOrElseThrow(Long userId, Long chatRoomId) {
+    public boolean deactivateChatRoomOrThrow(Long userId, Long chatRoomId) {
         if (!queryChatRoomDataUseCase.userExistsInChatRoom(userId, chatRoomId)) {
             throw new BaseException(CustomErrorCode.FORBIDDEN_CHATROOM_DEACTIVATION);
         }
