@@ -8,7 +8,7 @@ public interface CommandChatRoomDataUseCase {
     /**
      * param 채팅방_생성_요청자ID, 게시글ID return 채팅방ID
      */
-    Long createChatRoom(Long senderId, ChatRoomCreateRequest request);
+    Long createChatRoom(Long participantId, ChatRoomCreateRequest request);
 
     boolean deactivateChatRoom(Long userId, Long chatRoomId);
 

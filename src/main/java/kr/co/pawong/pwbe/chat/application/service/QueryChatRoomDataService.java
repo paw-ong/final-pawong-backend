@@ -36,7 +36,7 @@ public class QueryChatRoomDataService implements QueryChatRoomDataUseCase {
     @Override
     public boolean userExistsInChatRoom(Long userId, Long chatRoomId) {
         ChatRoom chatRoom = chatRoomDataQueryPort.findChatRoomByIdOrThrow(chatRoomId);
-        return chatRoom.getSenderId().equals(userId) || chatRoom.getAuthorId().equals(userId);
+        return chatRoom.getParticipantId().equals(userId) || chatRoom.getAuthorId().equals(userId);
     }
 
     @Override

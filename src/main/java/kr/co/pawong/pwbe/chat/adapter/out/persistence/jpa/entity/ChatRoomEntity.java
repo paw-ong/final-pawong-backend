@@ -42,7 +42,7 @@ public class ChatRoomEntity {
     private Long authorId;  // 게시글 작성자 id
 
     @Column(nullable = false)
-    private Long senderId;  // 채팅 요청자 id
+    private Long participantId;  // 채팅 요청자 id
 
     @Column(nullable = false)
     private LocalDateTime createdAt;    // 생성날짜
@@ -56,7 +56,7 @@ public class ChatRoomEntity {
         entity.chatRoomId = chatRoom.getChatRoomId();
         entity.postId = chatRoom.getPostId();
         entity.authorId = chatRoom.getAuthorId();
-        entity.senderId = chatRoom.getSenderId();
+        entity.participantId = chatRoom.getParticipantId();
         entity.createdAt = chatRoom.getCreatedAt();
         entity.status = chatRoom.getStatus();
         return entity;
@@ -67,7 +67,7 @@ public class ChatRoomEntity {
                 .chatRoomId(this.chatRoomId)
                 .postId(this.postId)
                 .authorId(this.authorId)
-                .senderId(this.senderId)
+                .participantId(this.participantId)
                 .createdAt(this.createdAt)
                 .status(this.status)
                 .build();

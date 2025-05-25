@@ -16,18 +16,18 @@ public class JpaChatRoomDataQueryAdapter implements ChatRoomDataQueryPort {
 
     private final ChatRoomJpaRepository chatRoomJpaRepository;
 
-    // user가 sender일 수도, author일 수도 있으므로 동일 param으로 전송
+    // user가 participant일 수도, author일 수도 있으므로 동일 param으로 전송
     // 내부적으로는 각각의 userId와 authorId를 받도록 하므로 이렇게 활용해야 함
     @Override
     public List<ChatRoom> findChatRoomsByUserId(Long userId) {
-        List<ChatRoomEntity> chatRoomEntities = chatRoomJpaRepository.findAllBySenderIdOrAuthorId(
+        List<ChatRoomEntity> chatRoomEntities = chatRoomJpaRepository.findAllByParticipantIdOrAuthorId(
                 userId, userId);
         return chatRoomEntities.stream()
                 .map(entity -> ChatRoom.builder()
                         .chatRoomId(entity.getChatRoomId())
                         .postId(entity.getPostId())
                         .authorId(entity.getAuthorId())
-                        .senderId(entity.getSenderId())
+                        .participantId(entity.getParticipantId())
                         .createdAt(entity.getCreatedAt())
                         .status(entity.getStatus())
                         .build())
