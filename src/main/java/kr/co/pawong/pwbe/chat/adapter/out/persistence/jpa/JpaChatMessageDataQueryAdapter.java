@@ -15,11 +15,11 @@ public class JpaChatMessageDataQueryAdapter implements ChatMessageDataQueryPort 
 
     private final ChatMessageJpaRepository chatMessageJpaRepository;
 
-    // 채팅방에 속한 모든 메시지들 반환
+    // 채팅방에 속한 모든 메시지들을 최근 생성 순으로 갖고오기
     @Override
-    public List<ChatMessage> findChatMessagesByChatRoomId(Long chatRoomId) {
+    public List<ChatMessage> findChatMessagesByChatRoomIdInLatestOrder(Long chatRoomId) {
         return chatMessageJpaRepository
-                .findChatMessagesByChatRoomId(chatRoomId)
+                .findChatMessagesByChatRoomIdOrderByCreatedAtDesc(chatRoomId)
                 .stream()
                 .map(ChatMessageEntity::toModel)
                 .collect(Collectors.toList());

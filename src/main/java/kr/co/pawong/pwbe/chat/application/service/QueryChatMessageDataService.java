@@ -27,7 +27,7 @@ public class QueryChatMessageDataService implements QueryChatMessageDataUseCase 
         }
 
         List<ChatMessage> chatMessages = chatMessageDataQueryPort
-                .findChatMessagesByChatRoomId(chatRoomId);
+                .findChatMessagesByChatRoomIdInLatestOrder(chatRoomId);
 
         return chatMessages.stream()
                 .map(ChatMessageDetail::from)
