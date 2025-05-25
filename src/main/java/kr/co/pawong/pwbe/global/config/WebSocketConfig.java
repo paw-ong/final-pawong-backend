@@ -25,7 +25,6 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSocketSecurity
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
