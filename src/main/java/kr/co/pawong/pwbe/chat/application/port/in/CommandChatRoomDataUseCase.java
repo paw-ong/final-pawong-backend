@@ -10,6 +10,6 @@ public interface CommandChatRoomDataUseCase {
      */
     Long createChatRoomOrElseThrow(Long participantId, ChatRoomCreateRequest request);
 
-    boolean deactivateChatRoom(Long userId, Long chatRoomId);
+    boolean deactivateChatRoomOrElseThrow(Long userId, Long chatRoomId);
 
 }

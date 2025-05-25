@@ -58,7 +58,7 @@ public class ChatRoomCommandController {
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getUserId();
-        boolean deactivated = commandChatRoomDataUseCase.deactivateChatRoom(userId, roomId);
+        boolean deactivated = commandChatRoomDataUseCase.deactivateChatRoomOrElseThrow(userId, roomId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ChatRoomDeactivateResponse(deactivated));

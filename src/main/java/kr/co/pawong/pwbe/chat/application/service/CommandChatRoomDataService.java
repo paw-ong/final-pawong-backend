@@ -29,12 +29,14 @@ public class CommandChatRoomDataService implements CommandChatRoomDataUseCase {
         return chatRoomDataCommandPort.saveChatRoomOrThrow(ChatRoom.from(participantId, request));
     }
 
+    // 채팅방 status를 INACTIVE로 변경
+    // 사용자가 채팅방에 속하지 않는 경우 예외 발생
     @Override
     @Transactional
-    public boolean deactivateChatRoom(Long userId, Long chatRoomId) {
-        if (queryChatRoomDataUseCase.userExistsInChatRoom(userId, chatRoomId)) {
-            return chatRoomDataCommandPort.deactivateChatRoomOrThrow(chatRoomId);
+    public boolean deactivateChatRoomOrElseThrow(Long userId, Long chatRoomId) {
+        if (!queryChatRoomDataUseCase.userExistsInChatRoom(userId, chatRoomId)) {
+            throw new BaseException(CustomErrorCode.FORBIDDEN_CHATROOM_DEACTIVATION);
         }
-        throw new BaseException(CustomErrorCode.FORBIDDEN_CHATROOM_DEACTIVATION);
+        return chatRoomDataCommandPort.deactivateChatRoomOrThrow(chatRoomId);
     }
 }
