@@ -19,9 +19,13 @@ public class CommandChatRoomDataService implements CommandChatRoomDataUseCase {
     private final QueryChatRoomDataUseCase queryChatRoomDataUseCase;
 
     // 생성된 채팅방 id를 반환
+    // 사용자가 자신과의 채팅방을 생성하려는 경우 예외 발생
     @Override
     @Transactional
-    public Long createChatRoom(Long participantId, ChatRoomCreateRequest request) {
+    public Long createChatRoomOrElseThrow(Long participantId, ChatRoomCreateRequest request) {
+        if (participantId.equals(request.getAuthorId())) {
+            throw new BaseException(CustomErrorCode.CHATROOM_POST_ERROR);
+        }
         return chatRoomDataCommandPort.saveChatRoomOrThrow(ChatRoom.from(participantId, request));
     }
 

@@ -4,8 +4,6 @@ import kr.co.pawong.pwbe.chat.adapter.in.api.dto.request.ChatRoomCreateRequest;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomCreateResponse;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomDeactivateResponse;
 import kr.co.pawong.pwbe.chat.application.port.in.CommandChatRoomDataUseCase;
-import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
-import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,13 +36,7 @@ public class ChatRoomCommandController {
             @RequestBody ChatRoomCreateRequest chatRoomCreateRequest,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-
-        // 사용자가 자신과의 채팅방을 생성하려는 경우 예외 발생
-        if (userDetails.getUserId().equals(chatRoomCreateRequest.getAuthorId())) {
-            throw new BaseException(CustomErrorCode.CHATROOM_POST_ERROR);
-        }
-
-        Long createdId = commandChatRoomDataUseCase.createChatRoom(
+        Long createdId = commandChatRoomDataUseCase.createChatRoomOrElseThrow(
                 userDetails.getUserId(),
                 chatRoomCreateRequest
         );
