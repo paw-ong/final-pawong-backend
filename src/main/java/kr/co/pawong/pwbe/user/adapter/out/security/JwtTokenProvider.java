@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
+
     private final Key secretKey;
     @Getter
     private static final long tokenValidityInMs = 60L * 60 * 1000 * 1000;
@@ -31,9 +32,10 @@ public class JwtTokenProvider {
     public String generateTokenByOauth2(Authentication authentication, Long userId) {
         DefaultOAuth2User oauth2User = (DefaultOAuth2User) authentication.getPrincipal();
         return getToken(
-            userId,
-            oauth2User.getName(),       // socialId
-            oauth2User.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList())
+                userId,
+                oauth2User.getName(),       // socialId
+                oauth2User.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList())
         );
     }
 
@@ -69,9 +71,9 @@ public class JwtTokenProvider {
         List<String> roles = claims.get("roles", List.class);
 
         return new CustomUserDetails(
-            userId,
-            socialId,
-            roles.stream().map(SimpleGrantedAuthority::new).toList()
+                userId,
+                socialId,
+                roles.stream().map(SimpleGrantedAuthority::new).toList()
         );
     }
 
@@ -101,8 +103,8 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
-     // 토큰에서 Claims를 꺼내오기
-     // 파싱 실패 시 예외 발생
+    // 토큰에서 Claims를 꺼내오기
+    // 파싱 실패 시 예외 발생
     private Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)

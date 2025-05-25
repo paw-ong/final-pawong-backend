@@ -13,6 +13,8 @@ import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterInfoDto;
 
 public interface QueryAdoptionDataUseCase {
 
+    Adoption findAdoptionByIdOrThrow(Long adoptionId);
+
     List<Adoption> findActiveNotProcessedAdoptions();
 
     List<Adoption> findAdoptionForEmbedding();

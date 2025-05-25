@@ -17,13 +17,15 @@ public class JpaLostBookmarkQueryAdapter implements LostBookmarkQueryPort {
 
     @Override
     public Optional<LostBookmark> findByLostPostId(long userId, long lostPostId) {
-        return lostBookmarkRepository.findLostBookmarkEntityByUserIdAndLostPostId(userId, lostPostId)
+        return lostBookmarkRepository.findLostBookmarkEntityByUserIdAndLostPostId(userId,
+                        lostPostId)
                 .map(LostBookmarkEntity::toDomain);
     }
 
     @Override
     public Optional<LostBookmark> findByAdoptionId(long userId, long adoptionId) {
-        return lostBookmarkRepository.findLostBookmarkEntityByUserIdAndAdoptionId(userId, adoptionId)
+        return lostBookmarkRepository.findLostBookmarkEntityByUserIdAndAdoptionId(userId,
+                        adoptionId)
                 .map(LostBookmarkEntity::toDomain);
     }
 
