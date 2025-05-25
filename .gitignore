@@ -8,8 +8,8 @@
 infra/elasticsearch/data/*
 infra/mysql/db/*
 
-### es, mysql data ###
-infra/elasticsearch/data/*
+### kafka, zookeeper ###
+infra/kafka/*
 
 ### nginx data ###
 infra/nginx/logs

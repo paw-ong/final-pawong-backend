@@ -34,7 +34,7 @@ class LostPostCardMapperTest {
         LostPost lostPost = LostPost.builder()
                 .lostPostId(1L)
                 .postType(PostType.LOST)
-                .imageUrl("https://www.aaa.com")
+                .imageKey("https://www.aaa.com")
                 .date(LocalDate.of(2025, 4, 5))
                 .location("Seoul")
                 .upKindNm(UpKindNm.개)
@@ -44,7 +44,7 @@ class LostPostCardMapperTest {
                 .build();
 
         // when
-        LostPostCard card = LostPostCardMapper.toLostPostCard( lostPost, "Alice", false, fixedClock);
+        LostPostCard card = LostPostCardMapper.toLostPostCard( lostPost, "Alice", false, fixedClock, "https://www.aaa.com");
 
         // then
         assertThat(card.postId()).isEqualTo(1L);
