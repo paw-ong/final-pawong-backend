@@ -24,10 +24,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class QueryAdoptionDataService implements QueryAdoptionDataUseCase {
+public class  QueryAdoptionDataService implements QueryAdoptionDataUseCase {
 
     private final AdoptionDataQueryPort adoptionDataQueryPort;
     private final ShelterInfoPort shelterInfoPort;
+
+    @Override
+    public Adoption findAdoptionByIdOrThrow(Long adoptionId) {
+        return adoptionDataQueryPort.findByAdoptionIdOrThrow(adoptionId);
+    }
 
     // AI 정제할 adoption 조회
     @Override

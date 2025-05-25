@@ -26,7 +26,8 @@ public class LostBookmarkController {
             @PathVariable Long id
     ) {
         // 북마크 토글 후 북마크 상태 받아오기
-        boolean bookmarked = toggleBookmarkUseCase.toggleLostPostBookmark(principal.getUserId(), id);
+        boolean bookmarked = toggleBookmarkUseCase.toggleLostPostBookmark(principal.getUserId(),
+                id);
         return ResponseEntity.ok(new BookmarkResponse(bookmarked));
     }
 
@@ -36,7 +37,8 @@ public class LostBookmarkController {
             @PathVariable Long id
     ) {
         // 북마크 토글 후 북마크 상태 받아오기
-        boolean bookmarked = toggleBookmarkUseCase.toggleLostAdoptionBookmark(principal.getUserId(), id);
+        boolean bookmarked = toggleBookmarkUseCase.toggleLostAdoptionBookmark(principal.getUserId(),
+                id);
         return ResponseEntity.ok(new BookmarkResponse(bookmarked));
     }
 

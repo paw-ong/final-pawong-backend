@@ -6,6 +6,7 @@ import org.springframework.security.core.AuthenticationException;
 
 @Getter
 public class FilterAuthenticationException extends AuthenticationException {
+
     private final ErrorCode errorCode;
 
     public FilterAuthenticationException(ErrorCode errorCode) {
