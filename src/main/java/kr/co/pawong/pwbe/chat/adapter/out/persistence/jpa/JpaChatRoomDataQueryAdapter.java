@@ -23,14 +23,7 @@ public class JpaChatRoomDataQueryAdapter implements ChatRoomDataQueryPort {
         List<ChatRoomEntity> chatRoomEntities = chatRoomJpaRepository.findAllByParticipantIdOrAuthorId(
                 userId, userId);
         return chatRoomEntities.stream()
-                .map(entity -> ChatRoom.builder()
-                        .chatRoomId(entity.getChatRoomId())
-                        .postId(entity.getPostId())
-                        .authorId(entity.getAuthorId())
-                        .participantId(entity.getParticipantId())
-                        .createdAt(entity.getCreatedAt())
-                        .status(entity.getStatus())
-                        .build())
+                .map(ChatRoomEntity::toModel)
                 .toList();
     }
 
