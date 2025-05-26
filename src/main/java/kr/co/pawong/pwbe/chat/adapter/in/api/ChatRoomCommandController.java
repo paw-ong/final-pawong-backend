@@ -36,7 +36,7 @@ public class ChatRoomCommandController {
             @RequestBody ChatRoomCreateRequest chatRoomCreateRequest,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        Long createdId = commandChatRoomDataUseCase.createChatRoomOrThrow(
+        Long createdId = commandChatRoomDataUseCase.createChatRoomOrFindExistingChatRoom(
                 userDetails.getUserId(),
                 chatRoomCreateRequest
         );
