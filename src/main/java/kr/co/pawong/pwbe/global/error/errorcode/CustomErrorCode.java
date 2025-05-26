@@ -31,7 +31,7 @@ public enum CustomErrorCode implements ErrorCode {
      * 403 FORBIDDEN
      */
     FORBIDDEN_POST_MODIFY(FORBIDDEN, "게시글 수정 및 삭제 권한이 없습니다."),
-    FORBIDDEN_CHATROOMS_VIEW(FORBIDDEN, "해당 공고의 채팅방들을 조회할 권한이 없습니다"),
+    FORBIDDEN_CHATROOMS_ACCESS(FORBIDDEN, "해당 공고의 채팅방들을 조회할 권한이 없습니다"),
     FORBIDDEN_CHATROOM_DEACTIVATION(FORBIDDEN, "해당 채팅방을 비활성화 할 권한이 없습니다."),
     FORBIDDEN_CHATMESSAGE_SENDING(FORBIDDEN, "해당 메시지를 채팅방에 보낼 권한이 없습니다."),
     FORBIDDEN_CHATMESSAGE_QUERY(FORBIDDEN, "해당 채팅방의 메시지들을 조회할 권한이 없습니다."),

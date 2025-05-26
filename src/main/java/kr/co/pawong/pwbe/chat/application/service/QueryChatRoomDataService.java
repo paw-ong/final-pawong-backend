@@ -50,7 +50,7 @@ public class QueryChatRoomDataService implements QueryChatRoomDataUseCase {
                 postId);
         // 메서드를 호출한 사용자가 해당 공고의 author가 아닌 경우에는 해당 채팅방 목록을 조회할 권한이 없다.
         if (!lostPostAuthorInfo.authorId().equals(userId)) {
-            throw new BaseException(CustomErrorCode.FORBIDDEN_CHATROOMS_VIEW);
+            throw new BaseException(CustomErrorCode.FORBIDDEN_CHATROOMS_ACCESS);
         }
         List<ChatRoom> chatRooms = chatRoomDataQueryPort.findChatRoomsByPostId(postId);
         List<ChatRoomDetail> chatRoomDetails = new ArrayList<>(chatRooms.size());
