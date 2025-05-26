@@ -36,6 +36,3 @@ logging:
         kafka: WARN
 app:
   firebase-configuration-file: firebase/serviceAccountKey.json
-kafka:
-  topic:
-    notification: fcm-notification
