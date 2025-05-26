@@ -231,4 +231,5 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+firebase
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,macos,windows,gradle,dotenv,git
