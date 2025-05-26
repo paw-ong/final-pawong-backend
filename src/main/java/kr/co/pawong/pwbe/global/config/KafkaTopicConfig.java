@@ -11,19 +11,62 @@ import org.springframework.kafka.core.KafkaAdmin;
 @Configuration
 public class KafkaTopicConfig {
 
-    public static final String TEST_TOPIC = "test-topic";
+    public static final String LOST_POST_CREATED_TOPIC = "dev.pawong.lost-post.created";
+    public static final String RESCUED_ANIMAL_CREATED_TOPIC = "dev.pawong.rescued-animal.created";
+    public static final String LOST_POST_EMBEDDED_TOPIC = "dev.pawong.lost-post.embedded";
+    public static final String RESCUED_ANIMAL_EMBEDDED_TOPIC = "dev.pawong.rescued-animal.embedded";
+    public static final String LOST_POST_INDEXED_TOPIC = "dev.pawong.lost-post.indexed";
+    public static final String RESCUED_ANIMAL_INDEXED_TOPIC = "dev.pawong.rescued-animal.indexed";
 
-    // KafkaAdmin 빈: application.yml 의 spring.kafka.* 설정을 사용
     @Bean
     public KafkaAdmin kafkaAdmin(KafkaProperties props, SslBundles sslBundles) {
         return new KafkaAdmin(props.buildAdminProperties(sslBundles));
     }
 
-    // 애플리케이션 시작 시 topic 이 자동 생성됨
     @Bean
-    public NewTopic testTopic() {
-        return TopicBuilder.name(TEST_TOPIC)
-                .partitions(2)
+    public NewTopic lostPostCreatedTopic() {
+        return TopicBuilder.name(LOST_POST_CREATED_TOPIC)
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic rescuedAnimalCreatedTopic() {
+        return TopicBuilder.name(RESCUED_ANIMAL_CREATED_TOPIC)
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic lostPostEmbeddedTopic() {
+        return TopicBuilder.name(LOST_POST_EMBEDDED_TOPIC)
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic rescuedAnimalEmbeddedTopic() {
+        return TopicBuilder.name(RESCUED_ANIMAL_EMBEDDED_TOPIC)
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic lostPostIndexedTopic() {
+        return TopicBuilder.name(LOST_POST_INDEXED_TOPIC)
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic rescuedAnimalIndexedTopic() {
+        return TopicBuilder.name(RESCUED_ANIMAL_INDEXED_TOPIC)
+                .partitions(1)
                 .replicas(1)
                 .build();
     }
