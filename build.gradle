@@ -61,6 +61,7 @@ dependencies {
     // Spring Batch
     implementation 'org.springframework.boot:spring-boot-starter-batch'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 
     // websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
@@ -70,6 +71,9 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'org.apache.kafka:kafka-clients'
 
+    // Firebase
+    implementation 'com.google.firebase:firebase-admin:9.2.0'
+
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -78,8 +82,6 @@ dependencies {
     testImplementation 'org.testcontainers:testcontainers'
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:elasticsearch'
-
-
 }
 
 tasks.named('test') {
