@@ -30,7 +30,7 @@ public class QueryChatRoomDataService implements QueryChatRoomDataUseCase {
         for (ChatRoom chatRoom : chatRooms) {
             Long postId = chatRoom.getPostId();
             ChatRoomLostPostInfo lostPostInfo = lostPostInfoPort.getLostPostInfosById(postId);
-            chatRoomDetails.add(new ChatRoomDetail(lostPostInfo, chatRoom.getChatRoomId(),
+            chatRoomDetails.add(new ChatRoomDetail(lostPostInfo, chatRoom.getChatRoomId(), chatRoom.getParticipantId(),
                     chatRoom.getStatus()));
         }
 
@@ -50,7 +50,7 @@ public class QueryChatRoomDataService implements QueryChatRoomDataUseCase {
         List<ChatRoomDetail> chatRoomDetails = new ArrayList<>(chatRooms.size());
         for (ChatRoom chatRoom : chatRooms) {
             ChatRoomLostPostInfo lostPostInfo = lostPostInfoPort.getLostPostInfosById(postId);
-            chatRoomDetails.add(new ChatRoomDetail(lostPostInfo, chatRoom.getChatRoomId(),
+            chatRoomDetails.add(new ChatRoomDetail(lostPostInfo, chatRoom.getChatRoomId(), chatRoom.getParticipantId(),
                     chatRoom.getStatus()));
         }
         return chatRoomDetails;
