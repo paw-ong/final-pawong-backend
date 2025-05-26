@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChatMessageJpaRepository extends JpaRepository<ChatMessageEntity, Long> {
 
-    // 채팅방ID로 메시지를 최근 생성 순으로 갖고오기
-    List<ChatMessageEntity> findChatMessagesByChatRoomIdOrderByCreatedAtDesc(Long chatRoomId);
+    // 채팅방ID로 메시지를 최근 생성 순으로 갖고오기 (epoch : asc)
+    List<ChatMessageEntity> findChatMessagesByChatRoomIdOrderByCreatedAtAsc(Long chatRoomId);
 }

@@ -19,7 +19,7 @@ public class JpaChatMessageDataQueryAdapter implements ChatMessageDataQueryPort 
     @Override
     public List<ChatMessage> findChatMessagesByChatRoomIdInLatestOrder(Long chatRoomId) {
         return chatMessageJpaRepository
-                .findChatMessagesByChatRoomIdOrderByCreatedAtDesc(chatRoomId)
+                .findChatMessagesByChatRoomIdOrderByCreatedAtAsc(chatRoomId)
                 .stream()
                 .map(ChatMessageEntity::toModel)
                 .collect(Collectors.toList());
