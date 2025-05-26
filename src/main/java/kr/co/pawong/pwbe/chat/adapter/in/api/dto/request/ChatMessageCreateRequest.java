@@ -1,7 +1,6 @@
 package kr.co.pawong.pwbe.chat.adapter.in.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class ChatMessageCreateRequest {
     private String content;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX", timezone = "UTC")
-    private Instant createAt;
+    private Long createdAt;
 }

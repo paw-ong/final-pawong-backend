@@ -1,8 +1,10 @@
 package kr.co.pawong.pwbe.chat.adapter.in.api;
 
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.request.ChatMessageCreateRequest;
-import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatMessageResponse;
+import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatMessageBrokerResponse;
 import kr.co.pawong.pwbe.chat.application.port.in.CommandChatMessageDataUseCase;
+import kr.co.pawong.pwbe.chat.application.port.in.dto.ChatMessageDetail;
+import kr.co.pawong.pwbe.chat.enums.ChatMessageStatus;
 import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
 import kr.co.pawong.pwbe.user.application.port.in.QueryNicknameUseCase;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,7 @@ public class ChatMessageCommandController {
 
     @MessageMapping("/chat.send/{roomId}")
     @SendToUser("/queue/chat/{roomId}")
-    public ChatMessageResponse sendMessage(
+    public ChatMessageBrokerResponse sendMessage(
             @Payload ChatMessageCreateRequest request,
             @DestinationVariable Long roomId,
             @AuthenticationPrincipal CustomUserDetails userDetails
@@ -33,12 +35,13 @@ public class ChatMessageCommandController {
                 roomId,
                 userDetails.getUserId(),
                 request.getContent());
-        return new ChatMessageResponse(
-                chatMessageId,
-                request.getContent(),
-                userDetails.getUserId(),
-                queryNicknameUseCase.getNicknameByUserId(userDetails.getUserId()),
-                request.getCreateAt()
-        );
+        return new ChatMessageBrokerResponse(
+                new ChatMessageDetail(
+                        chatMessageId,
+                        request.getContent(),
+                        userDetails.getUserId(),
+                        ChatMessageStatus.SENT,
+                        request.getCreatedAt()
+                ));
     }
 }
