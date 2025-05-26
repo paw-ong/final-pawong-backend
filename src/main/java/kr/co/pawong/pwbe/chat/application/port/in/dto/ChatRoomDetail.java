@@ -16,5 +16,6 @@ public class ChatRoomDetail {
     private ChatRoomLostPostInfo lostPostInfo;
     private Long chatRoomId;
     private Long participantId;
+    private String participantUserName;
     private ChatRoomStatus status;
 }

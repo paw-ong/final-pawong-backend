@@ -3,13 +3,14 @@ package kr.co.pawong.pwbe.chat.application.service;
 import java.util.ArrayList;
 import java.util.List;
 import kr.co.pawong.pwbe.chat.adapter.out.lostPost.dto.ChatRoomLostPostAuthorInfo;
+import kr.co.pawong.pwbe.chat.adapter.out.lostPost.dto.ChatRoomLostPostInfo;
 import kr.co.pawong.pwbe.chat.application.port.in.QueryChatRoomDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.dto.ChatRoomDetail;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatRoomDataQueryPort;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatRoomLostPostInfoPort;
+import kr.co.pawong.pwbe.chat.application.port.out.ChatRoomUserInfoPort;
 import kr.co.pawong.pwbe.chat.domain.ChatRoom;
 import kr.co.pawong.pwbe.chat.enums.ChatRoomStatus;
-import kr.co.pawong.pwbe.chat.adapter.out.lostPost.dto.ChatRoomLostPostInfo;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
@@ -21,16 +22,21 @@ public class QueryChatRoomDataService implements QueryChatRoomDataUseCase {
 
     private final ChatRoomLostPostInfoPort lostPostInfoPort;
     private final ChatRoomDataQueryPort chatRoomDataQueryPort;
+    private final ChatRoomUserInfoPort chatRoomUserInfoPort;
 
     // 유저가 속한 모든 채팅방을 조회해서 ChatRoomDetail 리스트로 반환
     @Override
     public List<ChatRoomDetail> findUserChatRooms(Long userId) {
         List<ChatRoom> chatRooms = chatRoomDataQueryPort.findChatRoomsByUserId(userId);
         List<ChatRoomDetail> chatRoomDetails = new ArrayList<>(chatRooms.size());
+
         for (ChatRoom chatRoom : chatRooms) {
             Long postId = chatRoom.getPostId();
+            String participantUserName = chatRoomUserInfoPort.getUserNameById(
+                    chatRoom.getParticipantId()).userName();
             ChatRoomLostPostInfo lostPostInfo = lostPostInfoPort.getLostPostInfosById(postId);
-            chatRoomDetails.add(new ChatRoomDetail(lostPostInfo, chatRoom.getChatRoomId(), chatRoom.getParticipantId(),
+            chatRoomDetails.add(new ChatRoomDetail(lostPostInfo, chatRoom.getChatRoomId(),
+                    chatRoom.getParticipantId(), participantUserName,
                     chatRoom.getStatus()));
         }
 
@@ -48,9 +54,13 @@ public class QueryChatRoomDataService implements QueryChatRoomDataUseCase {
         }
         List<ChatRoom> chatRooms = chatRoomDataQueryPort.findChatRoomsByPostId(postId);
         List<ChatRoomDetail> chatRoomDetails = new ArrayList<>(chatRooms.size());
+
         for (ChatRoom chatRoom : chatRooms) {
             ChatRoomLostPostInfo lostPostInfo = lostPostInfoPort.getLostPostInfosById(postId);
-            chatRoomDetails.add(new ChatRoomDetail(lostPostInfo, chatRoom.getChatRoomId(), chatRoom.getParticipantId(),
+            String participantUserName = chatRoomUserInfoPort.getUserNameById(
+                    chatRoom.getParticipantId()).userName();
+            chatRoomDetails.add(new ChatRoomDetail(lostPostInfo, chatRoom.getChatRoomId(),
+                    chatRoom.getParticipantId(), participantUserName,
                     chatRoom.getStatus()));
         }
         return chatRoomDetails;
