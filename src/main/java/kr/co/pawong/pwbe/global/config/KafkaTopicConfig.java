@@ -11,7 +11,7 @@ import org.springframework.kafka.core.KafkaAdmin;
 @Configuration
 public class KafkaTopicConfig {
 
-    public static final String DEAD_LETTER_TOPIC = "dev.pawong.dead-letter-topic";
+    public static final String COMMON_DEAD_LETTER_TOPIC = "dev.pawong.common.dlt";
 
     public static final String LOST_POST_CREATED_TOPIC = "dev.pawong.lost-post.created";
     public static final String RESCUED_ANIMAL_CREATED_TOPIC = "dev.pawong.rescued-animal.created";
@@ -28,7 +28,7 @@ public class KafkaTopicConfig {
      */
     @Bean
     public NewTopic deadLetterTopic() {
-        return TopicBuilder.name(DEAD_LETTER_TOPIC)
+        return TopicBuilder.name(COMMON_DEAD_LETTER_TOPIC)
                 .partitions(1)
                 .replicas(1)
                 .build();
