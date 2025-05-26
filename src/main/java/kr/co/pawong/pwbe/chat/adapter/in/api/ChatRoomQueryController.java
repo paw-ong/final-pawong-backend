@@ -42,6 +42,26 @@ public class ChatRoomQueryController {
     }
 
     /**
+     * 실종 공고로 요청된 채팅방들 목록을 조회하는 api
+     * 내부적으로 api를 호출한 사용자가 해당 공고의 작성자가 아니면 예외를 던지도록 구현
+     * @param postId
+     * @param userDetails
+     * @return List<ChatRoomDetail>
+     */
+    @GetMapping("/rooms/post/{postId}")
+    public ResponseEntity<ChatRoomsResponse> findChatRoomsByPostId(
+            @PathVariable Long postId,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Long userId = userDetails.getUserId();
+        List<ChatRoomDetail> allChatRooms = queryChatDataUseCase.findUserChatRoomsByPostId(
+                userId, postId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ChatRoomsResponse(allChatRooms));
+    }
+
+    /**
      * 유저가 채팅방에 존재하는지 확인하는 api
      * @param roomId
      * @param userDetails

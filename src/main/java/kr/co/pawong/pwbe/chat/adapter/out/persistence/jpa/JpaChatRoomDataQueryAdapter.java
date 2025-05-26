@@ -27,6 +27,15 @@ public class JpaChatRoomDataQueryAdapter implements ChatRoomDataQueryPort {
                 .toList();
     }
 
+    // postId로 엮인 채팅방 목록을 조회
+    @Override
+    public List<ChatRoom> findChatRoomsByPostId(Long postId) {
+        List<ChatRoomEntity> chatRoomEntities = chatRoomJpaRepository.findAllByPostId(postId);
+        return chatRoomEntities.stream()
+                .map(ChatRoomEntity::toModel)
+                .toList();
+    }
+
     @Override
     public ChatRoom findChatRoomByIdOrThrow(Long chatRoomId) {
         ChatRoomEntity chatRoomEntity = chatRoomJpaRepository.findById(chatRoomId)

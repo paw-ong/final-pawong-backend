@@ -10,4 +10,6 @@ public interface ChatRoomJpaRepository extends JpaRepository<ChatRoomEntity, Lon
     List<ChatRoomEntity> findAllByParticipantIdOrAuthorId(Long participantId, Long authorId);
 
     Optional<ChatRoomEntity> findByParticipantIdAndPostId(Long participantId, Long postId);
+
+    List<ChatRoomEntity> findAllByPostId(Long postId);
 }
