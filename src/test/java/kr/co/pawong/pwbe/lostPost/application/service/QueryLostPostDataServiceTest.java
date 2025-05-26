@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
+import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.request.LostPostSearchRequest;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAdoptionDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
@@ -17,6 +18,8 @@ import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 class QueryLostPostDataServiceTest {
 
@@ -36,6 +39,7 @@ class QueryLostPostDataServiceTest {
                 fakeLostPostPort,
                 fakeUserInfoPort,
                 // TODO: 이후 추가
+                null,
                 null,
                 fixedClock
         );
@@ -107,6 +111,16 @@ class QueryLostPostDataServiceTest {
                         .build();
                 return lp;
             }
+            return null;
+        }
+
+        @Override
+        public Page<LostPost> getLostPostsByPostTypePaged(Pageable pageable, PostType type) {
+            return null;
+        }
+
+        @Override
+        public Page<LostPost> searchLostPosts(Pageable pageable, LostPostSearchRequest request) {
             return null;
         }
 
