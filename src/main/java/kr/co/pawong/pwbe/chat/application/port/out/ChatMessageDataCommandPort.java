@@ -10,4 +10,6 @@ public interface ChatMessageDataCommandPort {
      */
     Long saveChatMessage(ChatMessage chatMessage);
 
+    void readChatMessage(Long charRoomId, Long userId);
+
 }

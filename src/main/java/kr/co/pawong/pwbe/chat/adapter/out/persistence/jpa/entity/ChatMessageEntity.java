@@ -67,4 +67,9 @@ public class ChatMessageEntity {
                 .status(this.status)
                 .build();
     }
+
+    public void readMessage() {
+        this.readAt = Instant.now();
+        this.status = ChatMessageStatus.READ;
+    }
 }
