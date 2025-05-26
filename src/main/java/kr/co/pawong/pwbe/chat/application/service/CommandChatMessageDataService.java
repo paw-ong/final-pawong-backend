@@ -5,7 +5,6 @@ import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.*;
 import kr.co.pawong.pwbe.chat.application.port.in.CommandChatMessageDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.QueryChatRoomDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatMessageDataCommandPort;
-import kr.co.pawong.pwbe.chat.application.port.out.ChatMessageDataQueryPort;
 import kr.co.pawong.pwbe.chat.domain.ChatMessage;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +17,9 @@ public class CommandChatMessageDataService implements CommandChatMessageDataUseC
 
     private final ChatMessageDataCommandPort chatMessageDataCommandPort;
     private final QueryChatRoomDataUseCase queryChatRoomDataUseCase;
-    private final ChatMessageDataQueryPort chatMessageDataQueryPort;
 
     @Override
-    public Long createChatMessage(Long chatRoomId, Long senderId, String content) {
+    public ChatMessage createChatMessage(Long chatRoomId, Long senderId, String content) {
         // 유저가 해당 채팅방에 속해있고, 채팅방이 ACTIVE라면 메시지 전송
         if (queryChatRoomDataUseCase.userExistsInChatRoom(senderId, chatRoomId)
                 && queryChatRoomDataUseCase.chatRoomIsActive(chatRoomId)) {

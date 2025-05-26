@@ -5,11 +5,11 @@ import kr.co.pawong.pwbe.chat.domain.ChatMessage;
 public interface ChatMessageDataCommandPort {
 
     /**
+     *
      * @param chatMessage
-     * @return 저장된 메시지의 id
+     * @return 저장된 메시지
      */
-    Long saveChatMessage(ChatMessage chatMessage);
+    ChatMessage saveChatMessage(ChatMessage chatMessage);
 
     void readChatMessage(Long charRoomId, Long userId);
-
 }

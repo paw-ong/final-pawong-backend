@@ -16,10 +16,10 @@ public class JpaChatMessageDataCommandAdapter implements ChatMessageDataCommandP
     private final ChatMessageJpaRepository chatMessageJpaRepository;
 
     @Override
-    public Long saveChatMessage(ChatMessage chatMessage) {
+    public ChatMessage saveChatMessage(ChatMessage chatMessage) {
         ChatMessageEntity savedMessage = chatMessageJpaRepository.save(
                 ChatMessageEntity.from(chatMessage));
-        return savedMessage.getMessageId();
+        return savedMessage.toModel();
     }
 
     @Override
