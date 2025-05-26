@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.user.adapter.out.jpa.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -31,11 +32,14 @@ public class UserEntity {
     private String profileImage;      // 프로필 이미지
     private String region;            // 지역
     private String tel;               // 전화번호
+    @Column(name = "email", nullable = false, length = 254)
+    private String email;
     @Enumerated(EnumType.STRING)
     private UserStatus status;        // 사용자 상태
     private LocalDateTime createdAt;      // 가입날짜
     private LocalDateTime updatedAt;      // 수정날짜
     private LocalDateTime deletedAt;      // 삭제날짜
+
 
     public User toDomain() {
         return User.builder()
@@ -45,6 +49,7 @@ public class UserEntity {
                 .profileImage(profileImage)
                 .region(region)
                 .tel(tel)
+                .email(email)
                 .status(status)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
@@ -64,6 +69,7 @@ public class UserEntity {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(user.getUpdatedAt())
                 .deletedAt(user.getDeletedAt())
+                .email(user.getEmail())
                 .build();
     }
 
@@ -71,6 +77,7 @@ public class UserEntity {
         this.nickname = user.getNickname();
         this.region = user.getRegion();
         this.tel = user.getTel();
+        this.email = user.getEmail();
         this.updatedAt = LocalDateTime.now();
         this.status = user.getStatus();
         return this;

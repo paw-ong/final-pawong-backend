@@ -20,6 +20,7 @@ public class User {
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
   private LocalDateTime deletedAt;
+  private String email;
 
   public static User from(UserCreate userCreate) {
     return User.builder()
@@ -35,6 +36,7 @@ public class User {
     this.nickname = userUpdate.getNickname();
     this.region = userUpdate.getRegion();
     this.tel = userUpdate.getTel();
+    this.email = userUpdate.getEmail();
     this.updatedAt = LocalDateTime.now();
     this.status = UserStatus.ACTIVE;
     return this;
