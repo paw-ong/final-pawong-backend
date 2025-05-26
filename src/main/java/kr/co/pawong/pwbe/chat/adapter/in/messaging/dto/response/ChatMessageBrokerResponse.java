@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.chat.adapter.in.api.dto.response;
+package kr.co.pawong.pwbe.chat.adapter.in.messaging.dto.response;
 
 import kr.co.pawong.pwbe.chat.application.port.in.dto.ChatMessageDetail;
 import lombok.AllArgsConstructor;

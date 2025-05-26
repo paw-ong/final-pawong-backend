@@ -2,6 +2,8 @@ package kr.co.pawong.pwbe.chat.adapter.in.api;
 
 import java.util.List;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatMessagesResponse;
+import kr.co.pawong.pwbe.chat.application.port.in.CommandChatMessageDataUseCase;
+import kr.co.pawong.pwbe.chat.application.port.in.CommandChatRoomDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.QueryChatMessageDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.dto.ChatMessageDetail;
 import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatMessageQueryController {
 
     private final QueryChatMessageDataUseCase queryChatMessageDataUseCase;
+    private final CommandChatMessageDataUseCase commandChatMessageDataUseCase;
 
     @GetMapping("/{roomId}")
     public ResponseEntity<ChatMessagesResponse> findAllMessagesInChatRoom(

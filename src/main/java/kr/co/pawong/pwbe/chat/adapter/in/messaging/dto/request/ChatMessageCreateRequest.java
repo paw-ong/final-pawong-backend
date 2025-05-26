@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.chat.adapter.in.api.dto.request;
+package kr.co.pawong.pwbe.chat.adapter.in.messaging.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
