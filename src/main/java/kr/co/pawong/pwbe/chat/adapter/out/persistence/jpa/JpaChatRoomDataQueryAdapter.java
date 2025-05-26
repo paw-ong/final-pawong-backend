@@ -47,7 +47,8 @@ public class JpaChatRoomDataQueryAdapter implements ChatRoomDataQueryPort {
     @Override
     public ChatRoom findChatRoomByParticipantIdAndPostIdOrThrow(Long participantId, Long postId) {
         ChatRoomEntity chatRoomEntity = chatRoomJpaRepository.findByParticipantIdAndPostId(
-                participantId, postId).orElseThrow(() -> new BaseException(CustomErrorCode.CHATROOM_NOT_FOUND));
+                        participantId, postId)
+                .orElseThrow(() -> new BaseException(CustomErrorCode.CHATROOM_NOT_FOUND));
 
         return chatRoomEntity.toModel();
     }
