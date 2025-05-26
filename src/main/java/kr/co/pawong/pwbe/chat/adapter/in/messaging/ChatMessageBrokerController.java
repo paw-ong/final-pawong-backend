@@ -27,4 +27,13 @@ public class ChatMessageBrokerController {
         sendChatMessageBrokerUseCase.createAndSendChatMessage(request, roomId, userDetails.getUserId());
     }
 
+    @MessageMapping("/chat.read/{roomId}")
+    public void markRead(
+            @DestinationVariable Long roomId,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+
+        sendChatMessageBrokerUseCase.readMessage(roomId, userDetails.getUserId());
+    }
+
 }

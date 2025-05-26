@@ -1,11 +1,12 @@
 package kr.co.pawong.pwbe.chat.application.listener.event;
 
-import kr.co.pawong.pwbe.chat.domain.ChatMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ChatMessageCreatedEvent {
-    private final ChatMessage chatMessage;
+public class ChatMessageReadEvent {
+    private final Long chatRoomId;
+    private final Long readerId;
+    private final Long lastReadMessageId;
 }

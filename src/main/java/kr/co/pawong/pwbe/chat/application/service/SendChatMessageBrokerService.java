@@ -2,8 +2,10 @@ package kr.co.pawong.pwbe.chat.application.service;
 
 import kr.co.pawong.pwbe.chat.adapter.in.messaging.dto.request.ChatMessageCreateRequest;
 import kr.co.pawong.pwbe.chat.application.listener.event.ChatMessageCreatedEvent;
+import kr.co.pawong.pwbe.chat.application.listener.event.ChatMessageReadEvent;
 import kr.co.pawong.pwbe.chat.application.port.in.CommandChatMessageDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.SendChatMessageBrokerUseCase;
+import kr.co.pawong.pwbe.chat.application.port.out.ChatMessageDataQueryPort;
 import kr.co.pawong.pwbe.chat.domain.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SendChatMessageBrokerService implements SendChatMessageBrokerUseCase {
 
     private final CommandChatMessageDataUseCase commandChatMessageDataUseCase;
+    private final ChatMessageDataQueryPort chatMessageDataQueryPort;
     private final ApplicationEventPublisher publisher;
 
     @Override
@@ -23,6 +26,14 @@ public class SendChatMessageBrokerService implements SendChatMessageBrokerUseCas
             Long userId) {
         ChatMessage chatMessage = createChatMessage(request, chatRoomId, userId);
         publisher.publishEvent(new ChatMessageCreatedEvent(chatMessage));
+    }
+
+    @Override
+    @Transactional
+    public void readMessage(Long roomId, Long userId) {
+        commandChatMessageDataUseCase.markAllAsRead(roomId, userId);
+        ChatMessage chatMessage = chatMessageDataQueryPort.findLatestReadMessageOrThrow(roomId, userId);
+        publisher.publishEvent(new ChatMessageReadEvent(roomId, userId, chatMessage.getMessageId()));
     }
 
     private ChatMessage createChatMessage(ChatMessageCreateRequest request, Long chatRoomId,
