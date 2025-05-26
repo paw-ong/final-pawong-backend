@@ -4,7 +4,5 @@ import kr.co.pawong.pwbe.lostPost.application.port.out.dto.CreatedLostAnimalPubl
 
 public interface LostAnimalMessagePublishPort {
 
-    void publishLostPostCreatedMessage(CreatedLostAnimalPublishDto message);
-
-    void publishFoundPostCreatedMessage(CreatedLostAnimalPublishDto message);
+    void publishLostAnimalCreatedMessage(CreatedLostAnimalPublishDto message);
 }
