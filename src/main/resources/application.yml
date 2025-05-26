@@ -10,7 +10,6 @@ spring:
       initialize-schema: always
     job:
       enabled: false # 프로젝트 실행 시 자동으로 배치 실행되게 하고 싶으면 true로 변경
-#
 cloud:
   aws:
     region: ${AWS_REGION}
@@ -28,10 +27,15 @@ data:
 api-url:
   adoption: ${ADOPTION_URL}
   shelter: ${SHELTER_URL}
-#logging:
-#  level:
-#    org:
-#      apache:
-#        kafka: WARN
-#      springframework:
-#        kafka: WARN
+logging:
+  level:
+    org:
+      apache:
+        kafka: WARN
+      springframework:
+        kafka: WARN
+app:
+  firebase-configuration-file: firebase/serviceAccountKey.json
+kafka:
+  topic:
+    notification: fcm-notification
