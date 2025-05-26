@@ -30,6 +30,7 @@ public class LostPostDetailMapper {
                 .location(lostPost.getLocation())
                 .geoPoint(lostPost.getGeoPoint())
                 .author(author)
+                .authorId(lostPost.getUserId())
                 .bookmarked(bookmarked)
                 .build();
     }

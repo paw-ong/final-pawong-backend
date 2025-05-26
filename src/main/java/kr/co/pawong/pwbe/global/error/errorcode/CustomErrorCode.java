@@ -18,6 +18,7 @@ public enum CustomErrorCode implements ErrorCode {
      * 400 BAD_REQUEST
      */
     REQUEST_ERROR(BAD_REQUEST, "입력값이 잘못되었습니다."),
+    CHATROOM_POST_ERROR(BAD_REQUEST, "채팅방을 생성할 수 없습니다."),
 
     /**
      * 401 UNAUTHORIZED
@@ -30,7 +31,9 @@ public enum CustomErrorCode implements ErrorCode {
      * 403 FORBIDDEN
      */
     FORBIDDEN_POST_MODIFY(FORBIDDEN, "게시글 수정 및 삭제 권한이 없습니다."),
-
+    FORBIDDEN_CHATROOM_DEACTIVATION(FORBIDDEN, "해당 채팅방을 비활성화 할 권한이 없습니다."),
+    FORBIDDEN_CHATMESSAGE_SENDING(FORBIDDEN, "해당 메시지를 채팅방에 보낼 권한이 없습니다."),
+    FORBIDDEN_CHATMESSAGE_QUERY(FORBIDDEN, "해당 채팅방의 메시지들을 조회할 권한이 없습니다."),
     /**
      * 404 NOT_FOUND
      */
@@ -38,6 +41,7 @@ public enum CustomErrorCode implements ErrorCode {
     ADOPTION_NOT_FOUND(NOT_FOUND, "유기동물 정보가 없습니다."),
     LOSTPOST_NOT_FOUND(NOT_FOUND, "실종동물 게시글 정보가 없습니다."),
     LOST_NOT_FOUND(NOT_FOUND, "게시글이 존재하지 않습니다."),
+    CHATROOM_NOT_FOUND(NOT_FOUND, "채팅방이 존재하지 않습니다."),
 
     /**
      * 500 SERVER_ERROR

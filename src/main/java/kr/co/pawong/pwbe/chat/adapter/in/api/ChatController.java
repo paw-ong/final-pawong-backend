@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.chat.adapter.in;
+package kr.co.pawong.pwbe.chat.adapter.in.api;
 
 import kr.co.pawong.pwbe.chat.adapter.in.dto.ChatMessageCreateRequest;
 import lombok.RequiredArgsConstructor;
