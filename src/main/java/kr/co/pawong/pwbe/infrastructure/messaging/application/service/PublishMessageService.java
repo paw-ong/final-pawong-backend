@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.infrastructure.messaging.application.service;
 
+import kr.co.pawong.pwbe.Notification.application.service.dto.NotificationDto;
 import kr.co.pawong.pwbe.infrastructure.messaging.application.port.in.PublishMessageUseCase;
 import kr.co.pawong.pwbe.infrastructure.messaging.application.port.out.MessagePublishPort;
 import lombok.RequiredArgsConstructor;
@@ -15,4 +16,11 @@ public class PublishMessageService implements PublishMessageUseCase {
     public void publishMessage(String topic, Object message) {
         messagePublishPort.publishMessage(topic, message);
     }
+
+    @Override
+    public void publishFcmNotificationMessage(NotificationDto notificationDto) {
+        messagePublishPort.publishFcmNotificationMessage(notificationDto);
+    }
+
+
 }
