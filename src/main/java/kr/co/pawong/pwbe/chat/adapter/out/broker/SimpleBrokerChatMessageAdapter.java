@@ -14,6 +14,5 @@ public class SimpleBrokerChatMessageAdapter implements ChatMessageBrokerPort {
     @Override
     public void sendMessageToUser(String username, String destination, Object object) {
         template.convertAndSendToUser(username, destination, object);
-
     }
 }
