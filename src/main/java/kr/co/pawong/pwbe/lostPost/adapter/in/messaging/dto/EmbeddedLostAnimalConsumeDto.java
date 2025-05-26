@@ -1,8 +1,10 @@
 package kr.co.pawong.pwbe.lostPost.adapter.in.messaging.dto;
 
-public record EmbeddedLostPostConsumeDto(
+import kr.co.pawong.pwbe.lostPost.enums.PostType;
+
+public record EmbeddedLostAnimalConsumeDto(
         long id,
-        String type,
+        PostType type,
         String queryText,
         String queryImageUrl,
         float[] embedding

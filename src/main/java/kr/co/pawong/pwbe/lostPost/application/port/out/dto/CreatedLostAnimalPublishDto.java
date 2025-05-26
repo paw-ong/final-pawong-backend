@@ -1,11 +1,12 @@
 package kr.co.pawong.pwbe.lostPost.application.port.out.dto;
 
+import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import lombok.Builder;
 
 @Builder
-public record CreatedLostPostPublishDto(
+public record CreatedLostAnimalPublishDto(
         long id,
-        String type,
+        PostType type,
         String queryText,
         String queryImageUrl
 ) {
