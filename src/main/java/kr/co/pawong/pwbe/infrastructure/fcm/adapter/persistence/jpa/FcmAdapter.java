@@ -1,11 +1,10 @@
 package kr.co.pawong.pwbe.infrastructure.fcm.adapter.persistence.jpa;
 
-import java.util.Optional;
-import kr.co.pawong.pwbe.infrastructure.fcm.application.service.support.FcmMapper;
-import kr.co.pawong.pwbe.infrastructure.fcm.application.port.out.FcmPort;
-import kr.co.pawong.pwbe.infrastructure.fcm.adapter.persistence.jpa.repository.FcmRepository;
-import kr.co.pawong.pwbe.infrastructure.fcm.domain.FcmToken;
 import kr.co.pawong.pwbe.infrastructure.fcm.adapter.persistence.jpa.entity.FcmTokenEntity;
+import kr.co.pawong.pwbe.infrastructure.fcm.adapter.persistence.jpa.repository.FcmRepository;
+import kr.co.pawong.pwbe.infrastructure.fcm.application.port.out.FcmPort;
+import kr.co.pawong.pwbe.infrastructure.fcm.application.service.support.FcmMapper;
+import kr.co.pawong.pwbe.infrastructure.fcm.domain.FcmToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -29,9 +28,10 @@ public class FcmAdapter implements FcmPort {
 
     // 사용자 ID로 FCM 토큰 조회
     @Override
-    public Optional<FcmToken> findByUserId(Long userId) {
+    public FcmToken findByUserId(Long userId) {
         return fcmRepository.findByUserId(userId)
-                .map(fcmMapper::toDomain);
+                .map(fcmMapper::toDomain)
+                .orElse(null);
     }
 
     // 사용자 ID로 FCM 토큰 삭제

@@ -23,8 +23,7 @@ public class FcmService implements FcmUsecase {
         log.info("FCM 토큰 저장: 사용자={}, 토큰={}", userId, token);
 
         // 기존 토큰 조회 or 새 토큰 생성
-        FcmToken fcmToken = fcmPort.findByUserId(userId)
-                .orElse(new FcmToken());
+        FcmToken fcmToken = fcmPort.findByUserId(userId);
 
         // 토큰 정보 업데이트
         fcmToken.updateToken(userId, token);
@@ -39,9 +38,7 @@ public class FcmService implements FcmUsecase {
     public String getTokenByUserId(Long userId) {
         log.info("사용자 ID로 FCM 토큰 조회: {}", userId);
 
-        return fcmPort.findByUserId(userId)
-                .map(FcmToken::getToken)
-                .orElse(null);
+        return fcmPort.findByUserId(userId).getToken();
     }
 
     // 사용자 ID로 유효한 FCM 토큰 조회
