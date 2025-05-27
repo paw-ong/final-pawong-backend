@@ -1,7 +1,9 @@
 package kr.co.pawong.pwbe.lostPost.application.service;
 
 import java.util.List;
+import kr.co.pawong.pwbe.lostPost.application.port.in.PublishCreatedLostAnimalUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostAnimalDataUseCase;
+import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.SearchSimilarLostAnimalsUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalQuery;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalQuery.LostType;
@@ -18,7 +20,10 @@ import org.springframework.stereotype.Service;
 public class SearchSimilarLostAnimalsService implements SearchSimilarLostAnimalsUseCase {
 
     private final LostAnimalEngineQueryPort lostAnimalEngineQueryPort;
+
     private final QueryLostAnimalDataUseCase queryLostAnimalDataUseCase;
+    private final QueryLostPostDataUseCase queryLostPostDataUseCase;
+    private final PublishCreatedLostAnimalUseCase publishCreatedLostAnimalUseCase;
 
     @Override
     public List<LostPostCard> searchSimilarLostAnimals(Long userId, Long lostPostId) {
@@ -29,6 +34,7 @@ public class SearchSimilarLostAnimalsService implements SearchSimilarLostAnimals
         );
         // null_일 경우 아직 해당 데이터가 인덱싱되지 않은 것.
         if (result == null) {
+            publishNotIndexedLostPost(lostPostId);
             return null;
         }
         // RDB 조회해서 결과 반환
@@ -39,6 +45,23 @@ public class SearchSimilarLostAnimalsService implements SearchSimilarLostAnimals
                             return new LostAnimalQuery(lostType, response.id(), userId);
                         })
                         .toList()
+        );
+    }
+
+    /**
+     * 인덱싱이 안된 경우 새로 임베딩 메시지를 발행합니다.
+     */
+    private void publishNotIndexedLostPost(long lostPostId) {
+        LostPostDetailDto lostPostDetail = queryLostPostDataUseCase.findLostPostById(lostPostId);
+        if (lostPostDetail.getPostType() != PostType.LOST) {
+            return;
+        }
+        String textFeature = String.join(" ",
+                lostPostDetail.getColor(),
+                lostPostDetail.getKindNm(),
+                lostPostDetail.getUpKindNm().name());
+        publishCreatedLostAnimalUseCase.publishCreatedLostAnimal(
+                lostPostId, lostPostDetail.getPostType(), textFeature, lostPostDetail.getImageUrl().toString()
         );
     }
 }
