@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.chat.adapter.in.api;
 
-import kr.co.pawong.pwbe.chat.adapter.in.dto.ChatMessageCreateRequest;
+import kr.co.pawong.pwbe.chat.adapter.in.api.dto.request.ChatMessageCreateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -16,7 +16,8 @@ public class ChatController {
 
     @MessageMapping("/chat.send/{roomId}")
     @SendToUser("/queue/chat/{roomId}")
-    public ChatMessageCreateRequest sendMessage(@Payload ChatMessageCreateRequest messageDTO, @DestinationVariable Long roomId) {
+    public ChatMessageCreateRequest sendMessage(@Payload ChatMessageCreateRequest messageDTO,
+            @DestinationVariable Long roomId) {
         log.info(messageDTO.getSender());
         log.info(messageDTO.getContent());
         messageDTO.setRoomId(roomId);

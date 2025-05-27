@@ -23,7 +23,8 @@ public class CommandChatRoomDataService implements CommandChatRoomDataUseCase {
     // 생성된 채팅방 id를 반환
     @Override
     @Transactional
-    public Long createChatRoomOrFindExistingChatRoom(Long participantId, ChatRoomCreateRequest request) {
+    public Long createChatRoomOrFindExistingChatRoom(Long participantId,
+            ChatRoomCreateRequest request) {
         try {
             ChatRoom chatRoom = chatRoomDataQueryPort.findChatRoomByParticipantIdAndPostIdOrThrow(
                     participantId,

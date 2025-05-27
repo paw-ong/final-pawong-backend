@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import kr.co.pawong.pwbe.chat.adapter.out.lostPost.dto.ChatRoomLostPostAuthorInfo;
 import kr.co.pawong.pwbe.chat.adapter.out.lostPost.dto.ChatRoomLostPostInfo;
-import kr.co.pawong.pwbe.chat.application.port.in.QueryChatMessageDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.QueryChatRoomDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.dto.ChatRoomDetail;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatMessageDataQueryPort;

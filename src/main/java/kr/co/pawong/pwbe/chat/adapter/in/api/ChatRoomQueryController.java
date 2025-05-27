@@ -27,6 +27,7 @@ public class ChatRoomQueryController {
 
     /**
      * 유저의 채팅방 목록을 조회하는 api
+     *
      * @param userDetails
      * @return List<ChatRoomDetail>
      */
@@ -42,8 +43,8 @@ public class ChatRoomQueryController {
     }
 
     /**
-     * 실종 공고로 요청된 채팅방들 목록을 조회하는 api
-     * 내부적으로 api를 호출한 사용자가 해당 공고의 작성자가 아니면 예외를 던지도록 구현
+     * 실종 공고로 요청된 채팅방들 목록을 조회하는 api 내부적으로 api를 호출한 사용자가 해당 공고의 작성자가 아니면 예외를 던지도록 구현
+     *
      * @param postId
      * @param userDetails
      * @return List<ChatRoomDetail>
@@ -63,6 +64,7 @@ public class ChatRoomQueryController {
 
     /**
      * 유저가 채팅방에 존재하는지 확인하는 api
+     *
      * @param roomId
      * @param userDetails
      * @return boolean (존재 여부)

@@ -47,8 +47,7 @@ public class ChatRoomCommandController {
     }
 
     /**
-     *
-     * @param { chatRoomId } as ChatRoomDeactivateRequest
+     * @param {           chatRoomId } as ChatRoomDeactivateRequest
      * @param userDetails
      * @return boolean (deactivate 여부)
      */

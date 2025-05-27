@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.chat.adapter.in.dto;
+package kr.co.pawong.pwbe.chat.adapter.in.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.Instant;
@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatMessageCreateRequest {
+
     @Setter
     private Long roomId;
     private String sender;
