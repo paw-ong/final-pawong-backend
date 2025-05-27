@@ -11,6 +11,7 @@ spring:
           starttls:
             enable: true
             required: true
+          timeout: 5000
         debug: true
       ssl:
         enabled: true
