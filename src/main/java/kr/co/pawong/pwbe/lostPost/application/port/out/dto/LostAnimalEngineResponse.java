@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.lostPost.application.port.in.dto;
+package kr.co.pawong.pwbe.lostPost.application.port.out.dto;
 
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
 

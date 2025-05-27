@@ -3,14 +3,13 @@ package kr.co.pawong.pwbe.lostPost.application.service;
 import java.util.List;
 import kr.co.pawong.pwbe.lostPost.application.port.in.NotifyUsersOfSimilarLostPostsUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
-import kr.co.pawong.pwbe.lostPost.application.port.in.SearchLostAnimalEngineUseCase;
-import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalEngineRequest;
-import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalEngineResponse;
-import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalQuery;
+import kr.co.pawong.pwbe.lostPost.application.port.out.LostAnimalEngineQueryPort;
+import kr.co.pawong.pwbe.lostPost.application.port.out.dto.LostAnimalEngineRequest;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAdoptionDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAnimalEngineCommandPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.dto.LostAnimalDto;
+import kr.co.pawong.pwbe.lostPost.application.port.out.dto.LostAnimalEngineResponse;
 import kr.co.pawong.pwbe.lostPost.domain.LostAdoption;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
@@ -26,8 +25,8 @@ public class NotifyUsersOfSimilarLostPostsService implements NotifyUsersOfSimila
     private final LostPostDataQueryPort lostPostDataQueryPort;
     private final LostAdoptionDataQueryPort lostAdoptionDataQueryPort;
     private final LostAnimalEngineCommandPort lostAnimalEngineCommandPort;
+    private final LostAnimalEngineQueryPort lostAnimalEngineQueryPort;
 
-    private final SearchLostAnimalEngineUseCase searchLostAnimalEngineUseCase;
     private final QueryLostPostDataUseCase queryLostPostDataUseCase;
 
     /**
@@ -41,7 +40,7 @@ public class NotifyUsersOfSimilarLostPostsService implements NotifyUsersOfSimila
         indexing(id, type, embedding);
 
         // 2. ES 검색
-        List<LostAnimalEngineResponse> similarAnimals = searchLostAnimalEngineUseCase.searchSimilarLostAnimals(
+        List<LostAnimalEngineResponse> similarAnimals = lostAnimalEngineQueryPort.searchSimilarLostAnimals(
                 new LostAnimalEngineRequest(List.of(PostType.LOST), embedding)
         );
 

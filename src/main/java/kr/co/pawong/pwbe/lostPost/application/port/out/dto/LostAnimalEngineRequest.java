@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.lostPost.application.port.in.dto;
+package kr.co.pawong.pwbe.lostPost.application.port.out.dto;
 
 import java.util.List;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
