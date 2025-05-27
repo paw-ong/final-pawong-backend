@@ -1,7 +1,7 @@
-package kr.co.pawong.pwbe.Notification.application.port.out;
+package kr.co.pawong.pwbe.notification.application.port.out;
 
 import java.util.Optional;
-import kr.co.pawong.pwbe.Notification.domain.Notification;
+import kr.co.pawong.pwbe.notification.domain.Notification;
 
 public interface NotificationPort {
     Notification save(Notification notification);

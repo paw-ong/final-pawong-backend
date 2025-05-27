@@ -1,6 +1,6 @@
-package kr.co.pawong.pwbe.Notification.application.service.dto;
+package kr.co.pawong.pwbe.notification.application.service.dto;
 
-import kr.co.pawong.pwbe.Notification.enums.NotificationType;
+import kr.co.pawong.pwbe.notification.enums.NotificationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

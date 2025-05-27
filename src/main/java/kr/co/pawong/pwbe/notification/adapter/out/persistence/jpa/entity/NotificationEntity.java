@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.Notification.adapter.out.persistence.jpa.entity;
+package kr.co.pawong.pwbe.notification.adapter.out.persistence.jpa.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -8,8 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import kr.co.pawong.pwbe.Notification.domain.Notification;
-import kr.co.pawong.pwbe.Notification.enums.NotificationType;
+import kr.co.pawong.pwbe.notification.domain.Notification;
+import kr.co.pawong.pwbe.notification.enums.NotificationType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;

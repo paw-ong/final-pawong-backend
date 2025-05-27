@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.Notification.application.port.in.dto;
+package kr.co.pawong.pwbe.notification.application.port.in.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

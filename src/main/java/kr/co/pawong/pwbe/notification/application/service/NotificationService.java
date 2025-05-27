@@ -1,14 +1,14 @@
-package kr.co.pawong.pwbe.Notification.application.service;
+package kr.co.pawong.pwbe.notification.application.service;
 
 import java.util.Optional;
-import kr.co.pawong.pwbe.Notification.application.port.in.NotificationUseCase;
-import kr.co.pawong.pwbe.Notification.application.port.in.dto.NotificationRequest;
-import kr.co.pawong.pwbe.Notification.application.port.out.NotificationPort;
-import kr.co.pawong.pwbe.Notification.domain.Notification;
+import kr.co.pawong.pwbe.notification.application.port.in.NotificationUseCase;
+import kr.co.pawong.pwbe.notification.application.port.in.dto.NotificationRequest;
+import kr.co.pawong.pwbe.notification.application.port.out.NotificationPort;
+import kr.co.pawong.pwbe.notification.domain.Notification;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.infrastructure.fcm.application.port.in.FcmUsecase;
-import kr.co.pawong.pwbe.Notification.application.service.dto.NotificationDto;
+import kr.co.pawong.pwbe.notification.application.service.dto.NotificationDto;
 import kr.co.pawong.pwbe.infrastructure.messaging.application.port.in.PublishMessageUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

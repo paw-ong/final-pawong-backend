@@ -7,7 +7,7 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.WebpushConfig;
 import com.google.firebase.messaging.WebpushNotification;
-import kr.co.pawong.pwbe.Notification.application.service.dto.NotificationDto;
+import kr.co.pawong.pwbe.notification.application.service.dto.NotificationDto;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.infrastructure.messaging.application.port.in;
 
-import kr.co.pawong.pwbe.Notification.application.service.dto.NotificationDto;
+import kr.co.pawong.pwbe.notification.application.service.dto.NotificationDto;
 
 public interface PublishMessageUseCase {
 

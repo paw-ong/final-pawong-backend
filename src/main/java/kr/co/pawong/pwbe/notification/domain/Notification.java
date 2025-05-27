@@ -1,8 +1,8 @@
-package kr.co.pawong.pwbe.Notification.domain;
+package kr.co.pawong.pwbe.notification.domain;
 
 import java.time.LocalDateTime;
-import kr.co.pawong.pwbe.Notification.enums.NotificationType;
-import kr.co.pawong.pwbe.Notification.application.service.dto.NotificationDto;
+import kr.co.pawong.pwbe.notification.enums.NotificationType;
+import kr.co.pawong.pwbe.notification.application.service.dto.NotificationDto;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.AllArgsConstructor;

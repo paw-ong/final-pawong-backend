@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.infrastructure.messaging.adapter.out;
 
-import kr.co.pawong.pwbe.Notification.application.service.dto.NotificationDto;
+import kr.co.pawong.pwbe.notification.application.service.dto.NotificationDto;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.infrastructure.messaging.application.port.out.MessagePublishPort;

@@ -1,10 +1,10 @@
-package kr.co.pawong.pwbe.Notification.adapter.out.persistence.jpa;
+package kr.co.pawong.pwbe.notification.adapter.out.persistence.jpa;
 
 import java.util.Optional;
-import kr.co.pawong.pwbe.Notification.adapter.out.persistence.jpa.entity.NotificationEntity;
-import kr.co.pawong.pwbe.Notification.adapter.out.persistence.jpa.repository.NotificationJpaRepository;
-import kr.co.pawong.pwbe.Notification.application.port.out.NotificationPort;
-import kr.co.pawong.pwbe.Notification.domain.Notification;
+import kr.co.pawong.pwbe.notification.adapter.out.persistence.jpa.entity.NotificationEntity;
+import kr.co.pawong.pwbe.notification.adapter.out.persistence.jpa.repository.NotificationJpaRepository;
+import kr.co.pawong.pwbe.notification.application.port.out.NotificationPort;
+import kr.co.pawong.pwbe.notification.domain.Notification;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
