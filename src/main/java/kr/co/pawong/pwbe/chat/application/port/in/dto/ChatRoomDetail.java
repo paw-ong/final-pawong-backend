@@ -18,4 +18,5 @@ public class ChatRoomDetail {
     private Long participantId;
     private String participantUserName;
     private ChatRoomStatus status;
+    private String latestMessageContent;
 }
