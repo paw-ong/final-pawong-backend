@@ -19,6 +19,18 @@ public enum CustomErrorCode implements ErrorCode {
      */
     REQUEST_ERROR(BAD_REQUEST, "입력값이 잘못되었습니다."),
     CHATROOM_POST_ERROR(BAD_REQUEST, "채팅방을 생성할 수 없습니다."),
+    FCM_INVALID_TOKEN(BAD_REQUEST, "FCM 토큰이 유효하지 않습니다."),
+    FCM_TOKEN_MISSING(BAD_REQUEST, "FCM 토큰이 누락되었습니다."),
+    FCM_NOTIFICATION_TITLE_MISSING(BAD_REQUEST, "알림 제목이 누락되었습니다."),
+    FCM_NOTIFICATION_MESSAGE_MISSING(BAD_REQUEST, "알림 메시지가 누락되었습니다."),
+    FCM_INVALID_JSON_FORMAT(BAD_REQUEST, "알림 JSON 형식이 올바르지 않습니다."),
+    NOTIFICATION_INVALID_TOKEN(BAD_REQUEST, "유효한 FCM 토큰을 찾을 수 없습니다."),
+    NOTIFICATION_INVALID_REQUEST(BAD_REQUEST, "알림 요청 데이터가 유효하지 않습니다."),
+    NOTIFICATION_USER_ID_REQUIRED(BAD_REQUEST, "사용자 ID는 필수입니다."),
+    NOTIFICATION_TITLE_REQUIRED(BAD_REQUEST, "알림 제목은 필수입니다."),
+    NOTIFICATION_MESSAGE_REQUIRED(BAD_REQUEST, "알림 메시지는 필수입니다."),
+    NOTIFICATION_TOKEN_REQUIRED(BAD_REQUEST, "FCM 토큰은 필수입니다."),
+    NOTIFICATION_TARGET_ID_REQUIRED(BAD_REQUEST, "대상 ID는 필수입니다."),
 
     /**
      * 401 UNAUTHORIZED
@@ -42,12 +54,20 @@ public enum CustomErrorCode implements ErrorCode {
     LOSTPOST_NOT_FOUND(NOT_FOUND, "실종동물 게시글 정보가 없습니다."),
     LOST_NOT_FOUND(NOT_FOUND, "게시글이 존재하지 않습니다."),
     CHATROOM_NOT_FOUND(NOT_FOUND, "채팅방이 존재하지 않습니다."),
+    NOTIFICATION_NOT_FOUND(NOT_FOUND, "알림이 존재하지 않습니다."),
 
     /**
      * 500 SERVER_ERROR
      */
     SERVER_ERROR(INTERNAL_SERVER_ERROR, "서버와의 연결에 실패하였습니다."),
     DATABASE_ERROR(INTERNAL_SERVER_ERROR, "데이터베이스 연결에 실패하였습니다."),
+    KAFKA_MESSAGE_PUBLISH_ERROR(INTERNAL_SERVER_ERROR, "Kafka 메시지 발행에 실패하였습니다."),
+    KAFKA_CONNECTION_ERROR(INTERNAL_SERVER_ERROR, "Kafka 서버 연결에 실패하였습니다."),
+    NOTIFICATION_SAVE_ERROR(INTERNAL_SERVER_ERROR, "알림 저장에 실패하였습니다."),
+    NOTIFICATION_FIND_ERROR(INTERNAL_SERVER_ERROR, "알림 조회에 실패하였습니다."),
+    NOTIFICATION_SEND_ERROR(INTERNAL_SERVER_ERROR, "알림 발송에 실패하였습니다."),
+    NOTIFICATION_CHAT_SEND_ERROR(INTERNAL_SERVER_ERROR, "채팅 알림 발송에 실패하였습니다."),
+    NOTIFICATION_ADOPTION_SEND_ERROR(INTERNAL_SERVER_ERROR, "유사 공고 알림 발송에 실패하였습니다."),
     // 검색
     SEARCH_ERROR(SERVICE_UNAVAILABLE, "검색 기능이 정상적으로 동작하지 않습니다.")
     ;
