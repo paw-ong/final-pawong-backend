@@ -1,9 +1,15 @@
 package kr.co.pawong.pwbe.notification.application.service;
 
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.FCM_INVALID_JSON_FORMAT;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.FCM_NOTIFICATION_MESSAGE_MISSING;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.FCM_NOTIFICATION_TITLE_MISSING;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.FCM_TOKEN_MISSING;
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.NOTIFICATION_ADOPTION_SEND_ERROR;
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.NOTIFICATION_CHAT_SEND_ERROR;
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.NOTIFICATION_INVALID_TOKEN;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.infrastructure.fcm.application.port.in.FcmUsecase;
 import kr.co.pawong.pwbe.infrastructure.messaging.application.port.in.PublishMessageUseCase;
@@ -14,6 +20,7 @@ import kr.co.pawong.pwbe.notification.application.service.dto.NotificationDto;
 import kr.co.pawong.pwbe.notification.domain.Notification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -24,6 +31,11 @@ public class NotificationService implements NotificationUseCase {
     private final PublishMessageUseCase publishMessageUseCase;
     private final FcmUsecase fcmUsecase;
     private final NotificationPort notificationPort;
+    private final ObjectMapper objectMapper;
+
+    // 알림 메시지를 발행할 kafka 토픽 이름
+    @Value("${kafka.topic.notification}")
+    private String notificationTopic;
 
     // 채팅 알림
     @Override
@@ -50,7 +62,7 @@ public class NotificationService implements NotificationUseCase {
 
             // NotificationDto로 변환하여 Kafka에 발행
             NotificationDto notificationDto = savedNotification.toDto(token);
-            publishMessageUseCase.publishFcmNotificationMessage(notificationDto);
+            publishMessageUseCase.publishMessage(notificationTopic, notificationDto);
 
             log.info("채팅 알림 발송 완료: userId={}, id={}", request.getUserId(), savedNotification.getId());
 
@@ -86,7 +98,7 @@ public class NotificationService implements NotificationUseCase {
 
             // NotificationDto로 변환하여 Kafka에 발행
             NotificationDto notificationDto = savedNotification.toDto(token);
-            publishMessageUseCase.publishFcmNotificationMessage(notificationDto);
+            publishMessageUseCase.publishMessage(notificationTopic, notificationDto);
 
             log.info("유사 공고 알림 발송 완료: userId={}, id={}", request.getUserId(), savedNotification.getId());
         } catch (BaseException e) {
@@ -96,6 +108,59 @@ public class NotificationService implements NotificationUseCase {
         } catch (Exception e) {
             log.error("유사 공고 알림 발송 실패: userId={}, adoptionId={}", request.getUserId(), request.getTargetId(), e);
             throw new BaseException(NOTIFICATION_ADOPTION_SEND_ERROR);
+        }
+    }
+
+    @Override
+    public void processFcmNotificationMessage(String jsonString) {
+        try {
+            // 1. JSON 파싱
+            NotificationDto notificationDto = parseJsonToDto(jsonString);
+
+            // 2. FCM 전송
+            notificationPort.sendFcmNotification(notificationDto);
+
+        } catch (JsonProcessingException e) {
+            log.error("JSON 파싱 실패: jsonString={}, error={}", jsonString, e.getMessage(), e);
+            throw new BaseException(FCM_INVALID_JSON_FORMAT);
+        } catch (Exception e) {
+            log.error("알림 처리 실패", e);
+            throw e;
+        }
+    }
+
+    // Json 파싱
+    private NotificationDto parseJsonToDto(String jsonString) throws JsonProcessingException {
+        if (jsonString == null || jsonString.trim().isEmpty()) {
+            throw new BaseException(FCM_INVALID_JSON_FORMAT);
+        }
+
+        try {
+            NotificationDto notificationDto = objectMapper.readValue(jsonString, NotificationDto.class);
+
+            // DTO 유효성 검증
+            validateDto(notificationDto);
+
+            return notificationDto;
+        } catch (JsonProcessingException e) {
+            log.error("JSON 파싱 실패 - 잘못된 JSON 형식: {}", jsonString, e);
+            throw new BaseException(FCM_INVALID_JSON_FORMAT);
+        }
+    }
+
+    // 필수 필드 유효성 검증
+    private void validateDto(NotificationDto notificationDto) {
+        if (notificationDto == null) {
+            throw new BaseException(FCM_INVALID_JSON_FORMAT);
+        }
+        if (notificationDto.getToken() == null || notificationDto.getToken().trim().isEmpty()) {
+            throw new BaseException(FCM_TOKEN_MISSING);
+        }
+        if (notificationDto.getTitle() == null || notificationDto.getTitle().trim().isEmpty()) {
+            throw new BaseException(FCM_NOTIFICATION_TITLE_MISSING);
+        }
+        if (notificationDto.getMessage() == null || notificationDto.getMessage().trim().isEmpty()) {
+            throw new BaseException(FCM_NOTIFICATION_MESSAGE_MISSING);
         }
     }
 
