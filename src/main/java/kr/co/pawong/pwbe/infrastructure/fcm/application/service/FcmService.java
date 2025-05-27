@@ -3,12 +3,13 @@ package kr.co.pawong.pwbe.infrastructure.fcm.application.service;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
-import kr.co.pawong.pwbe.infrastructure.fcm.domain.FcmToken;
 import kr.co.pawong.pwbe.infrastructure.fcm.application.port.in.FcmUsecase;
 import kr.co.pawong.pwbe.infrastructure.fcm.application.port.out.FcmPort;
+import kr.co.pawong.pwbe.infrastructure.fcm.domain.FcmToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -18,6 +19,7 @@ public class FcmService implements FcmUsecase {
     private final FcmPort fcmPort;
     private final FirebaseMessaging firebaseMessaging;
 
+    @Transactional
     @Override
     public void saveFcmToken(Long userId, String token) {
         log.info("FCM 토큰 저장: 사용자={}, 토큰={}", userId, token);
