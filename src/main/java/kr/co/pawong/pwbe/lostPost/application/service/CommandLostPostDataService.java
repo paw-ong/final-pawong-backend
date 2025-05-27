@@ -21,7 +21,20 @@ public class CommandLostPostDataService implements CommandLostPostDataUseCase {
     @Override
     public Long createLostPost(LostPost lostPost, Long userId) {
         lostPost.createBy(userId);
-        return lostPostUpdatePort.saveLostPost(lostPost).getLostPostId();
+        LostPost newPost = lostPostUpdatePort.saveLostPost(lostPost);
+        // 실종/발견 동물 추가 메시지 발행
+        String imageUrl = storageDataQueryPort.acquireImageUrl(newPost.getImageKey());
+        String textFeature = String.join(" ", newPost.getColor(), newPost.getKindNm(),
+                newPost.getUpKindNm().name());
+        lostAnimalMessagePublishPort.publishLostAnimalCreatedMessage(
+                new CreatedLostAnimalPublishDto(
+                        newPost.getLostPostId(),
+                        newPost.getPostType(),
+                        textFeature,
+                        imageUrl
+                )
+        );
+        return newPost.getLostPostId();
     }
 
     @Override
