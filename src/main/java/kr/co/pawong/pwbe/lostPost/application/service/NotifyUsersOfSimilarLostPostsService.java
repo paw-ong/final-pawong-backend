@@ -54,7 +54,7 @@ public class NotifyUsersOfSimilarLostPostsService implements NotifyUsersOfSimila
 
     private void indexing(long id, PostType type, float[] embedding) {
         switch (type) {
-            case PostType.FOUND, PostType.LOST -> {
+            case PostType.FOUND -> {
                 // 발견 게시물 데이터 가져오기
                 LostPost lostPost = lostPostDataQueryPort.findLostPostByIdOrThrow(id);
 

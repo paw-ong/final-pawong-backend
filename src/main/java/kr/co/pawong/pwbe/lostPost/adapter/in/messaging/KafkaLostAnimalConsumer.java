@@ -28,6 +28,7 @@ public class KafkaLostAnimalConsumer {
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void lostPostEmbeddedTopicConsumer(String message) throws JsonProcessingException {
+        log.info("LOST_POST_EMBEDDED_TOPIC 이벤트 수신");
         EmbeddedLostAnimalConsumeDto dto = objectMapper
                 .readValue(message, EmbeddedLostAnimalConsumeDto.class);
 
@@ -42,6 +43,7 @@ public class KafkaLostAnimalConsumer {
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void rescuedAnimalEmbeddedTopicConsumer(String message) throws JsonProcessingException {
+        log.info("RESCUED_ANIMAL_EMBEDDED_TOPIC 이벤트 수신");
         EmbeddedLostAnimalConsumeDto dto = objectMapper
                 .readValue(message, EmbeddedLostAnimalConsumeDto.class);
 
