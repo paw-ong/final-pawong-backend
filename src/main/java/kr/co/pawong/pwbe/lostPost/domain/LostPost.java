@@ -32,7 +32,7 @@ public class LostPost {
     private LocalDateTime deletedAt;    // 삭제날짜
     private PostStatus status;      // 게시글 상태
     private String location;        // 실종장소, 발견장소
-    private GeoPoint geoPoint;
+    private LostGeoPoint lostGeoPoint;
     private Long userId;            // 작성자 유저 id
 
     public void createBy(Long userId) {
