@@ -1,7 +1,11 @@
 package kr.co.pawong.pwbe.notification.domain;
 
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.NOTIFICATION_MESSAGE_REQUIRED;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.NOTIFICATION_TARGET_ID_REQUIRED;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.NOTIFICATION_TITLE_REQUIRED;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.NOTIFICATION_USER_ID_REQUIRED;
+
 import java.time.LocalDateTime;
-import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.notification.application.service.dto.NotificationDto;
 import kr.co.pawong.pwbe.notification.enums.NotificationType;
@@ -22,8 +26,8 @@ public class Notification {
     private LocalDateTime createdAt;
 
     // 채팅 알림
-    public static Notification createChatNotification(Long userId, String token, String message, Long chatId) {
-        validateNotificationData(userId, "새로운 채팅 메시지", message, token, chatId);
+    public static Notification createChatNotification(Long userId, String message, Long chatId) {
+        validateNotificationData(userId, "새로운 채팅 메시지", message, chatId);
 
         return Notification.builder()
                 .userId(userId)
@@ -36,11 +40,11 @@ public class Notification {
     }
 
     // 유사 공고 알림
-    public static Notification createSimilarAdoptionNotification(Long userId, String token, Long adoptionId) {
+    public static Notification createSimilarAdoptionNotification(Long userId, Long adoptionId) {
         String title = "유사 공고 발견";
         String message = "유사한 공고가 발견되었습니다.";
 
-        validateNotificationData(userId, title, message, token, adoptionId);
+        validateNotificationData(userId, title, message, adoptionId);
 
         return Notification.builder()
                 .userId(userId)
@@ -53,10 +57,11 @@ public class Notification {
     }
 
     // Notification -> NotificationDto
-    public NotificationDto toDto() {
+    public NotificationDto toDto(String token) {
         return NotificationDto.builder()
                 .id(this.id)
                 .userId(this.userId)
+                .token(token)
                 .title(this.title)
                 .message(this.message)
                 .targetId(this.targetId)
@@ -65,21 +70,18 @@ public class Notification {
     }
 
     // 알림 생성에 필요한 필수 데이터의 유효성 검증
-    private static void validateNotificationData(Long userId, String title, String message, String token, Long targetId) {
+    private static void validateNotificationData(Long userId, String title, String message, Long targetId) {
         if (userId == null) {
-            throw new BaseException(CustomErrorCode.NOTIFICATION_USER_ID_REQUIRED);
+            throw new BaseException(NOTIFICATION_USER_ID_REQUIRED);
         }
         if (title == null || title.trim().isEmpty()) {
-            throw new BaseException(CustomErrorCode.NOTIFICATION_TITLE_REQUIRED);
+            throw new BaseException(NOTIFICATION_TITLE_REQUIRED);
         }
         if (message == null || message.trim().isEmpty()) {
-            throw new BaseException(CustomErrorCode.NOTIFICATION_MESSAGE_REQUIRED);
-        }
-        if (token == null || token.trim().isEmpty()) {
-            throw new BaseException(CustomErrorCode.NOTIFICATION_TOKEN_REQUIRED);
+            throw new BaseException(NOTIFICATION_MESSAGE_REQUIRED);
         }
         if (targetId == null) {
-            throw new BaseException(CustomErrorCode.NOTIFICATION_TARGET_ID_REQUIRED);
+            throw new BaseException(NOTIFICATION_TARGET_ID_REQUIRED);
         }
     }
 }

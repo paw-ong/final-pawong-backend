@@ -1,5 +1,10 @@
 package kr.co.pawong.pwbe.infrastructure.messaging.adapter.out;
 
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.FCM_INVALID_JSON_FORMAT;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.FCM_NOTIFICATION_MESSAGE_MISSING;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.FCM_NOTIFICATION_TITLE_MISSING;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.FCM_TOKEN_MISSING;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -7,9 +12,8 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.WebpushConfig;
 import com.google.firebase.messaging.WebpushNotification;
-import kr.co.pawong.pwbe.notification.application.service.dto.NotificationDto;
-import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
+import kr.co.pawong.pwbe.notification.application.service.dto.NotificationDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -68,7 +72,7 @@ public class KafkaMessageConsumer {
     // Json 문자열을 NotificationDto로 파싱
     private NotificationDto parseJsonToDto(String jsonString) throws JsonProcessingException {
         if (jsonString == null || jsonString.trim().isEmpty()) {
-            throw new BaseException(CustomErrorCode.FCM_INVALID_JSON_FORMAT);
+            throw new BaseException(FCM_INVALID_JSON_FORMAT);
         }
 
         try {
@@ -80,23 +84,23 @@ public class KafkaMessageConsumer {
             return notificationDto;
         } catch (JsonProcessingException e) {
             log.error("JSON 파싱 실패 - 잘못된 JSON 형식: {}", jsonString, e);
-            throw new BaseException(CustomErrorCode.FCM_INVALID_JSON_FORMAT);
+            throw new BaseException(FCM_INVALID_JSON_FORMAT);
         }
     }
 
     // 필수 필드 유효성 검증
     private void validateDto(NotificationDto notificationDto) {
         if (notificationDto == null) {
-            throw new BaseException(CustomErrorCode.FCM_INVALID_JSON_FORMAT);
+            throw new BaseException(FCM_INVALID_JSON_FORMAT);
         }
         if (notificationDto.getToken() == null || notificationDto.getToken().trim().isEmpty()) {
-            throw new BaseException(CustomErrorCode.FCM_TOKEN_MISSING);
+            throw new BaseException(FCM_TOKEN_MISSING);
         }
         if (notificationDto.getTitle() == null || notificationDto.getTitle().trim().isEmpty()) {
-            throw new BaseException(CustomErrorCode.FCM_NOTIFICATION_TITLE_MISSING);
+            throw new BaseException(FCM_NOTIFICATION_TITLE_MISSING);
         }
         if (notificationDto.getMessage() == null || notificationDto.getMessage().trim().isEmpty()) {
-            throw new BaseException(CustomErrorCode.FCM_NOTIFICATION_MESSAGE_MISSING);
+            throw new BaseException(FCM_NOTIFICATION_MESSAGE_MISSING);
         }
     }
 }
