@@ -6,7 +6,6 @@ import kr.co.pawong.pwbe.global.config.KafkaTopicConfig;
 import kr.co.pawong.pwbe.lostPost.adapter.in.messaging.dto.EmbeddedLostAnimalConsumeDto;
 import kr.co.pawong.pwbe.lostPost.application.port.in.NotifyUsersOfSimilarLostPostsUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.StreamSimilarAnimalsUseCase;
-import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
