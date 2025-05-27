@@ -30,8 +30,6 @@ public class NotificationEntity {
 
     private String message; // 알림 메시지
 
-    private String token; // FCM 토큰
-
     private Long targetId; // 연관된 대상 ID (채팅방 ID, 동물 ID)
 
     @Enumerated(EnumType.STRING)
@@ -47,7 +45,6 @@ public class NotificationEntity {
         entity.userId = notification.getUserId();
         entity.title = notification.getTitle();
         entity.message = notification.getMessage();
-        entity.token = notification.getToken();
         entity.targetId = notification.getTargetId();
         entity.type = notification.getType();
         entity.createdAt = notification.getCreatedAt();
@@ -62,7 +59,6 @@ public class NotificationEntity {
                 .userId(this.userId)
                 .title(this.title)
                 .message(this.message)
-                .token(this.token)
                 .targetId(this.targetId)
                 .type(this.type)
                 .createdAt(this.createdAt)

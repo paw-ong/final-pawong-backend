@@ -15,7 +15,6 @@ public class NotificationDto {
     private Long userId;
     private String title;
     private String message;
-    private String token;
     private Long targetId;
     private NotificationType type;
 }
