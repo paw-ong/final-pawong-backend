@@ -1,17 +1,12 @@
 package kr.co.pawong.pwbe.lostPost.application.service;
 
 import java.util.List;
+import kr.co.pawong.pwbe.lostPost.application.port.in.IndexLostAnimalUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.NotifyUsersOfSimilarLostPostsUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAnimalEngineQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.dto.LostAnimalEngineRequest;
-import kr.co.pawong.pwbe.lostPost.application.port.out.LostAdoptionDataQueryPort;
-import kr.co.pawong.pwbe.lostPost.application.port.out.LostAnimalEngineCommandPort;
-import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
-import kr.co.pawong.pwbe.lostPost.application.port.out.dto.LostAnimalDto;
 import kr.co.pawong.pwbe.lostPost.application.port.out.dto.LostAnimalEngineResponse;
-import kr.co.pawong.pwbe.lostPost.domain.LostAdoption;
-import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +17,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class NotifyUsersOfSimilarLostPostsService implements NotifyUsersOfSimilarLostPostsUseCase {
 
-    private final LostPostDataQueryPort lostPostDataQueryPort;
-    private final LostAdoptionDataQueryPort lostAdoptionDataQueryPort;
-    private final LostAnimalEngineCommandPort lostAnimalEngineCommandPort;
     private final LostAnimalEngineQueryPort lostAnimalEngineQueryPort;
 
     private final QueryLostPostDataUseCase queryLostPostDataUseCase;
+    private final IndexLostAnimalUseCase indexLostAnimalUseCase;
 
     /**
      * 1. DB 조회 후에 데이터 ES_에 인덱싱
@@ -37,7 +30,7 @@ public class NotifyUsersOfSimilarLostPostsService implements NotifyUsersOfSimila
     @Override
     public void notifyUsersOfSimilarLostPosts(long id, PostType type, float[] embedding) {
         // 1. DB 조회 후에 데이터 ES_에 인덱싱
-        indexing(id, type, embedding);
+        indexLostAnimalUseCase.index(id, type, embedding);
 
         // 2. ES 검색
         List<LostAnimalEngineResponse> similarAnimals = lostAnimalEngineQueryPort.searchSimilarLostAnimals(
@@ -50,32 +43,5 @@ public class NotifyUsersOfSimilarLostPostsService implements NotifyUsersOfSimila
 
         // 4. 알림 호출
 
-    }
-
-    private void indexing(long id, PostType type, float[] embedding) {
-        switch (type) {
-            case PostType.FOUND -> {
-                // 발견 게시물 데이터 가져오기
-                LostPost lostPost = lostPostDataQueryPort.findLostPostByIdOrThrow(id);
-
-                // lostPost -> lostAnimalDto
-                LostAnimalDto lostPostDto = LostAnimalDto.fromLostPost(lostPost, type, embedding);
-
-                // ES에 저장
-                lostAnimalEngineCommandPort.saveLostAnimalToEs(lostPostDto);
-            }
-            case PostType.FOSTER -> {
-                // 구조 API 데이터 가져오기
-                LostAdoption lostAdoption = lostAdoptionDataQueryPort.findAdoptionByIdOrThrow(id);
-
-                // lostAdoption -> lostAnimalDto
-                LostAnimalDto lostAdoptionDto = LostAnimalDto.fromLostAnimal(lostAdoption, type,
-                        embedding);
-
-                // ES에 저장
-                lostAnimalEngineCommandPort.saveLostAnimalToEs(lostAdoptionDto);
-            }
-            default -> throw new IllegalStateException("Unexpected PostType: " + type.name());
-        }
     }
 }

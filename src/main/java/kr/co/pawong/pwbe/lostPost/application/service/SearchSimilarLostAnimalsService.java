@@ -1,12 +1,12 @@
 package kr.co.pawong.pwbe.lostPost.application.service;
 
 import java.util.List;
-import java.util.Optional;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostAnimalDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.SearchSimilarLostAnimalsUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalQuery;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalQuery.LostType;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
+import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostDetailDto;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAnimalEngineQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.dto.LostAnimalEngineResponse;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
