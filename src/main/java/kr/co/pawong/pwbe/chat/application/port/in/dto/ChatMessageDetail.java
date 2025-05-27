@@ -18,6 +18,7 @@ public class ChatMessageDetail {
     private Long chatMessageId;
     private String content;     // 메시지 내용
     private Long senderId;      // 누가 보냈는지 (활용가능)
+    private String senderName;
     private ChatMessageStatus status;   // 읽음 여부 (언제 읽었는지는 일단 활용X)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long createdAt; // Instant -> Long (에폭크 타임) -> String -> JSON
@@ -30,5 +31,10 @@ public class ChatMessageDetail {
                 .status(chatMessage.getStatus())
                 .createdAt(chatMessage.getCreatedAt().toEpochMilli())
                 .build();
+    }
+
+    public ChatMessageDetail updateSenderName(String userNickName) {
+        this.senderName = userNickName;
+        return this;
     }
 }
