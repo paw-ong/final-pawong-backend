@@ -7,7 +7,7 @@ public record ChatRoomLostPostInfo(
         String kindNm,    // 품종명
         String location,    // 장소
         String author,      // 글 작성자
-        Long authorId,
+        Long authorId,      // 글 작성자id
         URL imageUrl     // 이미지url
 ) {
 
