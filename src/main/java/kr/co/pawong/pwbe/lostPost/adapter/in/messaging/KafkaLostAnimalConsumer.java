@@ -45,6 +45,7 @@ public class KafkaLostAnimalConsumer {
         EmbeddedLostAnimalConsumeDto dto = objectMapper
                 .readValue(message, EmbeddedLostAnimalConsumeDto.class);
 
-        notifyUsersOfSimilarLostPostsUseCase.notifyUsersOfSimilarLostPosts(dto.id(), dto.type(), dto.embedding());
+        notifyUsersOfSimilarLostPostsUseCase.notifyUsersOfSimilarLostPosts(dto.id(), dto.type(),
+                dto.embedding());
     }
 }

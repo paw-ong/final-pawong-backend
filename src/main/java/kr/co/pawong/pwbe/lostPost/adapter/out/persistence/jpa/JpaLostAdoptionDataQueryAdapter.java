@@ -21,7 +21,7 @@ public class JpaLostAdoptionDataQueryAdapter implements LostAdoptionDataQueryPor
 
     private final LostAdoptionJpaRepository lostAdoptionJpaRepository;
 
-    public LostAdoption findAdoptionById(Long adoptionId) {
+    public LostAdoption findAdoptionByIdOrThrow(Long adoptionId) {
         LostAdoptionEntity entity = lostAdoptionJpaRepository.findById(adoptionId)
                 .orElseThrow(() ->
                         new BaseException(LOST_NOT_FOUND));

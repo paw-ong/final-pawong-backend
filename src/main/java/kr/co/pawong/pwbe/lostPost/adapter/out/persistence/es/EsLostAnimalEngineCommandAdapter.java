@@ -22,18 +22,15 @@ public class EsLostAnimalEngineCommandAdapter implements LostAnimalEngineCommand
 
     @Override
     public void saveLostAnimalToEs(LostAnimalDto lostAnimalDto) {
+        if (lostAnimalDto == null) {
+            return;
+        }
         try {
-            if (lostAnimalDto == null){
-                return;
-            }
-
             LostAnimalDocument document = LostAnimalDocument.from(lostAnimalDto);
-
             elasticsearchOperations.save(document, INDEX);
-            log.info("LostAnimal ES 저장이 완료되었습니다: {}", lostAnimalDto.getLostAnimalId());
         } catch (Exception e) {
             log.error("LostAnimal ES 저장이 실패하였습니다.", e);
-            throw new BaseException(CustomErrorCode.ES_SAVE_ERROR);
+            throw new BaseException(CustomErrorCode.ES_SAVE_ERROR, e);
         }
     }
 }
