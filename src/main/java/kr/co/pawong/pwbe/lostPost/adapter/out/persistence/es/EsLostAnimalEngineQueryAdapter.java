@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.es.document.LostAnimalDocument;
 import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.es.query.LostAnimalQueryBuilder;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAnimalEngineQueryPort;
@@ -49,5 +50,31 @@ public class EsLostAnimalEngineQueryAdapter implements LostAnimalEngineQueryPort
                         doc.getRdbId(),
                         PostType.valueOf(doc.getType())))
                 .toList();
+    }
+
+    /**
+     * 주어진 ES _id 에 해당하는 문서가 있으면,
+     * 해당 문서의 embedding으로 유사 검색을 수행하고 결과를 반환합니다.
+     * 없으면 Optional.empty()를 반환.
+     */
+    @Override
+    public List<LostAnimalEngineResponse> searchSimilarLostAnimalsByESId(String esId, List<PostType> types) {
+        // 1) ES에서 _id로 문서 조회
+        LostAnimalDocument doc =
+                elasticsearchOperations.get(esId, LostAnimalDocument.class);
+
+        // 2) 문서가 없으면 empty
+        if (doc == null) {
+            return null;
+        }
+
+        // 3) embedding과 type을 꺼내 요청 객체 생성
+        LostAnimalEngineRequest req = new LostAnimalEngineRequest(
+                types,
+                doc.getEmbedding()
+        );
+
+        // 4) 기존 검색 메서드 호출
+        return searchSimilarLostAnimals(req);
     }
 }
