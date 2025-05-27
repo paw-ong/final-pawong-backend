@@ -8,7 +8,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       batch-size: 1
     consumer:
-      group-id: pawong-spring-group
+      group-id: ${KAFKA_SPRING_GROUP_ID}
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       enable-auto-commit: false
