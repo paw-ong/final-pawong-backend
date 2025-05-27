@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.lostPost.adapter.out.es.document;
+package kr.co.pawong.pwbe.lostPost.adapter.out.persistence.es.document;
 
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
@@ -23,11 +23,10 @@ import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 @AllArgsConstructor
 @Document(indexName = "lost_animal")
 public class LostAnimalDocument {
-    @Id
-    private String id; // 자동생성 id
 
+    @Id
     @Field(type = FieldType.Keyword, name = "lostAnimalId")
-    private String lostAnimalId; // type + id
+    private String lostAnimalId; // type + id // ex) LOST_13, FOUND_243
 
     @Field(type = FieldType.Keyword, name = "rdbId")
     private Long rdbId; // id

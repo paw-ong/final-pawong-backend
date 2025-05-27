@@ -1,8 +1,8 @@
-package kr.co.pawong.pwbe.lostPost.adapter.out.es;
+package kr.co.pawong.pwbe.lostPost.adapter.out.persistence.es;
 
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
-import kr.co.pawong.pwbe.lostPost.adapter.out.es.document.LostAnimalDocument;
+import kr.co.pawong.pwbe.lostPost.adapter.out.persistence.es.document.LostAnimalDocument;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAnimalEngineCommandPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.dto.LostAnimalDto;
 import lombok.RequiredArgsConstructor;
