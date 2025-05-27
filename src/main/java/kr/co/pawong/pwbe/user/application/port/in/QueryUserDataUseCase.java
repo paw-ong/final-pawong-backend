@@ -8,4 +8,6 @@ public interface QueryUserDataUseCase {
 
     User getUserBySocialId(Long socialId);
 
+    Boolean isEmailExist(String email);
+
 }

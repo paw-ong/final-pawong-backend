@@ -32,4 +32,10 @@ public class QueryUserDataService implements QueryUserDataUseCase, QueryNickname
         return userDataQueryPort.findByUserIdOrThrow(userId)
                 .getNickname();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean isEmailExist(String email) {
+        return userDataQueryPort.findByEmail(email);
+    }
 }

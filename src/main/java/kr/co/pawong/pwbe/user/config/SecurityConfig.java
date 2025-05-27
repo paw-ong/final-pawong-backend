@@ -67,7 +67,8 @@ public class SecurityConfig {
                                 "/api/adoptions/**",
                                 "/api/adoption/**",
                                 "/api/shelters/**",
-                                "/api/lost-animals/**"
+                                "/api/lost-animals/**",
+                                "/api/mail/**"
                         ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/lost-animals/*").permitAll() // ⬅ 단건 조회만 허용
                         .requestMatchers("/api/lost-posts/**").authenticated()            // ⬅ 그 외는 인증 필요
