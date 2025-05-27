@@ -48,6 +48,7 @@ public enum CustomErrorCode implements ErrorCode {
      */
     SERVER_ERROR(INTERNAL_SERVER_ERROR, "서버와의 연결에 실패하였습니다."),
     DATABASE_ERROR(INTERNAL_SERVER_ERROR, "데이터베이스 연결에 실패하였습니다."),
+    ES_SAVE_ERROR(INTERNAL_SERVER_ERROR, "Elasticsearch 저장에 실패하였습니다."),
     // 검색
     SEARCH_ERROR(SERVICE_UNAVAILABLE, "검색 기능이 정상적으로 동작하지 않습니다.")
     ;
