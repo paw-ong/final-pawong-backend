@@ -3,6 +3,7 @@ package kr.co.pawong.pwbe.lostPost.application.service;
 import kr.co.pawong.pwbe.lostPost.application.port.in.CommandLostPostDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAnimalMessagePublishPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataCommandPort;
+import kr.co.pawong.pwbe.lostPost.application.port.out.StorageDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.dto.CreatedLostAnimalPublishDto;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommandLostPostDataService implements CommandLostPostDataUseCase {
 
     private final LostPostDataCommandPort lostPostUpdatePort;
-
     private final LostAnimalMessagePublishPort lostAnimalMessagePublishPort;
+    private final StorageDataQueryPort storageDataQueryPort;
 
     @Override
     public Long createLostPost(LostPost lostPost, Long userId) {
@@ -29,13 +30,15 @@ public class CommandLostPostDataService implements CommandLostPostDataUseCase {
         // RDB_에 저장
         LostPost newPost = lostPostUpdatePort.updateLostPostOrThrow(postId, lostPost, userId);
         // 실종/발견 동물 추가 메시지 발행
+        String imageUrl = storageDataQueryPort.acquireImageUrl(newPost.getImageKey());
+        String textFeature = String.join(" ", newPost.getColor(), newPost.getKindNm(),
+                newPost.getUpKindNm().name());
         lostAnimalMessagePublishPort.publishLostAnimalCreatedMessage(
                 new CreatedLostAnimalPublishDto(
                         newPost.getLostPostId(),
                         newPost.getPostType(),
-                        String.join(" ", newPost.getColor(), newPost.getKindNm(), newPost.getUpKindNm().name()),
-                        // TODO: 이거 이렇게 쓰는거 맞나요...?
-                        newPost.getImageKey()
+                        textFeature,
+                        imageUrl
                 )
         );
         return newPost.getLostPostId();
