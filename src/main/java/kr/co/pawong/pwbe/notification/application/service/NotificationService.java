@@ -89,7 +89,8 @@ public class NotificationService implements NotificationUseCase {
             // Notification 생성
             Notification notification = Notification.createSimilarAdoptionNotification(
                     request.getUserId(),
-                    request.getTargetId()
+                    request.getTargetId(),
+                    request.getPostType()
             );
 
             // DB에 저장

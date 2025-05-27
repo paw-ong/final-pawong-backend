@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.notification.application.service.dto;
 
 import kr.co.pawong.pwbe.notification.enums.NotificationType;
+import kr.co.pawong.pwbe.notification.enums.TargetType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,5 +18,6 @@ public class NotificationDto {
     private String title;
     private String message;
     private Long targetId;
+    private TargetType targetType;
     private NotificationType type;
 }

@@ -79,6 +79,7 @@ public class NotificationAdapter implements NotificationPort {
                             .build())
                     .putData("id", String.valueOf(notificationDto.getId()))
                     .putData("targetId", String.valueOf(notificationDto.getTargetId()))
+                    .putData("targetType", String.valueOf(notificationDto.getTargetType()))
                     .putData("type", notificationDto.getType().name())
                     .putData("timeStamp", String.valueOf(System.currentTimeMillis()))
                     .build();

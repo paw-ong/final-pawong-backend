@@ -7,8 +7,10 @@ import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.NOTIFICAT
 
 import java.time.LocalDateTime;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
+import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import kr.co.pawong.pwbe.notification.application.service.dto.NotificationDto;
 import kr.co.pawong.pwbe.notification.enums.NotificationType;
+import kr.co.pawong.pwbe.notification.enums.TargetType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +24,7 @@ public class Notification {
     private String title;
     private String message;
     private Long targetId;
+    private TargetType targetType;
     private NotificationType type;
     private LocalDateTime createdAt;
 
@@ -34,13 +37,14 @@ public class Notification {
                 .title("새로운 메시지")
                 .message(message)
                 .targetId(chatId)
+                .targetType(TargetType.CHAT)
                 .type(NotificationType.CHAT)
                 .createdAt(LocalDateTime.now())
                 .build();
     }
 
     // 유사 공고 알림
-    public static Notification createSimilarAdoptionNotification(Long userId, Long adoptionId) {
+    public static Notification createSimilarAdoptionNotification(Long userId, Long adoptionId, PostType postType) {
         String title = "유사 공고 발견";
         String message = "유사한 공고가 발견되었습니다.";
 
@@ -51,6 +55,7 @@ public class Notification {
                 .title(title)
                 .message(message)
                 .targetId(adoptionId)
+                .targetType(TargetType.valueOf(postType.name()))
                 .type(NotificationType.SIMILAR_ADOPTION)
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -65,6 +70,7 @@ public class Notification {
                 .title(this.title)
                 .message(this.message)
                 .targetId(this.targetId)
+                .targetType(this.targetType)
                 .type(this.type)
                 .build();
     }
