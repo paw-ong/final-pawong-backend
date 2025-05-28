@@ -1,18 +1,23 @@
-package kr.co.pawong.pwbe.user.adapter.out.security;
+package kr.co.pawong.pwbe.global.security.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import kr.co.pawong.pwbe.global.security.util.JwtTokenProvider;
 import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
 import kr.co.pawong.pwbe.user.domain.User;
 import kr.co.pawong.pwbe.user.enums.UserStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     @Value("${spring.security.base-url}")
@@ -39,14 +44,16 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        // ACTIVE
-        String token = jwtTokenProvider.generateTokenByOauth2(authentication, user.getUserId());
-        if (user.getStatus() != UserStatus.ACTIVE) {
-            response.sendRedirect(baseUrl + "/signup/additional-info?token=" + token + "&status="
-                    + user.getStatus());
+        ResponseCookie accessTokenCookie = jwtTokenProvider.generateAccessTokenCookieByOauth2(authentication, user.getUserId());
+        ResponseCookie refreshTokenCookie = jwtTokenProvider.generateRefreshTokenCookieByOauth2(authentication, user.getUserId());
+        response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
+        response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
+        // INACTIVE : 추가 정보 입력 페이지로 redirect
+        if(user.getStatus() != UserStatus.ACTIVE) {
+            response.sendRedirect(baseUrl + "/oauth2/redirect?status=PENDING");
             return;
         }
-        // JWT를 쿼리 파라미터 등으로 클라이언트에 전달하거나 헤더에 넣어 응답함.
-        response.sendRedirect(baseUrl + "/oauth2/redirect?token=" + token + "&status=ACTIVE");
+        // ACTIVE
+        response.sendRedirect(baseUrl+"/oauth2/redirect?status=ACTIVE");
     }
 }
