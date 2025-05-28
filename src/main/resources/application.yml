@@ -5,6 +5,7 @@ spring:
       - classpath:config/ai.yml
       - classpath:config/security.yml
       - classpath:config/mail.yml
+      - classpath:config/kafka.yml
   batch:
     jdbc:
       initialize-schema: always
@@ -31,3 +32,10 @@ data:
 api-url:
   adoption: ${ADOPTION_URL}
   shelter: ${SHELTER_URL}
+#logging:
+#  level:
+#    org:
+#      apache:
+#        kafka: WARN
+#      springframework:
+#        kafka: WARN

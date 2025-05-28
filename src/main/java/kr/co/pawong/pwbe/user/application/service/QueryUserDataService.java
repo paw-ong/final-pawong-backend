@@ -1,9 +1,9 @@
 package kr.co.pawong.pwbe.user.application.service;
 
 import kr.co.pawong.pwbe.user.application.port.in.QueryNicknameUseCase;
-import kr.co.pawong.pwbe.user.domain.User;
-import kr.co.pawong.pwbe.user.application.port.out.UserDataQueryPort;
 import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
+import kr.co.pawong.pwbe.user.application.port.out.UserDataQueryPort;
+import kr.co.pawong.pwbe.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

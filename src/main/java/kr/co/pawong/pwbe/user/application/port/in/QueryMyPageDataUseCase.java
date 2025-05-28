@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.user.application.port.in;
 
 import java.util.List;
+import kr.co.pawong.pwbe.user.application.port.in.dto.MyPageFavoritesResponse;
 import kr.co.pawong.pwbe.user.application.port.in.dto.MyPageLostPostResponse;
 
 public interface QueryMyPageDataUseCase {
@@ -9,4 +10,5 @@ public interface QueryMyPageDataUseCase {
 
     List<MyPageLostPostResponse> getBookmarkedLostPostsByUserId(Long userId);
 
+    List<MyPageFavoritesResponse> getFavoritesListByUserId(Long userId);
 }

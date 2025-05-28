@@ -22,15 +22,15 @@ public class User {
   private LocalDateTime deletedAt;
   private String email;
 
-  public static User from(UserCreate userCreate) {
-    return User.builder()
-            .socialId(userCreate.getSocialId())
-            .nickname(userCreate.getNickname())
-            .profileImage(userCreate.getProfileImage())
-            .status(UserStatus.PENDING)
-            .createdAt(LocalDateTime.now())
-            .build();
-  }
+    public static User from(UserCreate userCreate) {
+        return User.builder()
+                .socialId(userCreate.getSocialId())
+                .nickname(userCreate.getNickname())
+                .profileImage(userCreate.getProfileImage())
+                .status(UserStatus.PENDING)
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
 
   public User update(UserUpdate userUpdate) {
     this.nickname = userUpdate.getNickname();
