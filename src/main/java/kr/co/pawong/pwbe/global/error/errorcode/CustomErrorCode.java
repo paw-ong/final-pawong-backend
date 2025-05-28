@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.global.error.errorcode;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -69,7 +70,10 @@ public enum CustomErrorCode implements ErrorCode {
     NOTIFICATION_CHAT_SEND_ERROR(INTERNAL_SERVER_ERROR, "채팅 알림 발송에 실패하였습니다."),
     NOTIFICATION_ADOPTION_SEND_ERROR(INTERNAL_SERVER_ERROR, "유사 공고 알림 발송에 실패하였습니다."),
     // 검색
-    SEARCH_ERROR(SERVICE_UNAVAILABLE, "검색 기능이 정상적으로 동작하지 않습니다.")
+    SEARCH_ERROR(SERVICE_UNAVAILABLE, "검색 기능이 정상적으로 동작하지 않습니다."),
+
+    // 이메일
+    EMAIL_DUPLICATE(CONFLICT, "사용 중인 이메일입니다.")
     ;
     private final HttpStatus httpStatus;
     private final String message;
