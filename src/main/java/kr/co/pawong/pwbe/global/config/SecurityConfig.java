@@ -2,7 +2,9 @@ package kr.co.pawong.pwbe.global.config;
 
 import kr.co.pawong.pwbe.global.security.error.CustomAuthenticationEntryPoint;
 import kr.co.pawong.pwbe.global.security.filter.JwtFilter;
+import kr.co.pawong.pwbe.global.security.handler.CookieClearingLogoutSuccessHandler;
 import kr.co.pawong.pwbe.global.security.handler.OAuth2AuthenticationSuccessHandler;
+import kr.co.pawong.pwbe.global.security.handler.RedisLogoutHandler;
 import kr.co.pawong.pwbe.global.security.service.CustomOAuth2UserService;
 import kr.co.pawong.pwbe.global.security.util.JwtTokenProvider;
 import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
@@ -34,6 +36,8 @@ public class SecurityConfig {
     private final QueryUserDataUseCase queryUserDataUseCase;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final RedisLogoutHandler redisLogoutHandler;
+    private final CookieClearingLogoutSuccessHandler cookieClearingLogoutSuccessHandler;
 
 
     @Bean
@@ -78,7 +82,12 @@ public class SecurityConfig {
                 )
 
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(customAuthenticationEntryPoint));
+                        .authenticationEntryPoint(customAuthenticationEntryPoint))
+
+                .logout(logout -> logout
+                    .logoutUrl("/api/auth/logout")
+                    .addLogoutHandler(redisLogoutHandler)
+                    .logoutSuccessHandler(cookieClearingLogoutSuccessHandler));
 
         return http.build();
     }
