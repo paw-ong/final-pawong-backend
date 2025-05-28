@@ -9,7 +9,7 @@ public interface QueryChatRoomDataUseCase {
 
     List<ChatRoomDetail> findUserChatRoomsByPostId(Long userId, Long postId);
 
-    boolean userExistsInChatRoom(Long userId, Long chatRoomId);
+    boolean isUserInChatRoom(Long userId, Long chatRoomId);
 
-    boolean chatRoomIsActive(Long chatRoomId);
+    boolean isChatRoomActive(Long chatRoomId);
 }

@@ -78,6 +78,6 @@ public class ChatRoomQueryController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ChatRoomContainsUserResponse(
-                        queryChatDataUseCase.userExistsInChatRoom(userId, roomId)));
+                        queryChatDataUseCase.isUserInChatRoom(userId, roomId)));
     }
 }

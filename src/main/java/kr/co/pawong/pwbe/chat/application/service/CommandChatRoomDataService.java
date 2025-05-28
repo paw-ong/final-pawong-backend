@@ -23,7 +23,7 @@ public class CommandChatRoomDataService implements CommandChatRoomDataUseCase {
     // 생성된 채팅방 id를 반환
     @Override
     @Transactional
-    public Long createChatRoomOrFindExistingChatRoom(Long participantId,
+    public Long findExistingChatRoomOrCreate(Long participantId,
             ChatRoomCreateRequest request) {
         try {
             ChatRoom chatRoom = chatRoomDataQueryPort.findChatRoomByParticipantIdAndPostIdOrThrow(
@@ -41,7 +41,7 @@ public class CommandChatRoomDataService implements CommandChatRoomDataUseCase {
     @Override
     @Transactional
     public boolean deactivateChatRoomOrThrow(Long userId, Long chatRoomId) {
-        if (!queryChatRoomDataUseCase.userExistsInChatRoom(userId, chatRoomId)) {
+        if (!queryChatRoomDataUseCase.isUserInChatRoom(userId, chatRoomId)) {
             throw new BaseException(CustomErrorCode.FORBIDDEN_CHATROOM_DEACTIVATION);
         }
         return chatRoomDataCommandPort.deactivateChatRoomOrThrow(chatRoomId);
