@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -31,7 +32,7 @@ public class ChatRoomQueryController {
      * @param userDetails
      * @return List<ChatRoomDetail>
      */
-    @GetMapping("/rooms")
+    @GetMapping(value = "/rooms", params = "!postId")
     public ResponseEntity<ChatRoomsResponse> findChatRooms(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
@@ -49,17 +50,17 @@ public class ChatRoomQueryController {
      * @param userDetails
      * @return List<ChatRoomDetail>
      */
-    @GetMapping("/rooms/post/{postId}")
+    @GetMapping(value = "/rooms", params = "postId")
     public ResponseEntity<ChatRoomsResponse> findChatRoomsByPostId(
-            @PathVariable Long postId,
+            @RequestParam("postId") Long postId,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getUserId();
-        List<ChatRoomDetail> allChatRooms = queryChatDataUseCase.findUserChatRoomsByPostId(
+        List<ChatRoomDetail> chatRoomsByPost = queryChatDataUseCase.findUserChatRoomsByPostId(
                 userId, postId);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ChatRoomsResponse(allChatRooms));
+                .body(new ChatRoomsResponse(chatRoomsByPost));
     }
 
     /**
