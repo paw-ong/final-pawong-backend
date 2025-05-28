@@ -9,7 +9,7 @@ spring:
       # 스키마 생성/수정
       ddl-auto: update
     # SQL 로그
-    show-sql: true
+#    show-sql: true
     properties:
       hibernate:
         format_sql: true
