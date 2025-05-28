@@ -88,14 +88,7 @@ public class QueryChatRoomDataService implements QueryChatRoomDataUseCase {
                 .userName();
         String latestMessageContent = fetchLatestMessageContentOrEmpty(room.getChatRoomId());
 
-        return new ChatRoomDetail(
-                postInfo,
-                room.getChatRoomId(),
-                room.getParticipantId(),
-                participantName,
-                room.getStatus(),
-                latestMessageContent
-        );
+        return ChatRoomDetail.of(room, postInfo, participantName, latestMessageContent);
     }
 
     // 채팅방 내 가장 최근 메시지 반환. 메시지가 없다면 빈 문자열 반환
