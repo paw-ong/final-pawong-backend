@@ -147,17 +147,9 @@ public class JwtTokenProvider {
         if (token == null || getUsername(token) == null) {
             return false;
         }
-        try {
-            Claims claims = getClaims(token);
-            return !isExpired(claims);
-            // 만료 여부는 claims.getExpiration() 으로 직접 체크
-        } catch (ExpiredJwtException e) {
-            throw e;
-            // 토큰 만료
-        } catch (JwtException e) {
-            // 서명 오류 / 토큰 변조 / 포맷 오류 등
-            throw e;
-        }
+
+        Claims claims = getClaims(token);
+        return !isExpired(claims);
     }
     public Claims parseAndvalidateRefreshToken(String token) {
         if (token == null) {
