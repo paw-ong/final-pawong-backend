@@ -36,17 +36,16 @@ public class QueryChatRoomDataService implements QueryChatRoomDataUseCase {
     // 공고로 연결된 채팅방들을 ChatRoomDetail 리스트로 반환
     @Override
     public List<ChatRoomDetail> findUserChatRoomsByPostId(Long userId, Long postId) {
-        Long authorId =
-                chatRoomLostPostInfoPort.getLostPostInfosById(postId).authorId();
+        ChatRoomLostPostInfo lostPostInfo = chatRoomLostPostInfoPort.getLostPostInfosById(
+                postId);
         // 요청 유저가 작성자가 아닌 경우 권한 없음
-        if (!authorId.equals(userId)) {
+        if (!lostPostInfo.authorId().equals(userId)) {
             throw new BaseException(CustomErrorCode.FORBIDDEN_CHATROOMS_ACCESS);
         }
 
         List<ChatRoom> rooms = chatRoomDataQueryPort.findChatRoomsByPostId(postId);
-        // 특정 공고로 연결돤 채팅방이므로, 공통의 ChatRoomLostPostInfo 활용
-        ChatRoomLostPostInfo commonInfo = chatRoomLostPostInfoPort.getLostPostInfosById(postId);
-        return buildPostChatRoomDetails(rooms, commonInfo);
+        // 특정 공고로 연결돤 채팅방이므로, 위에서 조회한 lostPostInfo를 그대로 활용
+        return buildPostChatRoomDetails(rooms, lostPostInfo);
     }
 
     @Override
