@@ -1,9 +1,10 @@
-package kr.co.pawong.pwbe.user.application.service;
+package kr.co.pawong.pwbe.notification.application.service;
 
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.USER_NOT_FOUND;
 
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
-import kr.co.pawong.pwbe.user.application.port.in.EmailUseCase;
+import kr.co.pawong.pwbe.notification.application.port.in.CustomMailSenderUseCase;
+import kr.co.pawong.pwbe.notification.application.port.in.MailUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class EmailService implements EmailUseCase {
+public class CustomMailSenderService implements CustomMailSenderUseCase {
 
     private final JavaMailSender emailSender;
 

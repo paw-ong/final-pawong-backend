@@ -11,7 +11,4 @@ public interface AuthUseCase {
 
     AuthResponse signUp(Long userId, UserUpdate userUpdate);
 
-    void sendCodeToEmail(String toEmail);
-
-    String verifiedCode(String email, String authCode);
 }
