@@ -4,6 +4,7 @@ import java.net.URL;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.List;
+import kr.co.pawong.pwbe.chat.adapter.out.lostPost.dto.ChatRoomLostPostInfo;
 import java.util.stream.Collectors;
 import kr.co.pawong.pwbe.infrastructure.s3.application.port.out.ImageStoragePort;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
@@ -62,6 +63,14 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
     }
 
     @Override
+    public ChatRoomLostPostInfo findChatRoomLostPostInfosById(Long lostPostId) {
+        LostPost lostPost = lostPostDataQueryPort.findLostPostByIdOrThrow(lostPostId);
+        String author = userInfoPort.getNicknameByUserId(lostPost.getUserId());
+        URL imageUrl = imageStoragePort.presignDownload(lostPost.getImageKey(),
+                Duration.ofMinutes(15));
+        return new ChatRoomLostPostInfo(lostPost.getLocation(), author, imageUrl);
+    }
+
     public SliceLostPostSearchResponses fetchSlicedLostPosts(Pageable pageable, PostType type, Long userId) {
         Page<LostPost> lostPostPage = lostPostDataQueryPort.getLostPostsByPostTypePaged(pageable, type);
         List<LostPostCard> lostPostCards = mapToLostPostCards(lostPostPage, clock, userId);

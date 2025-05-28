@@ -1,0 +1,42 @@
+package kr.co.pawong.pwbe.chat.application.service;
+
+import kr.co.pawong.pwbe.chat.adapter.in.api.dto.request.ChatRoomCreateRequest;
+import kr.co.pawong.pwbe.chat.application.port.in.CommandChatRoomDataUseCase;
+import kr.co.pawong.pwbe.chat.application.port.in.QueryChatRoomDataUseCase;
+import kr.co.pawong.pwbe.chat.application.port.out.ChatRoomDataCommandPort;
+import kr.co.pawong.pwbe.chat.domain.ChatRoom;
+import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
+import kr.co.pawong.pwbe.global.error.exception.BaseException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+public class CommandChatRoomDataService implements CommandChatRoomDataUseCase {
+
+    private final ChatRoomDataCommandPort chatRoomDataCommandPort;
+    private final QueryChatRoomDataUseCase queryChatRoomDataUseCase;
+
+    // 생성된 채팅방 id를 반환
+    // 사용자가 자신과의 채팅방을 생성하려는 경우 예외 발생
+    @Override
+    @Transactional
+    public Long createChatRoomOrThrow(Long participantId, ChatRoomCreateRequest request) {
+        if (participantId.equals(request.getAuthorId())) {
+            throw new BaseException(CustomErrorCode.CHATROOM_POST_ERROR);
+        }
+        return chatRoomDataCommandPort.saveChatRoomOrThrow(ChatRoom.from(participantId, request));
+    }
+
+    // 채팅방 status를 INACTIVE로 변경
+    // 사용자가 채팅방에 속하지 않는 경우 예외 발생
+    @Override
+    @Transactional
+    public boolean deactivateChatRoomOrThrow(Long userId, Long chatRoomId) {
+        if (!queryChatRoomDataUseCase.userExistsInChatRoom(userId, chatRoomId)) {
+            throw new BaseException(CustomErrorCode.FORBIDDEN_CHATROOM_DEACTIVATION);
+        }
+        return chatRoomDataCommandPort.deactivateChatRoomOrThrow(chatRoomId);
+    }
+}

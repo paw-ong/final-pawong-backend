@@ -1,6 +1,5 @@
 package kr.co.pawong.pwbe.global.error.exception;
 
-import jdk.jshell.spi.ExecutionControlProvider;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.errorcode.ErrorCode;
 import kr.co.pawong.pwbe.global.error.response.BaseErrorResponse;

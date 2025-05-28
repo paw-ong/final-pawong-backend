@@ -40,5 +40,6 @@ public class LostPostDetailDto {
     private GeoPoint geoPoint;
     boolean bookmarked;             // 북마크 여부. 비로그인 상태일 경우 false
     String author; // 작성자
+    Long authorId;  // 작성자 id
 
 }
