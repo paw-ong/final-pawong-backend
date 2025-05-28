@@ -18,8 +18,8 @@ spring:
 kafka:
   topic:
     notification: fcm-notification
-    common-dead-letter: dev.pawong.common.dlt
-    lost-post-created: dev.pawong.lost-post.created
-    rescued-animal-created: dev.pawong.rescued-animal.created
-    lost-post-embedded: dev.pawong.lost-post.embedded
-    rescued-animal-embedded: dev.pawong.rescued-animal.embedded
+    common-dead-letter: "dev.pawong.common.dlt"
+    lost-post-created: "dev.pawong.lost-post.created"
+    rescued-animal-created: "dev.pawong.rescued-animal.created"
+    lost-post-embedded: "dev.pawong.lost-post.embedded"
+    rescued-animal-embedded: "dev.pawong.rescued-animal.embedded"
