@@ -63,17 +63,11 @@ public class SecurityConfig {
                                 "/api/adoptions/**",
                                 "/api/adoption/**",
                                 "/api/shelters/**",
-                                "/api/lost-animals/**",
-                                "/api/auth/csrf-token"
+                                "/api/lost-animals/**"
                         ).permitAll()
                         .requestMatchers(
-                                HttpMethod.GET, "/api/lost-animals/*", // ⬅ 단건 조회만 허용
-                                "/api/shelters/**"
+                                HttpMethod.GET, "/api/lost-animals/*" // ⬅ 단건 조회만 허용
                         ).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/lost-animals/**")
-                        .permitAll() // ⬅ 단건 조회만 허용
-                        .requestMatchers("/api/lost-animals/**")
-                        .authenticated()            // ⬅ 그 외는 인증 필요
                         .anyRequest().authenticated())
 
                 // oauth2 요청만 처리
