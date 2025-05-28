@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.global.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.ssl.SslBundles;
 import org.springframework.context.annotation.Bean;
@@ -11,13 +12,21 @@ import org.springframework.kafka.core.KafkaAdmin;
 @Configuration
 public class KafkaTopicConfig {
 
-    public static final String COMMON_DEAD_LETTER_TOPIC = "dev.pawong.common.dlt";
+    @Value("${kafka.topic.notification}")
+    private String NOTIFICATION_TOPIC;
+    @Value("${kafka.topic.common-dead-letter}")
+    private String COMMON_DEAD_LETTER_TOPIC;
+    @Value("${kafka.topic.lost-post-created}")
+    private String LOST_POST_CREATED_TOPIC;
+    @Value("${kafka.topic.rescued-animal-created}")
+    private String RESCUED_ANIMAL_CREATED_TOPIC;
+    @Value("${kafka.topic.lost-post-embedded}")
+    private String LOST_POST_EMBEDDED_TOPIC;
+    @Value("${kafka.topic.rescued-animal-embedded}")
+    private String RESCUED_ANIMAL_EMBEDDED_TOPIC;
 
-    public static final String LOST_POST_CREATED_TOPIC = "dev.pawong.lost-post.created";
-    public static final String RESCUED_ANIMAL_CREATED_TOPIC = "dev.pawong.rescued-animal.created";
-    public static final String LOST_POST_EMBEDDED_TOPIC = "dev.pawong.lost-post.embedded";
-    public static final String RESCUED_ANIMAL_EMBEDDED_TOPIC = "dev.pawong.rescued-animal.embedded";
 
+    // KafkaAdmin 빈: application.yml 의 spring.kafka.* 설정을 사용
     @Bean
     public KafkaAdmin kafkaAdmin(KafkaProperties props, SslBundles sslBundles) {
         return new KafkaAdmin(props.buildAdminProperties(sslBundles));
@@ -63,6 +72,15 @@ public class KafkaTopicConfig {
         return TopicBuilder.name(RESCUED_ANIMAL_EMBEDDED_TOPIC)
                 .partitions(1)
                 .replicas(1)
+                .build();
+    }
+
+    // fcm 알림
+    @Bean
+    public NewTopic fcmNotificationTopic() {
+        return TopicBuilder.name(NOTIFICATION_TOPIC)
+                .partitions(3) // 토픽의 파티션 수
+                .replicas(1) // 각 파티션의 복제본 수
                 .build();
     }
 }

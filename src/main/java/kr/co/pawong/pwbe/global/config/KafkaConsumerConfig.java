@@ -2,6 +2,7 @@ package kr.co.pawong.pwbe.global.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.TopicPartition;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -18,6 +19,9 @@ import org.springframework.util.backoff.FixedBackOff;
 @EnableKafka
 @Configuration
 public class KafkaConsumerConfig {
+
+    @Value("${kafka.topic.common-dead-letter")
+    private String COMMON_DEAD_LETTER_TOPIC;
 
     @Bean
     public KafkaTemplate<String, Object> kafkaTemplate(
@@ -43,7 +47,7 @@ public class KafkaConsumerConfig {
                 new DeadLetterPublishingRecoverer(
                         kafkaTemplate,
                         (record, ex) -> new TopicPartition(
-                                KafkaTopicConfig.COMMON_DEAD_LETTER_TOPIC, record.partition())
+                                COMMON_DEAD_LETTER_TOPIC, record.partition())
                 );
 
         // 재시도 정책: 1초 간격, 최대 3회

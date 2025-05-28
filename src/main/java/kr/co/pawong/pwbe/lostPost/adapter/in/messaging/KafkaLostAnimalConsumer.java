@@ -24,7 +24,7 @@ public class KafkaLostAnimalConsumer {
      * "실종" 신고 게시물 임베딩이 끝난 경우 호출
      */
     @KafkaListener(
-            topics = KafkaTopicConfig.LOST_POST_EMBEDDED_TOPIC,
+            topics = "${kafka.topic.lost-post-embedded}",
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void lostPostEmbeddedTopicConsumer(String message) throws JsonProcessingException {
@@ -39,7 +39,7 @@ public class KafkaLostAnimalConsumer {
      * "발견" 게시물 또는 "구조"되어서 보호소에 보호중인 실종 동물 임베딩이 끝난 경우 호출
      */
     @KafkaListener(
-            topics = KafkaTopicConfig.RESCUED_ANIMAL_EMBEDDED_TOPIC,
+            topics = "${kafka.topic.rescued-animal-embedded}",
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void rescuedAnimalEmbeddedTopicConsumer(String message) throws JsonProcessingException {

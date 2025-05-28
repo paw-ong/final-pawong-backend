@@ -6,11 +6,17 @@ import kr.co.pawong.pwbe.lostPost.application.port.out.LostAnimalMessagePublishP
 import kr.co.pawong.pwbe.lostPost.application.port.out.dto.CreatedLostAnimalPublishDto;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class LostAnimalMessagePublisher implements LostAnimalMessagePublishPort {
+
+    @Value("${kafka.topic.lost-post-created}")
+    private String LOST_POST_CREATED_TOPIC;
+    @Value("${kafka.topic.rescued-animal-created}")
+    private String RESCUED_ANIMAL_CREATED_TOPIC;
 
     private final PublishMessageUseCase publishMessageUseCase;
 
@@ -18,9 +24,9 @@ public class LostAnimalMessagePublisher implements LostAnimalMessagePublishPort 
     public void publishLostAnimalCreatedMessage(CreatedLostAnimalPublishDto message) {
         switch (message.type()) {
             case PostType.LOST
-                    -> publishMessageUseCase.publishMessage(KafkaTopicConfig.LOST_POST_CREATED_TOPIC, message);
+                    -> publishMessageUseCase.publishMessage(LOST_POST_CREATED_TOPIC, message);
             case PostType.FOUND, PostType.FOSTER
-                    -> publishMessageUseCase.publishMessage(KafkaTopicConfig.RESCUED_ANIMAL_CREATED_TOPIC, message);
+                    -> publishMessageUseCase.publishMessage(RESCUED_ANIMAL_CREATED_TOPIC, message);
         }
     }
 }

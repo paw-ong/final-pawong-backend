@@ -18,7 +18,7 @@ public class KafkaDeadLetterTopicConsumer {
      * 이 로그는 dtl.log 파일로 저장됩니다.
      */
     @KafkaListener(
-            topics = KafkaTopicConfig.COMMON_DEAD_LETTER_TOPIC
+            topics = "${kafka.topic.common-dead-letter}"
     )
     public void lostPostEmbeddedTopicConsumer(
             ConsumerRecord<String, String> record,
