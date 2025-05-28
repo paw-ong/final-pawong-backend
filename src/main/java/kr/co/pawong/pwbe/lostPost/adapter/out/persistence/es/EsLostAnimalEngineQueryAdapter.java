@@ -55,7 +55,7 @@ public class EsLostAnimalEngineQueryAdapter implements LostAnimalEngineQueryPort
     /**
      * 주어진 ES _id 에 해당하는 문서가 있으면,
      * 해당 문서의 embedding으로 유사 검색을 수행하고 결과를 반환합니다.
-     * 없으면 Optional.empty()를 반환.
+     * document 자체가 없으면 null를 반환.
      */
     @Override
     public List<LostAnimalEngineResponse> searchSimilarLostAnimalsByESId(String esId, List<PostType> types) {
@@ -63,7 +63,7 @@ public class EsLostAnimalEngineQueryAdapter implements LostAnimalEngineQueryPort
         LostAnimalDocument doc =
                 elasticsearchOperations.get(esId, LostAnimalDocument.class);
 
-        // 2) 문서가 없으면 empty
+        // 2) 문서가 없으면 null
         if (doc == null) {
             return null;
         }
