@@ -4,7 +4,7 @@ import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostAdoptionDataUseCa
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAdoptionDetailDto;
 import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.response.LostAdoptionDetailResponse;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.SliceLostPostSearchResponses;
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
+import kr.co.pawong.pwbe.global.security.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

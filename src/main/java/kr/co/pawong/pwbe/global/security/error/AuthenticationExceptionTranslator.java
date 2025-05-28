@@ -1,11 +1,11 @@
-package kr.co.pawong.pwbe.user.adapter.in.security.error;
+package kr.co.pawong.pwbe.global.security.error;
 
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.REQUEST_ERROR;
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.USER_NOT_FOUND;
 
 import java.util.Map;
 import kr.co.pawong.pwbe.global.error.errorcode.ErrorCode;
-import kr.co.pawong.pwbe.user.adapter.in.security.error.exception.FilterAuthenticationException;
+import kr.co.pawong.pwbe.global.security.error.exception.FilterAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 

@@ -2,7 +2,7 @@ package kr.co.pawong.pwbe.user.adapter.in.api;
 
 import java.util.List;
 import kr.co.pawong.pwbe.user.adapter.in.api.dto.response.BaseMyPageResponse;
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
+import kr.co.pawong.pwbe.global.security.dto.CustomUserDetails;
 import kr.co.pawong.pwbe.user.application.port.in.QueryMyPageDataUseCase;
 import kr.co.pawong.pwbe.user.application.port.in.dto.MyPageFavoritesResponse;
 import kr.co.pawong.pwbe.user.application.port.in.dto.MyPageLostPostResponse;

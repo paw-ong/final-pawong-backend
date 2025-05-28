@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.user.adapter.in.security.error;
+package kr.co.pawong.pwbe.global.security.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;

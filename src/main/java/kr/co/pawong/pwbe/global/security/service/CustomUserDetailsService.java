@@ -1,10 +1,11 @@
-package kr.co.pawong.pwbe.user.adapter.out.security;
+package kr.co.pawong.pwbe.global.security.service;
 
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.USERNAME_NOT_FOUND;
 
+import kr.co.pawong.pwbe.global.security.dto.CustomUserDetails;
+import kr.co.pawong.pwbe.global.security.error.exception.FilterAuthenticationException;
 import kr.co.pawong.pwbe.user.adapter.out.jpa.entity.UserEntity;
 import kr.co.pawong.pwbe.user.adapter.out.jpa.repository.UserJpaRepository;
-import kr.co.pawong.pwbe.user.adapter.out.security.error.exception.FilterAuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

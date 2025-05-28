@@ -1,8 +1,8 @@
-package kr.co.pawong.pwbe.global.interceptor;
+package kr.co.pawong.pwbe.global.security.interceptor;
 
 import java.util.List;
 import java.util.Map;
-import kr.co.pawong.pwbe.user.adapter.out.security.JwtTokenProvider;
+import kr.co.pawong.pwbe.global.security.util.JwtTokenProvider;
 import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
 import kr.co.pawong.pwbe.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -74,7 +74,7 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return false;
         }
-        if (!jwtTokenProvider.validateToken(token)) {
+        if (!jwtTokenProvider.validateAccessTokenOrThrow(token)) {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return false;
         }
