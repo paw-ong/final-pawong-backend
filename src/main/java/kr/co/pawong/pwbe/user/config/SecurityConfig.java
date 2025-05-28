@@ -77,7 +77,7 @@ public class SecurityConfig {
                                 "/api/adoption/**",
                                 "/api/shelters/**",
                                 "/api/lost-animals/**",
-                                "/api/mail/**"
+                                "/api/mail/**",
                                 "/api/lost-animals/**",
                                 "/api/auth/csrf-token"
                         ).permitAll()

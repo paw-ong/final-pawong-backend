@@ -10,4 +10,8 @@ public interface AuthUseCase {
     User createOrGetUser(UserCreate userCreate);
 
     AuthResponse signUp(Long userId, UserUpdate userUpdate);
+
+    void sendCodeToEmail(String toEmail);
+
+    String verifiedCode(String email, String authCode);
 }
