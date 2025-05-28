@@ -2,7 +2,7 @@ package kr.co.pawong.pwbe.infrastructure.fcm.adapter.in.api;
 
 import kr.co.pawong.pwbe.infrastructure.fcm.adapter.in.api.dto.FcmTokenRequest;
 import kr.co.pawong.pwbe.infrastructure.fcm.application.port.in.FcmUsecase;
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
+import kr.co.pawong.pwbe.global.security.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

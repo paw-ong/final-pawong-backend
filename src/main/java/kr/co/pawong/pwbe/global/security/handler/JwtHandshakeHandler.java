@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.global.handshake;
+package kr.co.pawong.pwbe.global.security.handler;
 
 import java.security.Principal;
 import java.util.Map;

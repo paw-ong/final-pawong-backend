@@ -1,4 +1,4 @@
-package kr.co.pawong.pwbe.user.adapter.in.security.error;
+package kr.co.pawong.pwbe.global.security.error;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

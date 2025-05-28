@@ -4,7 +4,7 @@ import kr.co.pawong.pwbe.chat.adapter.in.api.dto.request.ChatRoomCreateRequest;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomCreateResponse;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomDeactivateResponse;
 import kr.co.pawong.pwbe.chat.application.port.in.CommandChatRoomDataUseCase;
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
+import kr.co.pawong.pwbe.global.security.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

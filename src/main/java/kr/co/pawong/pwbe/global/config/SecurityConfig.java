@@ -1,10 +1,10 @@
 package kr.co.pawong.pwbe.global.config;
 
-import kr.co.pawong.pwbe.user.adapter.in.security.error.CustomAuthenticationEntryPoint;
-import kr.co.pawong.pwbe.user.adapter.in.security.filter.JwtFilter;
-import kr.co.pawong.pwbe.user.adapter.in.security.handler.OAuth2AuthenticationSuccessHandler;
-import kr.co.pawong.pwbe.user.adapter.in.security.service.CustomOAuth2UserService;
-import kr.co.pawong.pwbe.user.adapter.in.security.util.JwtTokenProvider;
+import kr.co.pawong.pwbe.global.security.error.CustomAuthenticationEntryPoint;
+import kr.co.pawong.pwbe.global.security.filter.JwtFilter;
+import kr.co.pawong.pwbe.global.security.handler.OAuth2AuthenticationSuccessHandler;
+import kr.co.pawong.pwbe.global.security.service.CustomOAuth2UserService;
+import kr.co.pawong.pwbe.global.security.util.JwtTokenProvider;
 import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

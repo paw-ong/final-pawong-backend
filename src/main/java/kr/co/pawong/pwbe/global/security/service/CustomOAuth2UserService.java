@@ -1,7 +1,8 @@
-package kr.co.pawong.pwbe.user.adapter.out.security;
+package kr.co.pawong.pwbe.global.security.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import kr.co.pawong.pwbe.global.security.dto.CustomOAuth2User;
 import kr.co.pawong.pwbe.user.adapter.out.dto.KakaoUserResponse;
 import kr.co.pawong.pwbe.user.application.port.in.AuthUseCase;
 import kr.co.pawong.pwbe.user.domain.User;
