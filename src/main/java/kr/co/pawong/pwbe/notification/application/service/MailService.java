@@ -42,14 +42,14 @@ public class MailService implements MailUseCase {
     }
 
     @Override
-    public String verifiedCode(String email, String authCode) {
+    public Boolean verifiedCode(String email, String authCode) {
         this.checkDuplicatedEmail(email);
         String redisAuthCode = redisUtils.getData(AUTH_CODE_PREFIX + email);
         boolean authResult = redisAuthCode.equals(authCode);
         if (authResult) {
             redisUtils.deleteData(AUTH_CODE_PREFIX + email);
-            return "이메일 인증 성공";
+            return true;
         }
-        return "이메일 인증 실패";
+        return false;
     }
 }

@@ -28,9 +28,9 @@ public class EmailController {
 
     // 인증코드 검증
     @GetMapping("/verifications")
-    public ResponseEntity<String> verificationEmail(@RequestParam("email") String email,
+    public ResponseEntity<Boolean> verificationEmail(@RequestParam("email") String email,
             @RequestParam("code") String authCode) {
-        String response = mailUseCase.verifiedCode(email, authCode);
+        Boolean response = mailUseCase.verifiedCode(email, authCode);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

@@ -4,6 +4,6 @@ public interface MailUseCase {
 
     void sendCodeToEmail(String toEmail);
 
-    String verifiedCode(String email, String authCode);
+    Boolean verifiedCode(String email, String authCode);
 
 }
