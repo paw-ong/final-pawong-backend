@@ -37,6 +37,23 @@ services:
     networks:
       - local-net
 
+  nginx:
+    image: nginx:latest
+    container_name: pawong-local-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./infra/nginx/conf/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./infra/nginx/logs:/var/log/nginx
+    depends_on:
+      - elasticsearch
+      - kibana
+    networks:
+      - local-net
+
+  # ──────────────────────────────
+  #  Kafka
+  # ──────────────────────────────
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: pawong-local-zk
@@ -69,19 +86,60 @@ services:
     networks:
       - local-net
 
-  nginx:
-    image: nginx:latest
-    container_name: pawong-local-nginx
-    ports:
-      - "80:80"
+  # ──────────────────────────────
+  #  Monitoring
+  # ──────────────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: pawong-local-prometheus
     volumes:
-      - ./infra/nginx/conf/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./infra/nginx/logs:/var/log/nginx
-    depends_on:
-      - elasticsearch
-      - kibana
+      - ./infra/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
     networks:
       - local-net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: pawong-local-grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    networks:
+      - local-net
+
+  node-exporter:
+    image: prom/node-exporter
+    container_name: pawong-local-node-exporter
+    ports:
+      - "${NODE_EXPORTER_PORT:-9100}:9100"
+    restart: always
+    networks:
+      - local-net
+
+#  loki:
+#    image: grafana/loki:2.8.2
+#    container_name: pawong-local-loki
+#    command: -config.file=/etc/loki/local-config.yaml
+#    volumes:
+#      - ./infra/monitoring/loki-config.yaml:/etc/loki/local-config.yaml:ro
+#    ports:
+#      - "${LOKI_PORT:-3100}:3100"
+#    networks:
+#      - local-net
+#
+#  promtail:
+#    image: grafana/promtail:2.8.2
+#    container_name: pawong-local-promtail
+#    volumes:
+#      - ./infra/monitoring/promtail.yml:/etc/promtail/promtail.yml:ro
+#      - /var/log:/var/log:ro
+#    depends_on:
+#      - loki
+#    networks:
+#      - local-net
 
 volumes:
   mysql-data:
@@ -89,3 +147,4 @@ volumes:
 networks:
   local-net:
     driver: bridge
+    name: local-net
