@@ -21,13 +21,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set Firebase service account
-        run: |
-          mkdir -p src/main/resources/firebase
-          cat << 'EOF' > src/main/resources/firebase/serviceAccountKey.json
-          ${{ secrets.FCM_ACCOUNT }}
-          EOF
-        shell: bash
+      - name: Create Firebase service account key
+        uses: jsdaniell/create-json@v1.2.2
+        with:
+          name: "serviceAccountKey.json"
+          json: ${{ secrets.FCM_ACCOUNT }}
+          dir: './src/main/resources/firebase/'
 
       - name: Build Docker image
         run: |
