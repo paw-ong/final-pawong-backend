@@ -55,7 +55,7 @@ public class JwtTokenProvider {
     public ResponseCookie generateRefreshTokenCookie(Long userId) {
         long maxAgeInSeconds = refreshTokenValidityInMs / 1_000;
         String refresh = createRefreshToken(userId);
-        refreshTokenService.store(userId, refresh);
+        refreshTokenService.storeRefresh(userId, refresh);
         return ResponseCookie.from("REFRESH_TOKEN", refresh)
                 .httpOnly(true)
                 .secure(false)

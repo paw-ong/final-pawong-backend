@@ -16,7 +16,6 @@ import kr.co.pawong.pwbe.global.security.error.exception.FilterAuthenticationExc
 import kr.co.pawong.pwbe.global.security.service.AuthContextService;
 import kr.co.pawong.pwbe.global.security.service.RefreshTokenService;
 import kr.co.pawong.pwbe.global.security.util.JwtTokenProvider;
-import kr.co.pawong.pwbe.user.application.port.in.AuthUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -96,7 +95,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         // Redis에 저장된 토큰과 일치하는지 검증 -> 일치하지 않으면 401
         Long userId = Long.valueOf(jwtTokenProvider.getRefreshUsername(refreshToken));
-        if (!refreshTokenService.isValid(userId, refreshToken)) {
+        if (!refreshTokenService.isValidRefresh(userId, refreshToken)) {
             throw new FilterAuthenticationException(TOKEN_INVALIDATE);
         }
 
@@ -109,7 +108,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String newRefresh = jwtTokenProvider.createRefreshToken(userId);
 
         // 2) Redis 교체
-        refreshTokenService.rotate(userId, newRefresh);
+        refreshTokenService.rotateRefresh(userId, newRefresh);
         log.info("rotate");
 
         // 3) 새로운 쿠키 세팅
