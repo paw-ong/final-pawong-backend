@@ -1,20 +1,26 @@
 package kr.co.pawong.pwbe.global.security.interceptor;
 
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.TOKEN_INVALIDATE;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import kr.co.pawong.pwbe.global.security.error.exception.FilterAuthenticationException;
 import kr.co.pawong.pwbe.global.security.service.AuthContextService;
 import kr.co.pawong.pwbe.global.security.util.JwtTokenProvider;
-import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.util.WebUtils;
 
 /**
  * WebSocket 핸드셰이크 단계 즉 클라이언트가 최초로 /ws (또는 SockJS 의 /ws/info) 엔드포인트로 HTTP 요청을 보낼 때 한번만 호출
@@ -59,17 +65,34 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
         if (upgrade == null || !upgrade.contains("websocket"))
             return true;
 
-        String token = UriComponentsBuilder.fromUri(request.getURI())
-                .build()
-                .getQueryParams()
-                .getFirst("token");
+        // 쿠키에서 토큰 가져오기
+        String token = resolveToken(request);
 
-        if (!jwtTokenProvider.validateAccessTokenOrThrow(token)) {
+        try {
+            // CASE 1: 유효한 Access Token
+            if (jwtTokenProvider.validateAccessTokenOrThrow(token)) {
+                attributes.put("auth", authContextService.createAuthContext(token));
+                return true;
+            }
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            return false;
+
+        } catch (ExpiredJwtException | JwtException | IllegalArgumentException bad) {
+            throw new FilterAuthenticationException(TOKEN_INVALIDATE);
         }
-        attributes.put("auth", authContextService.createAuthContext(token));
         return true;
+    }
+
+    /**
+     * ServerHttpRequest → HttpServletRequest로 변환해서
+     * "ACCESS_TOKEN" 쿠키를 찾아 그 값을 리턴하거나 null
+     */
+    private String resolveToken(ServerHttpRequest request) {
+        if (!(request instanceof ServletServerHttpRequest)) {
+            return null;
+        }
+        HttpServletRequest servletReq = ((ServletServerHttpRequest) request).getServletRequest();
+        Cookie cookie = WebUtils.getCookie(servletReq, "ACCESS_TOKEN");
+        return (cookie != null ? cookie.getValue() : null);
     }
 
     /**
