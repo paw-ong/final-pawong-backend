@@ -1,6 +1,6 @@
 package kr.co.pawong.pwbe.notification.application.service;
 
-import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.USER_NOT_FOUND;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.EMAIL_DUPLICATE;
 
 import java.time.Duration;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
@@ -26,7 +26,7 @@ public class MailService implements MailUseCase {
     @Override
     public void sendCodeToEmail(String toEmail) {
         this.checkDuplicatedEmail(toEmail);
-        String title = "Travel with me 이메일 인증 번호";
+        String title = "PAWONG 회원가입 이메일 인증 번호";
         String authCode = CodeGenerator.generateCode();
         mailService.sendEmail(toEmail, title, authCode);
         // 이메일 인증 요청 시 인증 번호 Redis에 저장 ( key = "AuthCode " + Email / value = AuthCode )
@@ -37,7 +37,7 @@ public class MailService implements MailUseCase {
     private void checkDuplicatedEmail(String email) {
         Boolean emails = queryUserDataUseCase.isEmailExist(email);
         if (emails == true) {
-            throw new BaseException(USER_NOT_FOUND);
+            throw new BaseException(EMAIL_DUPLICATE);
         }
     }
 

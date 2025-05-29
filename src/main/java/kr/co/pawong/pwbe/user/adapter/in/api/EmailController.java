@@ -19,18 +19,27 @@ public class EmailController {
     private final QueryUserDataUseCase queryUserDataUseCase;
     private final MailUseCase mailUseCase;
 
+    // 인증코드 발송
     @PostMapping("/six")
-    public ResponseEntity sendMessage(@RequestParam("email") String email) {
+    public ResponseEntity<?> sendMail(@RequestParam("email") String email) {
         mailUseCase.sendCodeToEmail(email);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 인증코드 검증
     @GetMapping("/verifications")
-    public ResponseEntity verificationEmail(@RequestParam("email") String email,
+    public ResponseEntity<String> verificationEmail(@RequestParam("email") String email,
             @RequestParam("code") String authCode) {
         String response = mailUseCase.verifiedCode(email, authCode);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // 이메일 중복 검사
+    @GetMapping("/is-email-exist")
+    public ResponseEntity<Boolean> isEmailExist(@RequestParam("email") String email) {
+        Boolean verification = queryUserDataUseCase.isEmailExist(email);
+        return new ResponseEntity<>(verification, HttpStatus.OK);
     }
 
 }

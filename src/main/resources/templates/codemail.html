@@ -11,17 +11,24 @@
       <table style="margin: 40px auto; border-collapse: separate;" width="600" cellspacing="0" cellpadding="0">
         <tr>
           <td style="padding-bottom: 20px;" align="center"> <!-- Added padding-bottom here -->
-            <h1 style="color: #A79277;">이메일 인증 토큰</h1>
+            <h1 style="color: #A79277;">이메일 인증 코드</h1>
           </td>
         </tr>
         <tr>
           <td style="padding-bottom: 20px;" align="center"> <!-- And here -->
-            <p>아래의 토큰을 사용하여 이메일을 인증해주세요:</p>
+            <p>아래의 코드을 사용하여 이메일을 인증해주세요:</p>
           </td>
         </tr>
         <tr>
           <td align="center">
-            <div style="background-color: #fff; border: 2px dashed #A79277; padding: 10px 20px; margin-top: 20px; font-size: 20px; font-weight: bold; letter-spacing: 2px;" th:text="${token}">[Token]</div>
+            <h1 style="margin:0; color:#3b4d63; line-height:140%; text-align:center; font-family:arial,helvetica,sans-serif; font-size:41px; font-weight:400;">
+              <span style="text-decoration:underline;"><strong th:text="${authCode.substring(0,1)}">1</strong></span>
+              <span style="text-decoration:underline;"><strong th:text="${authCode.substring(1,2)}">2</strong></span>
+              <span style="text-decoration:underline;"><strong th:text="${authCode.substring(2,3)}">3</strong></span>
+              <span style="text-decoration:underline;"><strong th:text="${authCode.substring(3,4)}">4</strong></span>
+              <span style="text-decoration:underline;"><strong th:text="${authCode.substring(4,5)}">5</strong></span>
+              <span style="text-decoration:underline;"><strong th:text="${authCode.substring(5,6)}">6</strong></span>
+            </h1>
           </td>
         </tr>
       </table>
