@@ -1,8 +1,6 @@
 package kr.co.pawong.pwbe.global.security.filter;
 
-import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.ACCESS_TOKEN_INVALIDATE;
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.REFRESH_TOKEN_INVALIDATE;
-import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.TOKEN_INVALIDATE;
 import static kr.co.pawong.pwbe.global.security.util.JwtUtil.getCookieValue;
 
 import io.jsonwebtoken.Claims;
@@ -61,48 +59,45 @@ public class JwtFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         log.info("jwtFilter");
 
-
-        /**
-         * CASE 1: Valid Access Token
-         */
+        // CASE 1: Valid Access Token
         String accessToken = getCookieValue(request, "ACCESS_TOKEN");
-
         try {
-            // CASE 1: 유효한 Access Token
-            if (jwtTokenProvider.validateAccessTokenOrThrow(accessToken)) {
-                authContextService.createAuthContext(accessToken);
-                log.info("valid Access");
+            jwtTokenProvider.validateAccessTokenOrThrow(accessToken);
+            authContextService.createAuthContext(accessToken);
+            filterChain.doFilter(request, response);
+        } catch (ExpiredJwtException | JwtException | IllegalArgumentException bad) {
+            String refreshToken = getCookieValue(request, "REFRESH_TOKEN");
+            if (validateRefreshToken(refreshToken)) {
+                Long userId = Long.valueOf(jwtTokenProvider.getRefreshUsername(refreshToken));
+                updateAccessAndRefreshToken(request, response, userId);
                 filterChain.doFilter(request, response);
                 return;
             }
-        } catch (ExpiredJwtException expired) {
-            // 토큰 만료 → CASE 2/3 로 내려가서 Refresh 로직 수행
-        } catch (JwtException | IllegalArgumentException bad) {
-            // 서명 오류 / 포맷 오류
-            throw new FilterAuthenticationException(ACCESS_TOKEN_INVALIDATE);
-        }
-
-        /**
-         * CASE 2: Invalid Access Token + Invalid Refresh Token
-         */
-        String refreshToken = getCookieValue(request, "REFRESH_TOKEN");
-        Claims refreshClaims;
-        try {
-            refreshClaims = jwtTokenProvider.parseAndValidateRefreshToken(refreshToken);
-            if (refreshClaims == null) throw new JwtException("Expired");
-        } catch (JwtException e) {
             throw new FilterAuthenticationException(REFRESH_TOKEN_INVALIDATE);
         }
+    }
+
+    private boolean validateRefreshToken(String refreshToken) {
+        Claims refreshClaims = jwtTokenProvider.parseAndValidateRefreshToken(refreshToken);
+        if (refreshClaims == null) {
+            log.info("invalid refresh");
+            return false;
+        }
+
         // Redis에 저장된 토큰과 일치하는지 검증 -> 일치하지 않으면 401
         Long userId = Long.valueOf(jwtTokenProvider.getRefreshUsername(refreshToken));
         if (!refreshTokenService.isValidRefresh(userId, refreshToken)) {
-            throw new FilterAuthenticationException(TOKEN_INVALIDATE);
+            log.info("invalid refresh");
+            return false;
         }
+        return true;
+    }
 
-        /**
-         * CASE 3: Valid Refresh Token → 새 토큰 발급
-         */
-        log.info("valid refreshToken");
+    private void updateAccessAndRefreshToken(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Long userId
+    ) {
         // 1) 새 토큰 생성
         String newAccess = jwtTokenProvider.createAccessToken(userId);
         String newRefresh = jwtTokenProvider.createRefreshToken(userId);
@@ -114,14 +109,11 @@ public class JwtFilter extends OncePerRequestFilter {
         // 3) 새로운 쿠키 세팅
         ResponseCookie accessCookie = jwtTokenProvider.generateAccessTokenCookie(userId);
         ResponseCookie refreshCookie = jwtTokenProvider.generateRefreshTokenCookie(userId);
-
         response.setHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
 
         // 4) 인증 객체 세팅
         authContextService.createAuthContext(newAccess);
-        filterChain.doFilter(request, response);
-
     }
 
     private String extractToken(HttpServletRequest request) {
