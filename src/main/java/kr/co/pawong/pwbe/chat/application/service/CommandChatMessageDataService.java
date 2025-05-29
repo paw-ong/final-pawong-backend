@@ -19,7 +19,6 @@ public class CommandChatMessageDataService implements CommandChatMessageDataUseC
 
     private final ChatMessageDataCommandPort chatMessageDataCommandPort;
     private final QueryChatRoomDataUseCase queryChatRoomDataUseCase;
-    private final ApplicationEventPublisher publisher;
 
     @Override
     public ChatMessage createChatMessage(Long chatRoomId, Long senderId, String content) {
