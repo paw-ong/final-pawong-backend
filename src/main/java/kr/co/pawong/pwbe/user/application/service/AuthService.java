@@ -1,30 +1,24 @@
 package kr.co.pawong.pwbe.user.application.service;
 
-import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import kr.co.pawong.pwbe.user.application.port.in.AuthUseCase;
 import kr.co.pawong.pwbe.user.application.port.in.dto.AuthResponse;
-import kr.co.pawong.pwbe.global.security.util.JwtTokenProvider;
 import kr.co.pawong.pwbe.user.domain.User;
 import kr.co.pawong.pwbe.user.application.port.in.dto.UserCreate;
 import kr.co.pawong.pwbe.user.application.port.in.dto.UserUpdate;
 import kr.co.pawong.pwbe.user.application.port.out.UserDataCommandPort;
 import kr.co.pawong.pwbe.user.application.port.out.UserDataQueryPort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.oauth2.jwt.JwtException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.WebUtils;
 
-@RequiredArgsConstructor
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class AuthService implements AuthUseCase {
 
     private final UserDataQueryPort userDataQueryPort;
     private final UserDataCommandPort userCommandRepository;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public User createOrGetUser(UserCreate userCreate) {
