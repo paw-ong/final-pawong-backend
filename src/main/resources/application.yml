@@ -35,4 +35,4 @@ logging:
       springframework:
         kafka: WARN
 app:
-  firebase-configuration-file: classpath:firebase/serviceAccountKey.json
+  firebase-configuration-file: firebase/serviceAccountKey.json
