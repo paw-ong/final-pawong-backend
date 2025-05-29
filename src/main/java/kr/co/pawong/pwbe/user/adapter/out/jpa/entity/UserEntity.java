@@ -32,7 +32,6 @@ public class UserEntity {
     private String profileImage;      // 프로필 이미지
     private String region;            // 지역
     private String tel;               // 전화번호
-    @Column(name = "email", nullable = false, length = 254)
     private String email;
     @Enumerated(EnumType.STRING)
     private UserStatus status;        // 사용자 상태
