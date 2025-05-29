@@ -24,8 +24,9 @@ jobs:
       - name: Set Firebase service account
         run: |
           mkdir -p src/main/resources/firebase
-          echo "${{ secrets.FCM_ACCOUNT }}" | base64 --decode \
-            > src/main/resources/firebase/serviceAccountKey.json
+          cat << 'EOF' > src/main/resources/firebase/serviceAccountKey.json
+          ${{ secrets.FCM_ACCOUNT }}
+          EOF
         shell: bash
 
       - name: Build Docker image
