@@ -107,6 +107,8 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
       GF_SERVER_ROOT_URL: ${GRAFANA_ROOT_URL}
       GF_SERVER_SERVE_FROM_SUB_PATH: true
+    volumes:
+      - ./infra/monitoring/grafana/data:/var/lib/grafana
     ports:
       - "${GRAFANA_PORT:-3000}:3000"
     networks:
