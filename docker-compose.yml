@@ -93,7 +93,7 @@ services:
     image: prom/prometheus:latest
     container_name: pawong-local-prometheus
     volumes:
-      - ./infra/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./infra/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     ports:
       - "${PROMETHEUS_PORT:-9090}:9090"
     networks:
@@ -123,27 +123,29 @@ services:
     networks:
       - local-net
 
-#  loki:
-#    image: grafana/loki:2.8.2
-#    container_name: pawong-local-loki
-#    command: -config.file=/etc/loki/local-config.yaml
-#    volumes:
-#      - ./infra/monitoring/loki-config.yaml:/etc/loki/local-config.yaml:ro
-#    ports:
-#      - "${LOKI_PORT:-3100}:3100"
-#    networks:
-#      - local-net
-#
-#  promtail:
-#    image: grafana/promtail:2.8.2
-#    container_name: pawong-local-promtail
-#    volumes:
-#      - ./infra/monitoring/promtail.yml:/etc/promtail/promtail.yml:ro
-#      - /var/log:/var/log:ro
-#    depends_on:
-#      - loki
-#    networks:
-#      - local-net
+  loki:
+    image: grafana/loki:latest
+    container_name: pawong-local-loki
+    volumes:
+      - ./infra/monitoring/loki/data:/loki
+    ports:
+      - "${LOKI_PORT:-3100}:3100"
+    networks:
+      - local-net
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: pawong-local-promtail
+    volumes:
+      - ./infra/monitoring/promtail/promtail.yml:/etc/promtail/config.yml
+      - ./infra/monitoring/promtail/tmp:/tmp
+      - ${PROMTAIL_BACKEND_LOR_DIR}:/var/log/backend
+      - ${PROMTAIL_FRONTEND_LOR_DIR}:/var/log/frontend
+      - ${PROMTAIL_NGINX_LOR_DIR}:/var/log/nginx
+    depends_on:
+      - loki
+    networks:
+      - local-net
 
 volumes:
   mysql-data:
