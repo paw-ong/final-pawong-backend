@@ -28,6 +28,6 @@ public class RedisLogoutHandler implements LogoutHandler {
 
         String refreshToken = cookie.getValue();
         Long userId = Long.valueOf(jwtTokenProvider.getRefreshUsername(refreshToken));
-        refreshTokenService.delete(userId);
+        refreshTokenService.deleteRefresh(userId);
     }
 }
