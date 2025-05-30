@@ -6,6 +6,7 @@ import kr.co.pawong.pwbe.chat.domain.ChatMessage;
 public interface ChatMessageDataQueryPort {
 
     List<ChatMessage> findChatMessagesByChatRoomIdInLatestOrder(Long chatRoomId);
+    ChatMessage findLatestChatMessageInChatRoomOrThrow(Long chatRoomId);
     ChatMessage findLatestReadMessageOrThrow(Long chatRoomId, Long userId);
 
 }

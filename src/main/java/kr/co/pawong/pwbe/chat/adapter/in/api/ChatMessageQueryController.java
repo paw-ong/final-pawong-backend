@@ -22,8 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatMessageQueryController {
 
     private final QueryChatMessageDataUseCase queryChatMessageDataUseCase;
-
-    @GetMapping("/{roomId}")
+    @GetMapping("/rooms/{roomId}/messages")
     public ResponseEntity<ChatMessagesResponse> findAllMessagesInChatRoom(
             @PathVariable Long roomId,
             @AuthenticationPrincipal CustomUserDetails userDetails

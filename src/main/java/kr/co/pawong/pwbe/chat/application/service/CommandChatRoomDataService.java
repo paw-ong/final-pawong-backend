@@ -4,6 +4,7 @@ import kr.co.pawong.pwbe.chat.adapter.in.api.dto.request.ChatRoomCreateRequest;
 import kr.co.pawong.pwbe.chat.application.port.in.CommandChatRoomDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.QueryChatRoomDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatRoomDataCommandPort;
+import kr.co.pawong.pwbe.chat.application.port.out.ChatRoomDataQueryPort;
 import kr.co.pawong.pwbe.chat.domain.ChatRoom;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
@@ -16,17 +17,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommandChatRoomDataService implements CommandChatRoomDataUseCase {
 
     private final ChatRoomDataCommandPort chatRoomDataCommandPort;
+    private final ChatRoomDataQueryPort chatRoomDataQueryPort;
     private final QueryChatRoomDataUseCase queryChatRoomDataUseCase;
 
     // 생성된 채팅방 id를 반환
-    // 사용자가 자신과의 채팅방을 생성하려는 경우 예외 발생
     @Override
     @Transactional
-    public Long createChatRoomOrThrow(Long participantId, ChatRoomCreateRequest request) {
-        if (participantId.equals(request.getAuthorId())) {
-            throw new BaseException(CustomErrorCode.CHATROOM_POST_ERROR);
+    public Long findExistingChatRoomOrCreate(Long participantId,
+            ChatRoomCreateRequest request) {
+        try {
+            ChatRoom chatRoom = chatRoomDataQueryPort.findChatRoomByParticipantIdAndPostIdOrThrow(
+                    participantId,
+                    request.getPostId());
+            return chatRoom.getChatRoomId();
+        } catch (BaseException e) {
+            return chatRoomDataCommandPort.saveChatRoomOrThrow(
+                    ChatRoom.from(participantId, request));
         }
-        return chatRoomDataCommandPort.saveChatRoomOrThrow(ChatRoom.from(participantId, request));
     }
 
     // 채팅방 status를 INACTIVE로 변경
@@ -34,7 +41,7 @@ public class CommandChatRoomDataService implements CommandChatRoomDataUseCase {
     @Override
     @Transactional
     public boolean deactivateChatRoomOrThrow(Long userId, Long chatRoomId) {
-        if (!queryChatRoomDataUseCase.userExistsInChatRoom(userId, chatRoomId)) {
+        if (!queryChatRoomDataUseCase.isUserInChatRoom(userId, chatRoomId)) {
             throw new BaseException(CustomErrorCode.FORBIDDEN_CHATROOM_DEACTIVATION);
         }
         return chatRoomDataCommandPort.deactivateChatRoomOrThrow(chatRoomId);

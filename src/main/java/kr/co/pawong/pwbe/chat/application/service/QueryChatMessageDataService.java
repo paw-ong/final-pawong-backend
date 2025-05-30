@@ -24,7 +24,7 @@ public class QueryChatMessageDataService implements QueryChatMessageDataUseCase 
     @Override
     public List<ChatMessageDetail> findAllMessagesInChatRoom(Long userId, Long chatRoomId) {
         // 유저가 해당 채팅방에 속하지 않다면 예외를 발생
-        if (!queryChatRoomDataUseCase.userExistsInChatRoom(userId, chatRoomId)) {
+        if (!queryChatRoomDataUseCase.isUserInChatRoom(userId, chatRoomId)) {
             throw new BaseException(CustomErrorCode.FORBIDDEN_CHATMESSAGE_QUERY);
         }
 
