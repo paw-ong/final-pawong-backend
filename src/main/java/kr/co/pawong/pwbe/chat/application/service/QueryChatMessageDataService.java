@@ -34,7 +34,7 @@ public class QueryChatMessageDataService implements QueryChatMessageDataUseCase 
         return chatMessages.stream()
                 .map(msg -> ChatMessageDetail
                                 .from(msg)
-                                .updateSenderName(userDataQueryPort.findByUserIdOrThrow(userId).getNickname())
+                                .updateSenderName(userDataQueryPort.findByUserIdOrThrow(msg.getSenderId()).getNickname())
                 )
                 .collect(Collectors.toList());
     }
