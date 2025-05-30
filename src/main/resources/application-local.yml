@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/pawong_db
-    username: root
-    password: dldydwp0819!
+    url: jdbc:mysql://localhost:3306/pawong
+    username: pawong
+    password: pawong
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
