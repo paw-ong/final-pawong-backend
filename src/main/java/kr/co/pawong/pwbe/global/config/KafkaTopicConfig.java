@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.global.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.ssl.SslBundles;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,9 @@ import org.springframework.kafka.core.KafkaAdmin;
 public class KafkaTopicConfig {
 
     public static final String TEST_TOPIC = "test-topic";
+
+    @Value("${kafka.topic.notification}")
+    private String notificationTopic;
 
     // KafkaAdmin 빈: application.yml 의 spring.kafka.* 설정을 사용
     @Bean
@@ -25,6 +29,15 @@ public class KafkaTopicConfig {
         return TopicBuilder.name(TEST_TOPIC)
                 .partitions(2)
                 .replicas(1)
+                .build();
+    }
+
+    // fcm 알림
+    @Bean
+    public NewTopic fcmNotificationTopic() {
+        return TopicBuilder.name(notificationTopic)
+                .partitions(3) // 토픽의 파티션 수
+                .replicas(1) // 각 파티션의 복제본 수
                 .build();
     }
 }

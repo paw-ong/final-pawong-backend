@@ -6,6 +6,7 @@ import kr.co.pawong.pwbe.chat.adapter.out.persistence.jpa.entity.ChatMessageEnti
 import kr.co.pawong.pwbe.chat.adapter.out.persistence.jpa.repository.ChatMessageJpaRepository;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatMessageDataQueryPort;
 import kr.co.pawong.pwbe.chat.domain.ChatMessage;
+import kr.co.pawong.pwbe.chat.enums.ChatMessageStatus;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class JpaChatMessageDataQueryAdapter implements ChatMessageDataQueryPort 
     @Override
     public List<ChatMessage> findChatMessagesByChatRoomIdInLatestOrder(Long chatRoomId) {
         return chatMessageJpaRepository
-                .findChatMessagesByChatRoomIdOrderByCreatedAtDesc(chatRoomId)
+                .findChatMessagesByChatRoomIdOrderByCreatedAtAsc(chatRoomId)
                 .stream()
                 .map(ChatMessageEntity::toModel)
                 .collect(Collectors.toList());
@@ -34,5 +35,13 @@ public class JpaChatMessageDataQueryAdapter implements ChatMessageDataQueryPort 
                         chatRoomId)
                 .orElseThrow(() -> new BaseException(CustomErrorCode.CHATMESSAGE_NOT_FOUND));
         return chatMessageEntity.toModel();
+    }
+
+    @Override
+    public ChatMessage findLatestReadMessageOrThrow(Long chatRoomId, Long userId) {
+        return chatMessageJpaRepository
+                .findFirstByChatRoomIdAndStatusAndSenderIdNotOrderByCreatedAtDesc(chatRoomId, ChatMessageStatus.READ, userId)
+                .orElseThrow(() -> new BaseException(CustomErrorCode.CHATMESSAGE_NOT_FOUND))
+                .toModel();
     }
 }

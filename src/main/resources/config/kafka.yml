@@ -11,3 +11,6 @@ spring:
       group-id: pawong-spring-group
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+kafka:
+  topic:
+    notification: fcm-notification
