@@ -54,6 +54,7 @@ public enum CustomErrorCode implements ErrorCode {
     LOSTPOST_NOT_FOUND(NOT_FOUND, "실종동물 게시글 정보가 없습니다."),
     LOST_NOT_FOUND(NOT_FOUND, "게시글이 존재하지 않습니다."),
     CHATROOM_NOT_FOUND(NOT_FOUND, "채팅방이 존재하지 않습니다."),
+    CHATMESSAGE_NOT_FOUND(NOT_FOUND, "채팅메세지가 존재하지 않습니다."),
     NOTIFICATION_NOT_FOUND(NOT_FOUND, "알림이 존재하지 않습니다."),
 
     /**
