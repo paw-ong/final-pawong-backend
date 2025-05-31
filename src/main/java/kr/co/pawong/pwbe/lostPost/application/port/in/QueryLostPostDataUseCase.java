@@ -18,4 +18,6 @@ public interface QueryLostPostDataUseCase {
 
     SliceLostPostSearchResponses fetchSlicedLostPosts(Pageable pageable, PostType type,
             Long userId);
+
+    List<Long> getUserIdsByLostPostIds(List<Long> lostPostIds);
 }

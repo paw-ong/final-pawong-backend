@@ -6,13 +6,13 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class GeoPoint {
+public class LostGeoPoint {
 
     private final BigDecimal latitude;      // 위도
     private final BigDecimal longitude;     // 경도
 
-    public static GeoPoint of(double lat, double lng) {
-        return new GeoPoint(
+    public static LostGeoPoint of(double lat, double lng) {
+        return new LostGeoPoint(
                 BigDecimal.valueOf(lat),
                 BigDecimal.valueOf(lng)
         );

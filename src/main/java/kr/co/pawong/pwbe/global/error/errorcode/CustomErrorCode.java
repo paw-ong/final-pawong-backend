@@ -63,6 +63,7 @@ public enum CustomErrorCode implements ErrorCode {
      */
     SERVER_ERROR(INTERNAL_SERVER_ERROR, "서버와의 연결에 실패하였습니다."),
     DATABASE_ERROR(INTERNAL_SERVER_ERROR, "데이터베이스 연결에 실패하였습니다."),
+    ES_SAVE_ERROR(INTERNAL_SERVER_ERROR, "Elasticsearch 저장에 실패하였습니다."),
     KAFKA_MESSAGE_PUBLISH_ERROR(INTERNAL_SERVER_ERROR, "Kafka 메시지 발행에 실패하였습니다."),
     KAFKA_CONNECTION_ERROR(INTERNAL_SERVER_ERROR, "Kafka 서버 연결에 실패하였습니다."),
     NOTIFICATION_SAVE_ERROR(INTERNAL_SERVER_ERROR, "알림 저장에 실패하였습니다."),

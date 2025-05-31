@@ -8,9 +8,18 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       batch-size: 1
     consumer:
-      group-id: pawong-spring-group
+      group-id: ${KAFKA_SPRING_GROUP_ID}
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+    listener:
+      ack-mode: record
 kafka:
   topic:
     notification: fcm-notification
+    common-dead-letter: dev.pawong.common.dlt
+    lost-post-created: dev.pawong.lost-post.created
+    rescued-animal-created: dev.pawong.rescued-animal.created
+    lost-post-embedded: dev.pawong.lost-post.embedded
+    rescued-animal-embedded: dev.pawong.rescued-animal.embedded

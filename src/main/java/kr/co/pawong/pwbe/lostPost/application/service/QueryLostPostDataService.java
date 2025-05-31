@@ -89,4 +89,11 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Long> getUserIdsByLostPostIds(List<Long> lostPostIds) {
+        return lostPostIds.stream()
+                .map(id -> lostPostDataQueryPort.findLostPostByIdOrThrow(id).getUserId())
+                .toList();
+    }
 }
