@@ -36,7 +36,7 @@ public class ChatRoomCommandController {
             @RequestBody ChatRoomCreateRequest chatRoomCreateRequest,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        Long createdId = commandChatRoomDataUseCase.createChatRoomOrThrow(
+        Long createdId = commandChatRoomDataUseCase.findExistingChatRoomOrCreate(
                 userDetails.getUserId(),
                 chatRoomCreateRequest
         );
@@ -47,8 +47,7 @@ public class ChatRoomCommandController {
     }
 
     /**
-     *
-     * @param { chatRoomId } as ChatRoomDeactivateRequest
+     * @param {           chatRoomId } as ChatRoomDeactivateRequest
      * @param userDetails
      * @return boolean (deactivate 여부)
      */
