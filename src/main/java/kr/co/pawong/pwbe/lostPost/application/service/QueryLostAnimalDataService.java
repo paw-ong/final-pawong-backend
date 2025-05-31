@@ -57,7 +57,7 @@ public class QueryLostAnimalDataService implements QueryLostAnimalDataUseCase {
             }
             // Lost Adoption 가져오기
             case LOST_ADOPTION -> {
-                LostAdoption lostAdoption = lostAdoptionDataQueryPort.findAdoptionById(
+                LostAdoption lostAdoption = lostAdoptionDataQueryPort.findAdoptionByIdOrThrow(
                         lostAnimalQuery.id());
                 // 보호소 이름 조회
                 String shelter = shelterCareNmPort.getShelterCareNmByCareRegNo(

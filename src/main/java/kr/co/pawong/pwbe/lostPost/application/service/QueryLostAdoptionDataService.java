@@ -30,7 +30,7 @@ public class QueryLostAdoptionDataService implements QueryLostAdoptionDataUseCas
     @Override
     public LostAdoptionDetailDto findAdoptionById(Long adoptionId) {
 
-        LostAdoption lostAdoption = lostAdoptionDataQueryPort.findAdoptionById(adoptionId);
+        LostAdoption lostAdoption = lostAdoptionDataQueryPort.findAdoptionByIdOrThrow(adoptionId);
         String careNm = shelterCareNmPort.getShelterCareNmByCareRegNo(lostAdoption.getCareRegNo());
 
         return LostAdoptionDetailMapper.toModel(lostAdoption, careNm);

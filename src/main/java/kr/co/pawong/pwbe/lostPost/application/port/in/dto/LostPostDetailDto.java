@@ -1,12 +1,10 @@
 package kr.co.pawong.pwbe.lostPost.application.port.in.dto;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import kr.co.pawong.pwbe.adoption.enums.SexCd;
-import kr.co.pawong.pwbe.adoption.enums.UpKindCd;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
-import kr.co.pawong.pwbe.lostPost.domain.GeoPoint;
+import kr.co.pawong.pwbe.lostPost.domain.LostGeoPoint;
 import kr.co.pawong.pwbe.lostPost.enums.PostStatus;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import lombok.AllArgsConstructor;
@@ -37,7 +35,7 @@ public class LostPostDetailDto {
     private LocalDateTime deletedAt;    // 삭제날짜
     private PostStatus status;      // 게시글 상태
     private String location;        // 실종장소, 발견장소
-    private GeoPoint geoPoint;
+    private LostGeoPoint lostGeoPoint;
     boolean bookmarked;             // 북마크 여부. 비로그인 상태일 경우 false
     String author; // 작성자
     Long authorId;  // 작성자 id

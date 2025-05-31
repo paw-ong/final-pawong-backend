@@ -140,4 +140,14 @@ public class Adoption {
     public void initId(Long adoptionId) {
         this.adoptionId = adoptionId;
     }
+
+    // popfile1 이미지 url 변경. proxy url로 대체시 활용
+    public void updatePopfile1(String popfile1) {
+        this.popfile1 = popfile1;
+    }
+
+    // popfile2 이미지 url 변경. proxy url로 대체시 활용
+    public void updatePopfile2(String popfile2) {
+        this.popfile2 = popfile2;
+    }
 }

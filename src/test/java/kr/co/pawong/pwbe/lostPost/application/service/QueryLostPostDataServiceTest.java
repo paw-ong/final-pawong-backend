@@ -121,12 +121,13 @@ class QueryLostPostDataServiceTest {
             return null;
         }
 
-        // TODO: 이후 구현
-        public Page<LostPost> getLostPostsByPostTypePaged(Pageable pageable, PostType type){
+        @Override
+        public Page<LostPost> getLostPostsByPostTypePaged(Pageable pageable, PostType type) {
             return null;
         }
-        // TODO: 이후 구현
-        public Page<LostPost> searchLostPosts(Pageable pageable, LostPostSearchRequest request){
+
+        @Override
+        public Page<LostPost> searchLostPosts(Pageable pageable, LostPostSearchRequest request) {
             return null;
         }
 

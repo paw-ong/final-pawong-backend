@@ -5,8 +5,8 @@ import lombok.Builder;
 @Builder
 public record LostAnimalQuery(
         LostType type,
-        long id, // lostPostId 또는 adoptionId
-        long userId
+        Long id, // lostPostId 또는 adoptionId
+        Long userId
 ) {
 
     public enum LostType {
