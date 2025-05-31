@@ -56,6 +56,7 @@ public enum CustomErrorCode implements ErrorCode {
     LOST_NOT_FOUND(NOT_FOUND, "게시글이 존재하지 않습니다."),
     CHATROOM_NOT_FOUND(NOT_FOUND, "채팅방이 존재하지 않습니다."),
     NOTIFICATION_NOT_FOUND(NOT_FOUND, "알림이 존재하지 않습니다."),
+    REDIS_KEY_NOT_FOUND(NOT_FOUND,"redis 키가 존재하지 않습니다."),
 
     /**
      * 500 SERVER_ERROR
