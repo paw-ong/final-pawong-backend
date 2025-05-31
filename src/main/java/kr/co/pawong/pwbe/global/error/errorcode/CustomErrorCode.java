@@ -69,6 +69,7 @@ public enum CustomErrorCode implements ErrorCode {
     NOTIFICATION_SEND_ERROR(INTERNAL_SERVER_ERROR, "알림 발송에 실패하였습니다."),
     NOTIFICATION_CHAT_SEND_ERROR(INTERNAL_SERVER_ERROR, "채팅 알림 발송에 실패하였습니다."),
     NOTIFICATION_ADOPTION_SEND_ERROR(INTERNAL_SERVER_ERROR, "유사 공고 알림 발송에 실패하였습니다."),
+    EMAIL_SEND_FAIL(INTERNAL_SERVER_ERROR, "이메일 전송에 실패했습니다."),
     // 검색
     SEARCH_ERROR(SERVICE_UNAVAILABLE, "검색 기능이 정상적으로 동작하지 않습니다."),
 

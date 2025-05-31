@@ -1,9 +1,13 @@
 package kr.co.pawong.pwbe.notification.application.service;
 
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.EMAIL_DUPLICATE;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.EMAIL_SEND_FAIL;
+
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.util.HashMap;
 import java.util.Map;
+import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.notification.application.port.in.CustomMailSenderUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +50,7 @@ public class CustomMailSenderService implements CustomMailSenderUseCase {
             javaMailSender.send(mimeMessage);                                     // HTML 메일 전송 호출
 
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            throw new BaseException(EMAIL_SEND_FAIL);
         }
 
     }
