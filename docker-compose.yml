@@ -89,16 +89,6 @@ services:
   # ──────────────────────────────
   #  Monitoring
   # ──────────────────────────────
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: pawong-local-prometheus
-    volumes:
-      - ./infra/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-    ports:
-      - "${PROMETHEUS_PORT:-9090}:9090"
-    networks:
-      - local-net
-
   grafana:
     image: grafana/grafana:latest
     container_name: pawong-local-grafana
@@ -111,6 +101,16 @@ services:
       - ./infra/monitoring/grafana/data:/var/lib/grafana
     ports:
       - "${GRAFANA_PORT:-3000}:3000"
+    networks:
+      - local-net
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: pawong-local-prometheus
+    volumes:
+      - ./infra/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
     networks:
       - local-net
 
