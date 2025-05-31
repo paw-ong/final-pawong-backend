@@ -10,6 +10,7 @@ import kr.co.pawong.pwbe.chat.domain.ChatMessage;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.user.application.port.out.UserDataQueryPort;
+import kr.co.pawong.pwbe.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +33,12 @@ public class QueryChatMessageDataService implements QueryChatMessageDataUseCase 
                 .findChatMessagesByChatRoomIdInLatestOrder(chatRoomId);
 
         return chatMessages.stream()
-                .map(msg -> ChatMessageDetail
-                                .from(msg)
-                                .updateSenderName(userDataQueryPort.findByUserIdOrThrow(msg.getSenderId()).getNickname())
+                .map(msg -> {
+                    User sender = userDataQueryPort.findByUserIdOrThrow(msg.getSenderId());
+                    return ChatMessageDetail
+                                    .from(msg)
+                                    .updateSenderInfo(sender.getNickname(), sender.getProfileImage());
+                    }
                 )
                 .collect(Collectors.toList());
     }

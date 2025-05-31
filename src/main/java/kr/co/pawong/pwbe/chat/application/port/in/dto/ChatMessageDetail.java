@@ -19,12 +19,13 @@ public class ChatMessageDetail {
     private String content;     // 메시지 내용
     private Long senderId;      // 누가 보냈는지 (활용가능)
     private String senderName;
+    private String senderProfileImage;
     private ChatMessageStatus status;   // 읽음 여부 (언제 읽었는지는 일단 활용X)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long createdAt; // Instant -> Long (에폭크 타임) -> String -> JSON
 
     public static ChatMessageDetail from(ChatMessage chatMessage) {
-        return ChatMessageDetail.builder()
+        return kr.co.pawong.pwbe.chat.application.port.in.dto.ChatMessageDetail.builder()
                 .chatMessageId(chatMessage.getMessageId())
                 .content(chatMessage.getContent())
                 .senderId(chatMessage.getSenderId())
@@ -33,8 +34,9 @@ public class ChatMessageDetail {
                 .build();
     }
 
-    public ChatMessageDetail updateSenderName(String userNickName) {
+    public ChatMessageDetail updateSenderInfo(String userNickName, String userProfileImage) {
         this.senderName = userNickName;
+        this.senderProfileImage = userProfileImage;
         return this;
     }
 }
