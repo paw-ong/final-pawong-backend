@@ -43,6 +43,7 @@ public enum CustomErrorCode implements ErrorCode {
      * 403 FORBIDDEN
      */
     FORBIDDEN_POST_MODIFY(FORBIDDEN, "게시글 수정 및 삭제 권한이 없습니다."),
+    FORBIDDEN_CHATROOMS_ACCESS(FORBIDDEN, "해당 공고의 채팅방들을 조회할 권한이 없습니다"),
     FORBIDDEN_CHATROOM_DEACTIVATION(FORBIDDEN, "해당 채팅방을 비활성화 할 권한이 없습니다."),
     FORBIDDEN_CHATMESSAGE_SENDING(FORBIDDEN, "해당 메시지를 채팅방에 보낼 권한이 없습니다."),
     FORBIDDEN_CHATMESSAGE_QUERY(FORBIDDEN, "해당 채팅방의 메시지들을 조회할 권한이 없습니다."),
@@ -54,6 +55,7 @@ public enum CustomErrorCode implements ErrorCode {
     LOSTPOST_NOT_FOUND(NOT_FOUND, "실종동물 게시글 정보가 없습니다."),
     LOST_NOT_FOUND(NOT_FOUND, "게시글이 존재하지 않습니다."),
     CHATROOM_NOT_FOUND(NOT_FOUND, "채팅방이 존재하지 않습니다."),
+    CHATMESSAGE_NOT_FOUND(NOT_FOUND, "채팅 메시지가 존재하지 않습니다."),
     NOTIFICATION_NOT_FOUND(NOT_FOUND, "알림이 존재하지 않습니다."),
 
     /**
@@ -61,6 +63,7 @@ public enum CustomErrorCode implements ErrorCode {
      */
     SERVER_ERROR(INTERNAL_SERVER_ERROR, "서버와의 연결에 실패하였습니다."),
     DATABASE_ERROR(INTERNAL_SERVER_ERROR, "데이터베이스 연결에 실패하였습니다."),
+    ES_SAVE_ERROR(INTERNAL_SERVER_ERROR, "Elasticsearch 저장에 실패하였습니다."),
     KAFKA_MESSAGE_PUBLISH_ERROR(INTERNAL_SERVER_ERROR, "Kafka 메시지 발행에 실패하였습니다."),
     KAFKA_CONNECTION_ERROR(INTERNAL_SERVER_ERROR, "Kafka 서버 연결에 실패하였습니다."),
     NOTIFICATION_SAVE_ERROR(INTERNAL_SERVER_ERROR, "알림 저장에 실패하였습니다."),
