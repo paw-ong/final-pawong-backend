@@ -30,11 +30,12 @@ public class ChatMessageEventListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onChatMessageCreated(ChatMessageCreatedEvent event) {
         ChatMessage chatMessage = event.getChatMessage();
+        User sender = userDataQueryPort.findByUserIdOrThrow(event.getChatMessage().getSenderId());
         ChatMessageDetail messageDetail = ChatMessageDetail
                 .from(chatMessage)
-                .updateSenderName(
-                        userDataQueryPort.findByUserIdOrThrow(event.getChatMessage().getSenderId())
-                        .getNickname());
+                .updateSenderInfo(
+                        sender.getNickname(),
+                        sender.getProfileImage());
 
         /* find user in chat room */
         ChatRoom chatRoom = chatRoomDataQueryPort.findChatRoomByIdOrThrow(chatMessage.getChatRoomId());
