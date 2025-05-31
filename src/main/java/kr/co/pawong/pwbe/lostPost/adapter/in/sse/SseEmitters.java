@@ -5,9 +5,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class SseEmitters {
@@ -18,14 +20,17 @@ public class SseEmitters {
     private final Map<Long, CopyOnWriteArrayList<SseEmitter>> emitters = new ConcurrentHashMap<>();
 
     public SseEmitter create(Long postId) {
-        SseEmitter emitter = new SseEmitter(0L); // 타임아웃 없음
+        SseEmitter emitter = new SseEmitter(10000L); // 타임아웃 없음
         emitters
                 .computeIfAbsent(postId, id -> new CopyOnWriteArrayList<>())
                 .add(emitter);
 
         // 완료·타임아웃·에러 시 cleanup
         emitter.onCompletion(() -> remove(postId, emitter));
-        emitter.onTimeout  (() -> remove(postId, emitter));
+        emitter.onTimeout  (() -> {
+            remove(postId, emitter);
+            log.error("postId: {} / SSE Timeout  발생", postId);
+        });
         emitter.onError    ((e) -> remove(postId, emitter));
 
         return emitter;
