@@ -20,7 +20,7 @@ public class SseEmitters {
     private final Map<Long, CopyOnWriteArrayList<SseEmitter>> emitters = new ConcurrentHashMap<>();
 
     public SseEmitter create(Long postId) {
-        SseEmitter emitter = new SseEmitter(10000L); // 타임아웃 없음
+        SseEmitter emitter = new SseEmitter(10000L); // 타임아웃 10초
         emitters
                 .computeIfAbsent(postId, id -> new CopyOnWriteArrayList<>())
                 .add(emitter);
