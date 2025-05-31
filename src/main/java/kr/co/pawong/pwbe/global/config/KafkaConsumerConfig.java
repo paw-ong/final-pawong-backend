@@ -20,7 +20,7 @@ import org.springframework.util.backoff.FixedBackOff;
 @Configuration
 public class KafkaConsumerConfig {
 
-    @Value("${kafka.topic.common-dead-letter")
+    @Value("${kafka.topic.common-dead-letter}")
     private String COMMON_DEAD_LETTER_TOPIC;
 
     @Bean
