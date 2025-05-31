@@ -7,5 +7,9 @@ public interface ChatRoomDataQueryPort {
 
     List<ChatRoom> findChatRoomsByUserId(Long userId);
 
+    List<ChatRoom> findChatRoomsByPostId(Long postId);
+
     ChatRoom findChatRoomByIdOrThrow(Long chatRoomId);
+
+    ChatRoom findChatRoomByParticipantIdAndPostIdOrThrow(Long participantId, Long postId);
 }

@@ -26,4 +26,12 @@ public class ChatRoom {
                 .status(ChatRoomStatus.ACTIVE)
                 .build();
     }
+
+    public boolean userExistsInChatRoom(Long userId) {
+        return this.participantId.equals(userId) || this.authorId.equals(userId);
+    }
+
+    public boolean isActive() {
+        return this.status == ChatRoomStatus.ACTIVE;
+    }
 }
