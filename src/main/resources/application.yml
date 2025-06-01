@@ -36,3 +36,6 @@ logging:
         kafka: WARN
 app:
   firebase-configuration-file: firebase/serviceAccountKey.json
+  image:
+    proxy:
+      base-url: ${PROXY_URL}

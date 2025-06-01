@@ -13,4 +13,3 @@ app:
   image:
     proxy:
       enabled: true
-      base-url: ${PROXY_URL}
