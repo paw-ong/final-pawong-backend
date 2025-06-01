@@ -21,12 +21,12 @@ public class QueryBookmarkDataService implements QueryBookmarkDataUseCase {
     }
 
     @Override
-    public boolean lostPostBookmarkExists(Long userId, long lostPostId) {
+    public boolean existsLostPostBookmark(Long userId, long lostPostId) {
         return lostBookmarkQueryPort.lostPostBookmarkExists(userId, lostPostId);
     }
 
     @Override
-    public boolean lostAdoptionBookmarkExists(Long userId, long adoptionId) {
+    public boolean existsLostAdoptionBookmark(Long userId, long adoptionId) {
         return lostBookmarkQueryPort.lostAdoptionBookmarkExists(userId, adoptionId);
     }
 }
