@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RefreshTokenService {
 
-    private static final String REFRESH_PREFIX = "REFRESH";
+    private static final String REFRESH_PREFIX = "Refresh ";
     @Value("${spring.security.jwt.refresh-token-validity-in-ms}")
     private long refreshTtlMs;
     private final StringRedisTemplate redisTemplate;
