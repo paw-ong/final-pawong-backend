@@ -1,6 +1,5 @@
 package kr.co.pawong.pwbe.lostPost.application.port.in.dto;
 
-import java.net.URL;
 import lombok.Builder;
 
 /**

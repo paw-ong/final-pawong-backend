@@ -2,7 +2,6 @@ package kr.co.pawong.pwbe.lostPost.adapter.in.messaging;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.co.pawong.pwbe.global.config.KafkaTopicConfig;
 import kr.co.pawong.pwbe.lostPost.adapter.in.messaging.dto.EmbeddedLostAnimalConsumeDto;
 import kr.co.pawong.pwbe.lostPost.application.port.in.NotifyUsersOfSimilarLostPostsUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.StreamSimilarAnimalsUseCase;
