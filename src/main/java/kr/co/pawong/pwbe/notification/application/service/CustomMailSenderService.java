@@ -1,0 +1,64 @@
+package kr.co.pawong.pwbe.notification.application.service;
+
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.EMAIL_DUPLICATE;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.EMAIL_SEND_FAIL;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import java.util.HashMap;
+import java.util.Map;
+import kr.co.pawong.pwbe.global.error.exception.BaseException;
+import kr.co.pawong.pwbe.notification.application.port.in.CustomMailSenderUseCase;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
+
+@Slf4j
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class CustomMailSenderService implements CustomMailSenderUseCase {
+
+    private final JavaMailSender javaMailSender;
+    private final SpringTemplateEngine templateEngine;
+    @Value("${spring.mail.username}")
+    private String username;
+
+    public void sendEmail(String toEmail,
+            String title,
+            String authCode){
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setFrom(username); // 보내는 사람 주소임, smtp 설정과 맞아야함
+            helper.setTo(toEmail); // 받는 사람 주소임
+            helper.setSubject(title); // 메일 제목 설정
+
+            // html에 들어갈 동적데이터 설정하기
+            HashMap<String, String> emailValues = new HashMap<>();
+            emailValues.put("authCode", authCode);
+            String text = setContext(emailValues);
+
+            helper.setText(text, true);
+
+            javaMailSender.send(mimeMessage);                                     // HTML 메일 전송 호출
+
+        } catch (MessagingException e) {
+            throw new BaseException(EMAIL_SEND_FAIL);
+        }
+
+    }
+
+    private String setContext(Map<String, String> emailValues) {
+        Context context = new Context();
+        emailValues.forEach(context::setVariable);
+        return templateEngine.process("codemail", context);
+    }
+
+}

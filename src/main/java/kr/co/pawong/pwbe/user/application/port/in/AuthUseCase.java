@@ -10,4 +10,5 @@ public interface AuthUseCase {
     User createOrGetUser(UserCreate userCreate);
 
     AuthResponse signUp(Long userId, UserUpdate userUpdate);
+
 }

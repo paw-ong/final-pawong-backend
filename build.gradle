@@ -73,6 +73,15 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-admin:9.2.0'
 
+    // Mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // Thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -81,6 +90,10 @@ dependencies {
     testImplementation 'org.testcontainers:testcontainers'
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:elasticsearch'
+    testImplementation 'org.awaitility:awaitility:4.2.0'
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+
+
 }
 
 tasks.named('test') {

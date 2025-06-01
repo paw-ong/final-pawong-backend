@@ -31,4 +31,10 @@ public class UserDataQueryAdapter implements UserDataQueryPort {
                 .map(UserEntity::toDomain)
                 .orElse(null);
     }
+
+    @Override
+    public Boolean findByEmail(String email) {
+        // 존재 여부만 반환
+        return userJpaRepository.existsByEmail(email);
+    }
 }

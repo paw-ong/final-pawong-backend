@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.global.error.errorcode;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -57,6 +58,7 @@ public enum CustomErrorCode implements ErrorCode {
     CHATROOM_NOT_FOUND(NOT_FOUND, "채팅방이 존재하지 않습니다."),
     CHATMESSAGE_NOT_FOUND(NOT_FOUND, "채팅 메시지가 존재하지 않습니다."),
     NOTIFICATION_NOT_FOUND(NOT_FOUND, "알림이 존재하지 않습니다."),
+    REDIS_KEY_NOT_FOUND(NOT_FOUND,"redis 키가 존재하지 않습니다."),
 
     /**
      * 500 SERVER_ERROR
@@ -71,8 +73,13 @@ public enum CustomErrorCode implements ErrorCode {
     NOTIFICATION_SEND_ERROR(INTERNAL_SERVER_ERROR, "알림 발송에 실패하였습니다."),
     NOTIFICATION_CHAT_SEND_ERROR(INTERNAL_SERVER_ERROR, "채팅 알림 발송에 실패하였습니다."),
     NOTIFICATION_ADOPTION_SEND_ERROR(INTERNAL_SERVER_ERROR, "유사 공고 알림 발송에 실패하였습니다."),
+    EMAIL_SEND_FAIL(INTERNAL_SERVER_ERROR, "이메일 전송에 실패하였습니다."),
+    REDIS_SAVE_ERROR(INTERNAL_SERVER_ERROR,"REDIS 저장에 실패하였습니다."),
     // 검색
-    SEARCH_ERROR(SERVICE_UNAVAILABLE, "검색 기능이 정상적으로 동작하지 않습니다.")
+    SEARCH_ERROR(SERVICE_UNAVAILABLE, "검색 기능이 정상적으로 동작하지 않습니다."),
+
+    // 이메일
+    EMAIL_DUPLICATE(CONFLICT, "사용 중인 이메일입니다.")
     ;
     private final HttpStatus httpStatus;
     private final String message;

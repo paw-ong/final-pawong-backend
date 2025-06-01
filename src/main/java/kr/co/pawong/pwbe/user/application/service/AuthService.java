@@ -1,31 +1,42 @@
 package kr.co.pawong.pwbe.user.application.service;
 
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.USER_NOT_FOUND;
+
 import jakarta.transaction.Transactional;
+import kr.co.pawong.pwbe.notification.application.service.CustomMailSenderService;
 import kr.co.pawong.pwbe.user.application.port.in.AuthUseCase;
 import kr.co.pawong.pwbe.user.application.port.in.dto.AuthResponse;
+import java.time.Duration;
+import kr.co.pawong.pwbe.global.error.exception.BaseException;
+import kr.co.pawong.pwbe.global.util.CodeGenerator;
+import kr.co.pawong.pwbe.global.util.RedisUtils;
+import kr.co.pawong.pwbe.user.domain.User;
 import kr.co.pawong.pwbe.user.application.port.in.dto.UserCreate;
 import kr.co.pawong.pwbe.user.application.port.in.dto.UserUpdate;
 import kr.co.pawong.pwbe.user.application.port.out.UserDataCommandPort;
 import kr.co.pawong.pwbe.user.application.port.out.UserDataQueryPort;
-import kr.co.pawong.pwbe.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class AuthService implements AuthUseCase {
 
     private final UserDataQueryPort userDataQueryPort;
     private final UserDataCommandPort userCommandRepository;
 
-    @Override
-    public User createOrGetUser(UserCreate userCreate) {
-        User getUser = userDataQueryPort.findByUserSocialId(userCreate.getSocialId());
-        if (getUser == null) {
-            return userCommandRepository.save(User.from(userCreate));
-        }
-        return getUser;
+
+
+  @Override
+  public User createOrGetUser(UserCreate userCreate) {
+    User getUser =  userDataQueryPort.findByUserSocialId(userCreate.getSocialId());
+    if(getUser == null) {
+      return userCommandRepository.save(User.from(userCreate));
     }
+    return getUser;
+  }
 
     @Transactional
     @Override
