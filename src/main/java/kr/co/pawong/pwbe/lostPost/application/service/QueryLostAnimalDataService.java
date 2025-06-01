@@ -8,7 +8,6 @@ import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostAnimalDataUseCase
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalQuery;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostPostCardMapper;
-import kr.co.pawong.pwbe.lostPost.application.port.out.BookmarkInfoPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAdoptionDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.ShelterCareNmPort;
@@ -27,7 +26,6 @@ public class QueryLostAnimalDataService implements QueryLostAnimalDataUseCase {
     private final LostPostDataQueryPort lostPostDataQueryPort;
     private final ShelterCareNmPort shelterCareNmPort;
     private final UserInfoPort userInfoPort;
-    private final BookmarkInfoPort bookmarkInfoPort;
     private final ImageStoragePort imageStoragePort;
     private final Clock clock;
     private static final Duration DOWNLOAD_URL_EXPIRE = Duration.ofMinutes(15);
