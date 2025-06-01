@@ -62,11 +62,10 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/adoptions/**",
                                 "/api/adoption/**",
-                                "/api/shelters/**",
-                                "/api/lost-animals/**"
+                                "/api/shelters/**"
                         ).permitAll()
                         .requestMatchers(
-                                HttpMethod.GET, "/api/lost-animals/*" // ⬅ 단건 조회만 허용
+                                HttpMethod.GET, "/api/lost-animals/**" // ⬅ 단건 조회만 허용
                         ).permitAll()
                         .anyRequest().authenticated())
 
