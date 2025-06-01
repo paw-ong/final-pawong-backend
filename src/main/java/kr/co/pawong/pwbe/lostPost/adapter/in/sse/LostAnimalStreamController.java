@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import kr.co.pawong.pwbe.lostPost.application.port.in.SearchSimilarLostAnimalsUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;

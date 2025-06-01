@@ -6,8 +6,6 @@ import kr.co.pawong.pwbe.global.security.handler.CookieClearingLogoutSuccessHand
 import kr.co.pawong.pwbe.global.security.handler.OAuth2AuthenticationSuccessHandler;
 import kr.co.pawong.pwbe.global.security.handler.RedisLogoutHandler;
 import kr.co.pawong.pwbe.global.security.service.CustomOAuth2UserService;
-import kr.co.pawong.pwbe.global.security.util.JwtTokenProvider;
-import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -30,10 +28,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
-    private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final QueryUserDataUseCase queryUserDataUseCase;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final RedisLogoutHandler redisLogoutHandler;
