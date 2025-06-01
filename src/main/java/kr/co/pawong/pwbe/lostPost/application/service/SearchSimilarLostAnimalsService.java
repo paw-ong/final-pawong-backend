@@ -26,7 +26,7 @@ public class SearchSimilarLostAnimalsService implements SearchSimilarLostAnimals
     private final PublishCreatedLostAnimalUseCase publishCreatedLostAnimalUseCase;
 
     @Override
-    public List<LostPostCard> searchSimilarLostAnimals(Long userId, Long lostPostId) {
+    public List<LostPostCard> searchSimilarLostAnimals(Long lostPostId) {
         // 유사 LostAnimal 조회
         List<LostAnimalEngineResponse> result = lostAnimalEngineQueryPort.searchSimilarLostAnimalsByESId(
                 PostType.LOST.name() + "_" + lostPostId,
@@ -42,7 +42,7 @@ public class SearchSimilarLostAnimalsService implements SearchSimilarLostAnimals
                 result.stream()
                         .map(response -> {
                             LostType lostType = response.type() == PostType.FOSTER ? LostType.LOST_ADOPTION : LostType.LOST_POST;
-                            return new LostAnimalQuery(lostType, response.id(), userId);
+                            return new LostAnimalQuery(lostType, response.id(), null);
                         })
                         .toList()
         );

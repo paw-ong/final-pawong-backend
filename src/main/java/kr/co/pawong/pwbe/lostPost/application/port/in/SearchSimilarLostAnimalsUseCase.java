@@ -5,5 +5,5 @@ import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 
 public interface SearchSimilarLostAnimalsUseCase {
 
-    List<LostPostCard> searchSimilarLostAnimals(Long userId, Long lostPostId);
+    List<LostPostCard> searchSimilarLostAnimals(Long lostPostId);
 }

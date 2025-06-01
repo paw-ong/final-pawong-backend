@@ -21,8 +21,7 @@ public class LostPostIndexedEventListener {
     @EventListener
     public void onIndexed(LostPostIndexedEvent event) {
         Long postId = event.getLostPostId();
-        List<LostPostCard> result = searchSimilarLostAnimalsUseCase.searchSimilarLostAnimals(
-                null, postId);
+        List<LostPostCard> result = searchSimilarLostAnimalsUseCase.searchSimilarLostAnimals(postId);
 
         emitters.getAll(postId).forEach(emitter -> {
             try {

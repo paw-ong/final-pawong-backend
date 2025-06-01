@@ -33,7 +33,7 @@ public class LostAnimalStreamController {
     ) {
         // 유사 동물 조회
         List<LostPostCard> result = searchSimilarLostAnimalsUseCase.searchSimilarLostAnimals(
-                null, lostPostId);
+                lostPostId);
         SseEmitter emitter = emitters.create(lostPostId);
         // 유사 결과가 있으면 바로 결과 반환
         if (result != null) {
