@@ -34,6 +34,7 @@ public class QueryLostAdoptionDataService implements QueryLostAdoptionDataUseCas
     public LostAdoptionDetailDto findAdoptionById(Long adoptionId) {
 
         LostAdoption lostAdoption = lostAdoptionDataQueryPort.findAdoptionByIdOrThrow(adoptionId);
+        changePopfilesToProxy(lostAdoption);
         String careNm = shelterCareNmPort.getShelterCareNmByCareRegNo(lostAdoption.getCareRegNo());
 
         return LostAdoptionDetailMapper.toModel(lostAdoption, careNm);
