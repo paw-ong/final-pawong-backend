@@ -3,6 +3,8 @@ package kr.co.pawong.pwbe.lostPost.application.service;
 import java.time.Clock;
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.co.pawong.pwbe.adoption.application.port.out.ProxyUrlPort;
+import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostAdoptionDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAdoptionDetailDto;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
@@ -26,6 +28,7 @@ public class QueryLostAdoptionDataService implements QueryLostAdoptionDataUseCas
     private final ShelterCareNmPort shelterCareNmPort;
     private final BookmarkInfoPort bookmarkInfoPort;
     private final Clock clock;
+    private final ProxyUrlPort proxyUrlPort;
 
     @Override
     public LostAdoptionDetailDto findAdoptionById(Long adoptionId) {
@@ -49,9 +52,17 @@ public class QueryLostAdoptionDataService implements QueryLostAdoptionDataUseCas
                 .map(la -> {
                     String shelter = shelterCareNmPort.getShelterCareNmByCareRegNo(la.getCareRegNo());
                     boolean bookmarked = bookmarkInfoPort.existsByUserIdAndAdoptionId(userId, la.getAdoptionId());
-                    return LostPostCardMapper.toLostPostCard(la, shelter, bookmarked,clock);
+                    // 프록시 URL로 변경
+                    changePopfilesToProxy(la);
+                    return LostPostCardMapper.toLostPostCard(la, shelter, bookmarked, clock);
                 })
                 .collect(Collectors.toList());
     }
 
+    private void changePopfilesToProxy(LostAdoption lostAdoption) {
+        String popfile1 = proxyUrlPort.generateProxyUrl(lostAdoption.getPopfile1());
+        String popfile2 = proxyUrlPort.generateProxyUrl(lostAdoption.getPopfile2());
+        lostAdoption.updatePopfile1(popfile1);
+        lostAdoption.updatePopfile2(popfile2);
+    }
 }

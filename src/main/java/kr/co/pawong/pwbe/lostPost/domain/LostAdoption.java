@@ -1,11 +1,5 @@
 package kr.co.pawong.pwbe.lostPost.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import kr.co.pawong.pwbe.adoption.enums.ActiveState;
@@ -48,4 +42,14 @@ public class LostAdoption {
     private float[] embedding; // 임베딩 값
     private boolean isAiProcessed = false; // 정제 여부
     private boolean isEmbedded = false; // 임베딩 여부
+
+    // popfile1 이미지 url 변경. proxy url로 대체시 활용
+    public void updatePopfile1(String popfile1) {
+        this.popfile1 = popfile1;
+    }
+
+    // popfile2 이미지 url 변경. proxy url로 대체시 활용
+    public void updatePopfile2(String popfile2) {
+        this.popfile2 = popfile2;
+    }
 }
