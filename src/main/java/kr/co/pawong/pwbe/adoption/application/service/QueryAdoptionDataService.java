@@ -10,6 +10,7 @@ import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionDetailResponse
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.AdoptionRecommendResponses;
 import kr.co.pawong.pwbe.adoption.application.port.in.dto.SliceAdoptionSearchResponses;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
+import kr.co.pawong.pwbe.adoption.application.port.out.ProxyUrlPort;
 import kr.co.pawong.pwbe.adoption.application.port.out.ShelterInfoPort;
 import kr.co.pawong.pwbe.adoption.application.service.support.AdoptionCardMapper;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
@@ -28,10 +29,13 @@ public class  QueryAdoptionDataService implements QueryAdoptionDataUseCase {
 
     private final AdoptionDataQueryPort adoptionDataQueryPort;
     private final ShelterInfoPort shelterInfoPort;
+    private final ProxyUrlPort proxyUrlPort;
 
     @Override
     public Adoption findAdoptionByIdOrThrow(Long adoptionId) {
-        return adoptionDataQueryPort.findByAdoptionIdOrThrow(adoptionId);
+        Adoption adoption = adoptionDataQueryPort.findByAdoptionIdOrThrow(adoptionId);
+        changePopfilesToProxy(adoption);
+        return adoption;
     }
 
     // AI 정제할 adoption 조회
@@ -60,6 +64,7 @@ public class  QueryAdoptionDataService implements QueryAdoptionDataUseCase {
 
     private List<AdoptionCard> mapToAdoptionCards(Page<Adoption> adoptionPage) {
         return adoptionPage.getContent().stream()
+                .peek(this::changePopfilesToProxy)
                 .map(AdoptionCardMapper::toAdoptionCard)
                 .collect(Collectors.toList());
     }
@@ -69,6 +74,9 @@ public class  QueryAdoptionDataService implements QueryAdoptionDataUseCase {
     public AdoptionRecommendResponses getRecommendAdoptions() {
         LocalDate today = LocalDate.now();
         List<Adoption> adoptions = adoptionDataQueryPort.findTop12ActiveByNoticeEdt(today);
+
+        // 각 adoption들의 popfile을 proxy url로 변경
+        adoptions.forEach(this::changePopfilesToProxy);
 
         List<AdoptionCard> adoptionCards = adoptions.stream()
                 .map(AdoptionCardMapper::toAdoptionCard)
@@ -95,13 +103,23 @@ public class  QueryAdoptionDataService implements QueryAdoptionDataUseCase {
         // 1) Adoption 엔티티 조회
         Adoption adoption = adoptionDataQueryPort.findByAdoptionIdOrThrow(adoptionId);
 
-        // 2) AdoptionDetailDto로 매핑
+        // 2) 이미지 url들을 대체
+        changePopfilesToProxy(adoption);
+
+        // 3) AdoptionDetailDto로 매핑
         AdoptionDetailDto adoptionDetailDto = AdoptionDetailDto.from(adoption);
 
-        // 3) Port를 통해 ShelterDetail 조회
+        // 4) Port를 통해 ShelterDetail 조회
         var shelterDetailDto = shelterInfoPort.getShelterDetail(adoptionDetailDto.getCareRegNo());
 
-        // 4) Response 생성 후 반환
+        // 5) Response 생성 후 반환
         return new AdoptionDetailResponse(adoptionDetailDto, shelterDetailDto);
+    }
+
+    private void changePopfilesToProxy(Adoption adoption) {
+        String popfile1 = proxyUrlPort.generateProxyUrl(adoption.getPopfile1());
+        String popfile2 = proxyUrlPort.generateProxyUrl(adoption.getPopfile2());
+        adoption.updatePopfile1(popfile1);
+        adoption.updatePopfile2(popfile2);
     }
 }

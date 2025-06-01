@@ -27,12 +27,14 @@ public class FcmService implements FcmUsecase {
         // 기존 토큰 조회 or 새 토큰 생성
         FcmToken fcmToken = fcmPort.findByUserId(userId);
 
-        // 토큰 정보 업데이트
-        fcmToken.updateToken(userId, token);
-
-        // DB에 저장
-        fcmPort.save(fcmToken);
-        log.info("FCM 토큰 저장 완료: 사용자={}", userId);
+        if (fcmToken == null) {
+            fcmToken = FcmToken.create(userId, token);
+            // DB에 저장
+            fcmPort.save(fcmToken);
+            log.info("FCM 토큰 저장 완료: 사용자={}", userId);
+        } else {
+            log.info("기존 FCM 토큰이 이미 존재함: 사용자={}", userId);
+        }
     }
 
     // 사용자 ID로 FCM 토큰 조회

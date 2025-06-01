@@ -1,11 +1,16 @@
 package kr.co.pawong.pwbe.chat.adapter.out.lostPost.dto;
 
 import java.net.URL;
+import kr.co.pawong.pwbe.lostPost.enums.PostType;
 
 public record ChatRoomLostPostInfo(
+        Long postId,        // 실종 공고id
+        String kindNm,    // 품종명
         String location,    // 장소
         String author,      // 글 작성자
-        URL imageUrl     // 이미지url
+        Long authorId,      // 글 작성자id
+        URL imageUrl,     // 이미지url
+        PostType postType   // 포스트 유형
 ) {
 
 }

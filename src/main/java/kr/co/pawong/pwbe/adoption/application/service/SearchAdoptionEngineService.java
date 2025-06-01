@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.adoption.application.service;
 
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionAiPort;
+import kr.co.pawong.pwbe.adoption.application.port.out.ProxyUrlPort;
 import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
 import kr.co.pawong.pwbe.adoption.application.port.out.dto.AdoptionSearchCondition;
 import kr.co.pawong.pwbe.adoption.application.port.out.AdoptionDataQueryPort;
@@ -25,6 +26,7 @@ public class SearchAdoptionEngineService implements SearchAdoptionEngineUseCase 
     private final AdoptionEngineQueryPort adoptionEngineQueryPort;
     private final AdoptionDataQueryPort adoptionDataQueryPort;
     private final AdoptionAiPort adoptionAiPort;
+    private final ProxyUrlPort proxyUrlPort;
 
     // RDB에서 adoptionId로 최종 AdoptionSearchResponses 반환
     @Override
@@ -36,6 +38,10 @@ public class SearchAdoptionEngineService implements SearchAdoptionEngineUseCase 
                 .map(AdoptionIdSearchResponse::getAdoptionId)
                 .map(adoptionDataQueryPort::findByIdOrThrow)
                 .collect(Collectors.toList());
+
+        // 각 popfile을 proxy url로 변경
+        adoptions.forEach(this::changePopfilesToProxy);
+
         // 최종적으로 검색 결과를 위한 매핑 리스트 반환
         List<AdoptionCard> adoptionCards = adoptions.stream()
                 .map(AdoptionCardMapper::toAdoptionCard)
@@ -58,6 +64,12 @@ public class SearchAdoptionEngineService implements SearchAdoptionEngineUseCase 
                 .collect(Collectors.toList()));
     }
 
+    // 위임, 임베딩 값
+    @Override
+    public List<String> autocomplete(String keyword) {
+        return adoptionEngineQueryPort.autocomplete(keyword);
+    }
+
     // 위임, 정제된 검색어 문장
     private String refineSearchTerm(AdoptionSearchRequest request) {
         String term = request.getSearchTerm();
@@ -69,14 +81,14 @@ public class SearchAdoptionEngineService implements SearchAdoptionEngineUseCase 
         return adoptionAiPort.tag(request.getSearchTerm());
     }
 
-    // 위임, 임베딩 값
     private float[] embed(String refinedSearchTerm) {
         return adoptionAiPort.embed(refinedSearchTerm);
     }
 
-    @Override
-    public List<String> autocomplete(String keyword) {
-        return adoptionEngineQueryPort.autocomplete(keyword);
+    private void changePopfilesToProxy(Adoption adoption) {
+        String popfile1 = proxyUrlPort.generateProxyUrl(adoption.getPopfile1());
+        String popfile2 = proxyUrlPort.generateProxyUrl(adoption.getPopfile2());
+        adoption.updatePopfile1(popfile1);
+        adoption.updatePopfile2(popfile2);
     }
-
 }

@@ -13,7 +13,10 @@ public class KafkaMessageConsumer {
 
     private final NotificationUseCase notificationUseCase;
 
-    @KafkaListener(topics = "${kafka.topic.notification}", groupId = "${spring.kafka.consumer.group-id}")
+    @KafkaListener(
+            topics = "${kafka.topic.notification}",
+            containerFactory = "kafkaListenerContainerFactory"
+    )
     public void consumeFcmNotificationMessage(String jsonString) {
         notificationUseCase.processFcmNotificationMessage(jsonString);
     }

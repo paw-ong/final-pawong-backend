@@ -11,7 +11,7 @@ public interface AdoptionDataCommandPort {
 
     void updateAdoption(Adoption adoption);
 
-    void saveAdoption(Adoption adoption);
+    long saveAdoption(Adoption adoption);
 
     void deleteAdoption(Adoption adoption);
 }

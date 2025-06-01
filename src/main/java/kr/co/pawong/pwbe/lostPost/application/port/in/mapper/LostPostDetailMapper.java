@@ -28,7 +28,7 @@ public class LostPostDetailMapper {
                 .deletedAt(lostPost.getDeletedAt())
                 .status(lostPost.getStatus())
                 .location(lostPost.getLocation())
-                .geoPoint(lostPost.getGeoPoint())
+                .lostGeoPoint(lostPost.getLostGeoPoint())
                 .author(author)
                 .authorId(lostPost.getUserId())
                 .bookmarked(bookmarked)
