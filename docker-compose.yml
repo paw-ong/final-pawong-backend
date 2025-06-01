@@ -48,6 +48,7 @@ services:
     depends_on:
       - elasticsearch
       - kibana
+      - grafana
     networks:
       - local-net
 
