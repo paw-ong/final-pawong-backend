@@ -18,7 +18,7 @@ public class LostPostCardMapper {
      * @param author   - 작성자 닉네임
      */
     public static LostPostCard toLostPostCard(
-            LostPost lostPost, String author, boolean bookmarked, Clock clock, String url) {
+            LostPost lostPost, String author, Clock clock, String url) {
 
         return LostPostCard.builder()
                 .postId(lostPost.getLostPostId())
@@ -30,7 +30,6 @@ public class LostPostCardMapper {
                 .kindNm(lostPost.getKindNm())
                 .createdAt(TimeUtils.formatTimeAgo(lostPost.getCreatedAt(), clock))
                 .feature(lostPost.getSpecialMark())
-                .bookmarked(bookmarked)
                 .build();
     }
 
@@ -39,7 +38,7 @@ public class LostPostCardMapper {
      * @param shelter   - 작성자 닉네임
      */
     public static LostPostCard toLostPostCard(
-            LostAdoption lostAdoption, String shelter, boolean bookmarked, Clock clock) {
+            LostAdoption lostAdoption, String shelter, Clock clock) {
 
         return LostPostCard.builder()
                 .postId(lostAdoption.getAdoptionId())
@@ -51,7 +50,6 @@ public class LostPostCardMapper {
                 .kindNm(lostAdoption.getKindNm())
                 .createdAt(TimeUtils.formatDateAgo(lostAdoption.getNoticeSdt(), clock))
                 .feature(lostAdoption.getSpecialMark())
-                .bookmarked(bookmarked)
                 .build();
     }
 

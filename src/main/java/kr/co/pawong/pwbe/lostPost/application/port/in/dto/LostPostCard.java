@@ -15,7 +15,6 @@ import lombok.Builder;
  * @param kindNm        // 상세 품종
  * @param createdAt     // 글 작성 일자 - 3초 전, 3개월 전 형식
  * @param feature       // 동물 특징
- * @param bookmarked    // 북마크 여부. 비로그인 상태일 경우 false
  */
 @Builder
 public record LostPostCard(
@@ -27,8 +26,7 @@ public record LostPostCard(
         String happenedPlace,
         String kindNm,
         String createdAt,
-        String feature,
-        boolean bookmarked
+        String feature
 ) {
 
 }

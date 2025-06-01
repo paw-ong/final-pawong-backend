@@ -50,10 +50,7 @@ public class QueryLostAnimalDataService implements QueryLostAnimalDataUseCase {
                 // 작성자 이름 조회
                 String author = userInfoPort.getNicknameByUserId(lostPost.getUserId());
                 String url = imageStoragePort.presignDownload(lostPost.getImageKey(), DOWNLOAD_URL_EXPIRE).toString();
-                // 유저 북마크 여부
-                boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(lostAnimalQuery.userId(),
-                        lostAnimalQuery.id());
-                yield LostPostCardMapper.toLostPostCard(lostPost, author, bookmarked, clock, url);
+                yield LostPostCardMapper.toLostPostCard(lostPost, author, clock, url);
             }
             // Lost Adoption 가져오기
             case LOST_ADOPTION -> {
@@ -62,10 +59,7 @@ public class QueryLostAnimalDataService implements QueryLostAnimalDataUseCase {
                 // 보호소 이름 조회
                 String shelter = shelterCareNmPort.getShelterCareNmByCareRegNo(
                         lostAdoption.getCareRegNo());
-                // 유저 북마크 여부
-                boolean bookmarked = bookmarkInfoPort.existsByUserIdAndAdoptionId(lostAnimalQuery.userId(),
-                        lostAnimalQuery.id());
-                yield LostPostCardMapper.toLostPostCard(lostAdoption, shelter, bookmarked, clock);
+                yield LostPostCardMapper.toLostPostCard(lostAdoption, shelter, clock);
             }
         };
     }

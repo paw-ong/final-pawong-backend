@@ -25,7 +25,6 @@ public class SearchLostPostDataService implements SearchLostPostDataUseCase {
 
     private final LostPostDataQueryPort lostPostDataQueryPort;
     private final UserInfoPort userInfoPort;
-    private final BookmarkInfoPort bookmarkInfoPort;
     private final ImageStoragePort imageStoragePort;
     private final Clock clock;
     private static final Duration DOWNLOAD_URL_EXPIRE = Duration.ofMinutes(15);
@@ -43,8 +42,7 @@ public class SearchLostPostDataService implements SearchLostPostDataUseCase {
                 .map(lp -> {
                     String author = userInfoPort.getNicknameByUserId(lp.getUserId());
                     String url = imageStoragePort.presignDownload(lp.getImageKey(), DOWNLOAD_URL_EXPIRE).toString();
-                    boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(lp.getUserId(), lp.getLostPostId());
-                    return LostPostCardMapper.toLostPostCard(lp, author, bookmarked, clock, url);
+                    return LostPostCardMapper.toLostPostCard(lp, author, clock, url);
                 })
                 .collect(Collectors.toList());
     }

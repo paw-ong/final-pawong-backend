@@ -23,7 +23,6 @@ public class MyPageMapper {
                 .kindNm(myPageLostPostInfo.kindNm())
                 .createdAt(myPageLostPostInfo.createdAt())
                 .feature(myPageLostPostInfo.feature())
-                .bookmarked(myPageLostPostInfo.bookmarked())
                 .build();
     }
 

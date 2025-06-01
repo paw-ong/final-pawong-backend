@@ -16,9 +16,4 @@ public class BookmarkInfoAdapter implements BookmarkInfoPort {
         return queryBookmarkDataUseCase.existsLostPostBookmark(userId, lostPostId);
     }
 
-    @Override
-    public boolean existsByUserIdAndAdoptionId(Long userId, Long adoptionId) {
-        return queryBookmarkDataUseCase.existsLostAdoptionBookmark(userId, adoptionId);
-    }
-
 }
