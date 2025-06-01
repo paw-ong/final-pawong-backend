@@ -33,9 +33,9 @@ public class LostAnimalQueryBuilder {
 
             return Query.of(q -> q.scriptScore(ss -> ss
                     .query(bool.build()._toQuery())
-                    .script(s -> s.inline(i -> i
+                    .script(s -> s
                             .source("cosineSimilarity(params.query_vector, 'embedding')") // -1~1
-                            .params("query_vector", JsonData.of(vec))))));
+                            .params("query_vector", JsonData.of(vec)))));
         }
 
         /* 벡터가 없으면 필터만 */

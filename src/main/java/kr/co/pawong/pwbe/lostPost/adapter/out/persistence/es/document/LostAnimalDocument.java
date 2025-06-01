@@ -28,7 +28,7 @@ public class LostAnimalDocument {
     @Field(type = FieldType.Keyword, name = "lostAnimalId")
     private String lostAnimalId; // type + id // ex) LOST_13, FOUND_243
 
-    @Field(type = FieldType.Keyword, name = "rdbId")
+    @Field(type = FieldType.Long, name = "rdbId")
     private Long rdbId; // id
 
     @Field(type = FieldType.Keyword, name = "type")
