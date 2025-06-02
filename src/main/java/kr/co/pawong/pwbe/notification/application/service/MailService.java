@@ -39,8 +39,8 @@ public class MailService implements MailUseCase {
 
 
     // 알림 메시지를 발행할 kafka 토픽 이름
-    @Value("${kafka.topic.similar-animal-notification}")
-    private String similarNotificationTopic;
+    @Value("${kafka.topic.mail-notification}")
+    private String mailNotificationTopic;
 
     // 이메일 인증
     @Override
@@ -85,7 +85,7 @@ public class MailService implements MailUseCase {
 
             // NotificationEmailDto로 변환하여 Kafka에 발행
             NotificationEmailDto notificationEmailDto = notification.toDto();
-            publishMessageUseCase.publishMessage(similarNotificationTopic, notificationEmailDto);
+            publishMessageUseCase.publishMessage(mailNotificationTopic, notificationEmailDto);
 
             log.info("채팅 알림 발송 완료: userId={}, id={}", request.getUserId(), notification.getId());
         } catch (Exception e) {

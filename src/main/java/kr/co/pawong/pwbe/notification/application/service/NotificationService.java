@@ -32,13 +32,9 @@ public class NotificationService implements NotificationUseCase {
     private final ObjectMapper objectMapper;
     private final NotificationUtils notificationUtils;
 
-    // 알림 메시지를 발행할 kafka 토픽 이름
-    @Value("${kafka.topic.similar-animal-notification}")
-    private String similarNotificationTopic;
-
-    // 알림 메시지를 발행할 kafka 토픽 이름
-    @Value("${kafka.topic.chat-notification}")
-    private String chatNotificationTopic;
+    // fcm 메시지를 발행할 kafka 토픽 이름
+    @Value("${kafka.topic.fcm-notification}")
+    private String fcmNotificationTopic;
 
 
     // 채팅 알림
@@ -66,7 +62,7 @@ public class NotificationService implements NotificationUseCase {
 
             // NotificationDto로 변환하여 Kafka에 발행
             NotificationDto notificationDto = savedNotification.toDto(token);
-            publishMessageUseCase.publishMessage(chatNotificationTopic, notificationDto);
+            publishMessageUseCase.publishMessage(fcmNotificationTopic, notificationDto);
 
             log.info("채팅 알림 발송 완료: userId={}, id={}", request.getUserId(), savedNotification.getId());
 
@@ -103,7 +99,7 @@ public class NotificationService implements NotificationUseCase {
 
             // NotificationDto로 변환하여 Kafka에 발행
             NotificationDto notificationDto = savedNotification.toDto(token);
-            publishMessageUseCase.publishMessage(similarNotificationTopic, notificationDto);
+            publishMessageUseCase.publishMessage(fcmNotificationTopic, notificationDto);
 
             log.info("유사 공고 알림 발송 완료: userId={}, id={}", request.getUserId(), savedNotification.getId());
         } catch (BaseException e) {
