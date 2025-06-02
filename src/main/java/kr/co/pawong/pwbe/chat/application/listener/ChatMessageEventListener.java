@@ -37,15 +37,10 @@ public class ChatMessageEventListener {
                         sender.getNickname(),
                         sender.getProfileImage());
 
-        /* find user in chat room */
-        ChatRoom chatRoom = chatRoomDataQueryPort.findChatRoomByIdOrThrow(chatMessage.getChatRoomId());
-        User author = userDataQueryPort.findByUserIdOrThrow(chatRoom.getAuthorId());
-        User participant = userDataQueryPort.findByUserIdOrThrow(chatRoom.getParticipantId());
-
         /* send it to users */
         String userDest = "/queue/chat/" + chatMessage.getChatRoomId();
-        chatMessageBrokerPort.sendMessageToUser(String.valueOf(author.getSocialId()), userDest, messageDetail);
-        chatMessageBrokerPort.sendMessageToUser(String.valueOf(participant.getSocialId()), userDest,messageDetail);
+        chatMessageBrokerPort.sendMessageToUser(String.valueOf(event.getAuthor().getSocialId()), userDest, messageDetail);
+        chatMessageBrokerPort.sendMessageToUser(String.valueOf(event.getParticipant().getSocialId()), userDest,messageDetail);
     }
 
     @Async("chatExecutor")

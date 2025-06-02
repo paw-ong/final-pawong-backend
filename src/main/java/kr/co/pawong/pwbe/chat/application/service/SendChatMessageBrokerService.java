@@ -6,7 +6,14 @@ import kr.co.pawong.pwbe.chat.application.listener.event.ChatMessageReadEvent;
 import kr.co.pawong.pwbe.chat.application.port.in.CommandChatMessageDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.SendChatMessageBrokerUseCase;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatMessageDataQueryPort;
+import kr.co.pawong.pwbe.chat.application.port.out.ChatRoomDataQueryPort;
 import kr.co.pawong.pwbe.chat.domain.ChatMessage;
+import kr.co.pawong.pwbe.chat.domain.ChatRoom;
+import kr.co.pawong.pwbe.lostPost.enums.PostType;
+import kr.co.pawong.pwbe.notification.application.port.in.NotificationUseCase;
+import kr.co.pawong.pwbe.notification.application.port.in.dto.NotificationRequest;
+import kr.co.pawong.pwbe.user.application.port.out.UserDataQueryPort;
+import kr.co.pawong.pwbe.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -18,6 +25,9 @@ public class SendChatMessageBrokerService implements SendChatMessageBrokerUseCas
 
     private final CommandChatMessageDataUseCase commandChatMessageDataUseCase;
     private final ChatMessageDataQueryPort chatMessageDataQueryPort;
+    private final ChatRoomDataQueryPort chatRoomDataQueryPort;
+    private final NotificationUseCase notificationUseCase;
+    private final UserDataQueryPort userDataQueryPort;
     private final ApplicationEventPublisher publisher;
 
     @Override
@@ -25,7 +35,24 @@ public class SendChatMessageBrokerService implements SendChatMessageBrokerUseCas
     public void createAndSendChatMessage(ChatMessageCreateRequest request, Long chatRoomId,
             Long userId) {
         ChatMessage chatMessage = createChatMessage(request, chatRoomId, userId);
-        publisher.publishEvent(new ChatMessageCreatedEvent(chatMessage));
+
+        /* find user in chat room */
+        ChatRoom chatRoom = chatRoomDataQueryPort.findChatRoomByIdOrThrow(chatMessage.getChatRoomId());
+        User author = userDataQueryPort.findByUserIdOrThrow(chatRoom.getAuthorId());
+        User participant = userDataQueryPort.findByUserIdOrThrow(chatRoom.getParticipantId());
+        User receiver = (author.getUserId().equals(chatMessage.getSenderId()))? participant: author;
+
+        /* Send a chat message */
+        publisher.publishEvent(new ChatMessageCreatedEvent(chatMessage, author, participant));
+
+        /* Send notification */
+        notificationUseCase.sendChatNotification(new NotificationRequest(
+                receiver.getUserId(),
+                chatMessage.getContent(),
+                chatMessage.getChatRoomId(),
+                PostType.LOST
+        ));
+
     }
 
     @Override
