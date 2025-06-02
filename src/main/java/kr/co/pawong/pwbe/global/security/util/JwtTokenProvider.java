@@ -120,18 +120,17 @@ public class JwtTokenProvider {
             // any other parsing/signature/format error
             throw new JwtException("Invalid access token", e);
         }
-
         return true;
     }
+
     public Claims parseAndValidateRefreshToken(String token) {
         if (token == null) {
             return null;
         }
         try {
             Claims refreshClaims = getRefreshClaims(token);
-            if(isExpired(refreshClaims))
+            if(!isExpired(refreshClaims))
                 return refreshClaims;
-            // 만료 여부는 claims.getExpiration() 으로 직접 체크
         } catch (ExpiredJwtException e) {
             throw e;
             // 토큰 만료
@@ -144,7 +143,7 @@ public class JwtTokenProvider {
 
     // 토큰의 만료 여부를 확인
     private boolean isExpired(Claims claims) {
-        return claims.getExpiration().after(new Date());   // 만료 시간이 현재보다 뒤(미래)에 있어야 true
+        return claims.getExpiration().before(new Date());   // 만료 시간이 현재보다 전에 있으면 Expired true
     }
 
     // token 내에서 userId(subject)를 꺼내오는 메소드
