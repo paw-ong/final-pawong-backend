@@ -56,7 +56,6 @@ public class JwtFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        log.info("jwtFilter");
 
         // CASE 1: Valid Access Token
         String accessToken = getCookieValue(request, "ACCESS_TOKEN");

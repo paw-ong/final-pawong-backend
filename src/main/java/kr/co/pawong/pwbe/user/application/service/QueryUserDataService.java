@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.user.application.service;
 
+import kr.co.pawong.pwbe.user.application.port.in.QueryEmailUseCase;
 import kr.co.pawong.pwbe.user.application.port.in.QueryNicknameUseCase;
 import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
 import kr.co.pawong.pwbe.user.application.port.out.UserDataQueryPort;
@@ -10,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class QueryUserDataService implements QueryUserDataUseCase, QueryNicknameUseCase {
+public class QueryUserDataService implements QueryUserDataUseCase, QueryNicknameUseCase,
+        QueryEmailUseCase {
 
     private final UserDataQueryPort userDataQueryPort;
 
@@ -31,6 +33,13 @@ public class QueryUserDataService implements QueryUserDataUseCase, QueryNickname
     public String getNicknameByUserId(Long userId) {
         return userDataQueryPort.findByUserIdOrThrow(userId)
                 .getNickname();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public String getEmailByUserId(Long userId) {
+        return userDataQueryPort.findByUserIdOrThrow(userId)
+                .getEmail();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.notification.adapter.in.messaging;
 
+import kr.co.pawong.pwbe.notification.application.port.in.MailUseCase;
 import kr.co.pawong.pwbe.notification.application.port.in.NotificationUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,21 +13,22 @@ import org.springframework.stereotype.Component;
 public class KafkaMessageConsumer {
 
     private final NotificationUseCase notificationUseCase;
+    private final MailUseCase mailUseCase;
 
     @KafkaListener(
-            topics = "${kafka.topic.similar-animal-notification}",
+            topics = "${kafka.topic.fcm-notification}",
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void consumeSimilarAnimalNotificationMessage(String jsonString) {
         notificationUseCase.processFcmNotificationMessage(jsonString);
-    }
-
-    @KafkaListener(
-            topics = "${kafka.topic.chat-notification}",
-            containerFactory = "kafkaListenerContainerFactory"
-    )
-    public void consumeChatNotificationMessage(String jsonString) {
         notificationUseCase.processFcmNotificationMessage(jsonString);
     }
 
+    @KafkaListener(
+            topics = "${kafka.topic.mail-notification}",
+            containerFactory = "kafkaListenerContainerFactory"
+    )
+    public void consumeChatNotificationMessage(String jsonString) {
+        mailUseCase.processMailNotificationMessage(jsonString);
+    }
 }
