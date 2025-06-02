@@ -1,11 +1,12 @@
-package kr.co.pawong.pwbe.user.config;
+package kr.co.pawong.pwbe.global.config;
 
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomOAuth2UserService;
-import kr.co.pawong.pwbe.user.adapter.out.security.JwtTokenProvider;
-import kr.co.pawong.pwbe.user.adapter.out.security.OAuth2AuthenticationSuccessHandler;
-import kr.co.pawong.pwbe.user.adapter.out.security.error.CustomAuthenticationEntryPoint;
-import kr.co.pawong.pwbe.user.adapter.out.security.filter.JwtFilter;
-import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
+import kr.co.pawong.pwbe.global.security.error.CustomAuthenticationEntryPoint;
+import kr.co.pawong.pwbe.global.security.filter.JwtFilter;
+import kr.co.pawong.pwbe.global.security.handler.CookieClearingLogoutSuccessHandler;
+import kr.co.pawong.pwbe.global.security.handler.OAuth2AuthenticationSuccessHandler;
+import kr.co.pawong.pwbe.global.security.handler.RedisLogoutHandler;
+import kr.co.pawong.pwbe.global.security.service.CustomOAuth2UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,44 +20,29 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
-    private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final QueryUserDataUseCase queryUserDataUseCase;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-
-    public SecurityConfig(
-            JwtFilter jwtFilter,
-            JwtTokenProvider jwtTokenProvider,
-            UserDetailsService userDetailsService,
-            CustomOAuth2UserService customOAuth2UserService,
-            QueryUserDataUseCase queryUserDataUseCase,
-            CustomAuthenticationEntryPoint customAuthenticationEntryPoint
-    ) {
-        this.jwtFilter = jwtFilter;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.userDetailsService = userDetailsService;
-        this.customOAuth2UserService = customOAuth2UserService;
-        this.queryUserDataUseCase = queryUserDataUseCase;
-        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
-    }
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final RedisLogoutHandler redisLogoutHandler;
+    private final CookieClearingLogoutSuccessHandler cookieClearingLogoutSuccessHandler;
 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/**")
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // JS에서 읽을 수 있도록 HttpOnly=false
+                                .ignoringRequestMatchers("/api/**")
+                                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        // JS에서 읽을 수 있도록 HttpOnly=false
                 )
 
                 // ExceptionTranslationFilter -> jwtFilter 실행
@@ -76,14 +62,10 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/adoptions/**",
                                 "/api/adoption/**",
-                                "/api/shelters/**",
-                                "/api/lost-animals/**",
-                                "/api/mail/**",
-                                "/api/lost-animals/**",
-                                "/api/auth/csrf-token"
+                                "/api/shelters/**"
                         ).permitAll()
                         .requestMatchers(
-                                HttpMethod.GET, "/api/lost-animals/*" // ⬅ 단건 조회만 허용
+                                HttpMethod.GET, "/api/lost-animals/**" // ⬅ 단건 조회만 허용
                         ).permitAll()
                         .anyRequest().authenticated())
 
@@ -91,18 +73,18 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo ->
                                 userInfo.userService(customOAuth2UserService))
-                        .successHandler(oAuth2AuthenticationSuccessHandler())
+                        .successHandler(oAuth2AuthenticationSuccessHandler)
                 )
 
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(customAuthenticationEntryPoint));
+                        .authenticationEntryPoint(customAuthenticationEntryPoint))
+
+                .logout(logout -> logout
+                    .logoutUrl("/api/auth/logout")
+                    .addLogoutHandler(redisLogoutHandler)
+                    .logoutSuccessHandler(cookieClearingLogoutSuccessHandler));
 
         return http.build();
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-        return new OAuth2AuthenticationSuccessHandler(queryUserDataUseCase, jwtTokenProvider);
     }
 
     @Bean

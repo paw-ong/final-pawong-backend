@@ -1,10 +1,12 @@
-package kr.co.pawong.pwbe.user.adapter.out.security;
+package kr.co.pawong.pwbe.global.security.dto;
 
 import java.util.Collection;
 import java.util.Map;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 
+@Getter
 public class CustomOAuth2User extends DefaultOAuth2User {
 
     private final Long userId;
@@ -18,7 +20,4 @@ public class CustomOAuth2User extends DefaultOAuth2User {
         this.userId = userId;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
 }

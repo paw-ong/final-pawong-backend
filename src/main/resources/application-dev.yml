@@ -9,13 +9,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-  data:
-    redis:
-      host: ${REDIS_URI:localhost}
-      port: ${REDIS_PORT:6380}
-      password: ${REDIS_PASSWORD}
 app:
   image:
     proxy:
       enabled: true
-      base-url: ${PROXY_URL}

@@ -17,10 +17,10 @@ spring:
       ack-mode: record
 kafka:
   topic:
-    notification: fcm-notification
-    mail: mail-notification
-    common-dead-letter: "dev.pawong.common.dlt"
-    lost-post-created: "dev.pawong.lost-post.created"
-    rescued-animal-created: "dev.pawong.rescued-animal.created"
-    lost-post-embedded: "dev.pawong.lost-post.embedded"
-    rescued-animal-embedded: "dev.pawong.rescued-animal.embedded"
+    similar-animal-notification: similar.animal.notification
+    chat-notification: chat.notification
+    common-dead-letter: dev.pawong.common.dlt
+    lost-post-created: dev.pawong.lost-post.created
+    rescued-animal-created: dev.pawong.rescued-animal.created
+    lost-post-embedded: dev.pawong.lost-post.embedded
+    rescued-animal-embedded: dev.pawong.rescued-animal.embedded

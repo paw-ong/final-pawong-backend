@@ -16,18 +16,19 @@ public class KafkaMessageConsumer {
     private final MailUseCase mailUseCase;
 
     @KafkaListener(
-            topics = "${kafka.topic.notification}",
+            topics = "${kafka.topic.similar-animal-notification}",
             containerFactory = "kafkaListenerContainerFactory"
     )
-    public void consumeFcmNotificationMessage(String jsonString) {
+    public void consumeSimilarAnimalNotificationMessage(String jsonString) {
         notificationUseCase.processFcmNotificationMessage(jsonString);
+        mailUseCase.processMailNotificationMessage(jsonString);
     }
 
     @KafkaListener(
-            topics = "${kafka.topic.mail}",
+            topics = "${kafka.topic.chat-notification}",
             containerFactory = "kafkaListenerContainerFactory"
     )
-    public void consumeMailNotificationMessage(String jsonString) {
-        mailUseCase.processMailNotificationMessage(jsonString);
+    public void consumeChatNotificationMessage(String jsonString) {
+        notificationUseCase.processFcmNotificationMessage(jsonString);
     }
 }
