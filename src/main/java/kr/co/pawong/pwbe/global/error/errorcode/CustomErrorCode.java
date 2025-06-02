@@ -25,6 +25,7 @@ public enum CustomErrorCode implements ErrorCode {
     FCM_NOTIFICATION_TITLE_MISSING(BAD_REQUEST, "알림 제목이 누락되었습니다."),
     FCM_NOTIFICATION_MESSAGE_MISSING(BAD_REQUEST, "알림 메시지가 누락되었습니다."),
     FCM_INVALID_JSON_FORMAT(BAD_REQUEST, "알림 JSON 형식이 올바르지 않습니다."),
+    EMAIL_INVALID_JSON_FORMAT(BAD_REQUEST, "이메일 JSON 형식이 올바르지 않습니다."),
     NOTIFICATION_INVALID_TOKEN(BAD_REQUEST, "유효한 FCM 토큰을 찾을 수 없습니다."),
     NOTIFICATION_INVALID_REQUEST(BAD_REQUEST, "알림 요청 데이터가 유효하지 않습니다."),
     NOTIFICATION_USER_ID_REQUIRED(BAD_REQUEST, "사용자 ID는 필수입니다."),
