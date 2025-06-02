@@ -1,15 +1,22 @@
 package kr.co.pawong.pwbe.notification.application.service;
 
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.EMAIL_DUPLICATE;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.EMAIL_INVALID_JSON_FORMAT;
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.EMAIL_SEND_FAIL;
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.REDIS_SAVE_ERROR;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.Duration;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.global.util.CodeGenerator;
+import kr.co.pawong.pwbe.global.util.NotificationUtils;
 import kr.co.pawong.pwbe.global.util.RedisUtils;
+import kr.co.pawong.pwbe.infrastructure.messaging.application.port.in.PublishMessageUseCase;
 import kr.co.pawong.pwbe.notification.application.port.in.MailUseCase;
 import kr.co.pawong.pwbe.notification.application.port.in.dto.NotificationRequest;
+import kr.co.pawong.pwbe.notification.application.port.out.NotificationPort;
+import kr.co.pawong.pwbe.notification.application.service.dto.NotificationEmailDto;
+import kr.co.pawong.pwbe.notification.domain.Notification;
 import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +33,15 @@ public class MailService implements MailUseCase {
     private long authCodeExpirationMillis;
     private final CustomMailSenderService customMailSenderService;
     private final RedisUtils redisUtils;
+    private final NotificationUtils notificationUtils;
     private final QueryUserDataUseCase queryUserDataUseCase;
+    private final NotificationPort notificationPort;
+    private final PublishMessageUseCase publishMessageUseCase;
+
+
+    // 알림 메시지를 발행할 kafka 토픽 이름
+    @Value("${kafka.topic.similar-animal-notification}")
+    private String similarNotificationTopic;
 
     // 이메일 인증
     @Override
@@ -58,23 +73,43 @@ public class MailService implements MailUseCase {
         }
     }
 
-    // 유사 공고 알림
+    // 유사 공고 이메일
     @Override
     public void sendSimilarAdoptionEmail(NotificationRequest request){
-        String title = "\uD83D\uDD0D 등록하신 실종동물과 유사한 보호 동물이 있습니다 ";
-
         try {
-            customMailSenderService.sendSimilarAdoptionEmail(request, title);
+            // Notification 생성
+            Notification notification = Notification.createSimilarAdoptionNotification(
+                    request.getUserId(),
+                    request.getTargetId(),
+                    request.getTargetType()
+            );
+
+            // NotificationEmailDto로 변환하여 Kafka에 발행
+            NotificationEmailDto notificationEmailDto = notification.toDto();
+            publishMessageUseCase.publishMessage(similarNotificationTopic, notificationEmailDto);
+
+            log.info("채팅 알림 발송 완료: userId={}, id={}", request.getUserId(), notification.getId());
         } catch (Exception e) {
             throw new BaseException(EMAIL_SEND_FAIL);
         }
 
     }
 
-    //
     @Override
     public void processMailNotificationMessage(String jsonString){
+        try {
+            // 1. JSON 파싱
+            NotificationEmailDto notificationEmailDto = notificationUtils.parseJsonToEmailDto(jsonString);
+            // 2. 이메일 전송
+            customMailSenderService.sendSimilarAdoptionEmail(notificationEmailDto);
 
+        } catch (JsonProcessingException e) {
+            log.error("JSON 파싱 실패: jsonString={}, error={}", jsonString, e.getMessage(), e);
+            throw new BaseException(EMAIL_INVALID_JSON_FORMAT);
+        } catch (Exception e) {
+            log.error("이메일 처리 실패", e);
+            throw e;
+        }
 
     }
 
