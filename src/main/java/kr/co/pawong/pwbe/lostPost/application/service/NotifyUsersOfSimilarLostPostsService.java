@@ -42,7 +42,7 @@ public class NotifyUsersOfSimilarLostPostsService implements NotifyUsersOfSimila
         // 3. 작성자 정보 가져와서 알림 호출
         for (LostAnimalEngineResponse similarAnimal : similarAnimals) {
             Long userId = queryLostPostDataUseCase.getUserIdByLostPostId(similarAnimal.id());
-            notificationSendPort.sendNotification(userId, similarAnimal.id(), similarAnimal.type());
+            notificationSendPort.sendNotification(userId, id, type);
         }
 
     }

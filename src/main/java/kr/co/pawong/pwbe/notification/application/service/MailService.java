@@ -77,7 +77,7 @@ public class MailService implements MailUseCase {
     public void sendSimilarAdoptionEmail(NotificationRequest request){
         try {
             // Notification 생성
-            Notification notification = Notification.createSimilarAdoptionNotification(
+            Notification notification = Notification.createSimilarAdoptionMailNotification(
                     request.getUserId(),
                     request.getTargetId(),
                     request.getTargetType()
@@ -87,7 +87,7 @@ public class MailService implements MailUseCase {
             NotificationEmailDto notificationEmailDto = notification.toDto();
             publishMessageUseCase.publishMessage(mailNotificationTopic, notificationEmailDto);
 
-            log.info("채팅 알림 발송 완료: userId={}, id={}", request.getUserId(), notification.getId());
+            log.info("유사동물 메일 알림 발송 완료: userId={}, id={}", request.getUserId(), notification.getId());
         } catch (Exception e) {
             throw new BaseException(EMAIL_SEND_FAIL);
         }
