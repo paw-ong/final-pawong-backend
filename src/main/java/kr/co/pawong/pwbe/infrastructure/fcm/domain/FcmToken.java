@@ -27,4 +27,9 @@ public class FcmToken {
                 .updatedAt(now)
                 .build();
     }
+
+    public void updateToken(String token) {
+        this.token = token;
+        this.updatedAt = LocalDateTime.now();
+    }
 }

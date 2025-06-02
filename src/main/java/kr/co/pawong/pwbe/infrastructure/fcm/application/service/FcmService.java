@@ -32,8 +32,8 @@ public class FcmService implements FcmUsecase {
             // DB에 저장
             fcmPort.save(fcmToken);
             log.info("FCM 토큰 저장 완료: 사용자={}", userId);
-        } else {
-            log.info("기존 FCM 토큰이 이미 존재함: 사용자={}", userId);
+        } else if (!fcmToken.getToken().equals(token)) {
+            fcmToken.updateToken(token);
         }
     }
 
