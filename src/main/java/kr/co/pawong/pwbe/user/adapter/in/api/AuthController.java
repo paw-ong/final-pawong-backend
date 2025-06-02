@@ -37,4 +37,5 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("csrf-token", model.getToken()));
     }
 
+
 }
