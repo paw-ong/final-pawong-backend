@@ -26,6 +26,28 @@
     </encoder>
   </appender>
 
+  <!-- DLT(Dead Letter Topic 전용 로깅) -->
+  <appender name="DLT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_DIR}/dlt.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_DIR}/dlt.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>7</maxHistory>
+      <totalSizeCap>10MB</totalSizeCap>
+    </rollingPolicy>
+    <encoder>
+      <!-- 날짜/시간 + 메시지 -->
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger
+    name="kr.co.pawong.pwbe.infrastructure.messaging.adapter.in.KafkaDeadLetterTopicConsumer"
+    level="INFO"
+    additivity="false">
+    <appender-ref ref="DLT_FILE"/>
+    <appender-ref ref="CONSOLE"/>   <!-- 콘솔에도 출력 -->
+  </logger>
+
   <root level="INFO">
     <appender-ref ref="CONSOLE"/>
     <appender-ref ref="DAILY_FILE"/>

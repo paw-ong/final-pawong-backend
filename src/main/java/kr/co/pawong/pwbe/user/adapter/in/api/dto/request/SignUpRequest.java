@@ -9,12 +9,14 @@ public class SignUpRequest {
     private String nickname;
     private String region;
     private String tel;
+    private String email;
 
     public UserUpdate update() {
         return UserUpdate.builder()
                 .nickname(nickname)
                 .region(region)
                 .tel(tel)
+                .email(email)
                 .build();
     }
 }

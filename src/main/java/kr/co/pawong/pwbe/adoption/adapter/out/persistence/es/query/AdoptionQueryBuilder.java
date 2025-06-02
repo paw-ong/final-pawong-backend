@@ -107,10 +107,10 @@ public class AdoptionQueryBuilder {
             semantic.filter(f -> f.exists(e -> e.field("embedding")))
                     .should(s -> s.scriptScore(ss -> ss
                             .query(q -> q.matchAll(m -> m))
-                            .script(sc -> sc.inline(i -> i
+                            .script(sc -> sc
                                     .source("cosineSimilarity(params.query_vector, 'embedding') + 1.0") // cosine similarity 활용
                                     .params("query_vector", JsonData.of(embeddingList))
-                            ))
+                            )
                             .boost(4.0f)    // 벡터는 2배의 가중치
                     ));
         }

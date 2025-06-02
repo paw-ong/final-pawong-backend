@@ -109,7 +109,7 @@ public class LostPostEntity {
                 .deletedAt(lostPost.getDeletedAt())
                 .status(lostPost.getStatus())
                 .location(lostPost.getLocation())
-                .geoPoint(new GeoPointEmbeddable(lostPost.getGeoPoint()))
+                .geoPoint(new GeoPointEmbeddable(lostPost.getLostGeoPoint()))
                 .userId(lostPost.getUserId())
                 .build();
     }
@@ -134,7 +134,7 @@ public class LostPostEntity {
                 .deletedAt(this.deletedAt)
                 .status(this.status)
                 .location(this.location)
-                .geoPoint(this.geoPoint.toDomain())
+                .lostGeoPoint(this.geoPoint.toDomain())
                 .userId(this.userId)
                 .build();
     }
@@ -156,7 +156,7 @@ public class LostPostEntity {
         this.content = lostPost.getContent();
         this.rfidCd = lostPost.getRfidCd();
         this.location = lostPost.getLocation();
-        this.geoPoint = new GeoPointEmbeddable(lostPost.getGeoPoint());
+        this.geoPoint = new GeoPointEmbeddable(lostPost.getLostGeoPoint());
         this.updatedAt = LocalDateTime.now();
         this.status = PostStatus.ACTIVE;
         return this;

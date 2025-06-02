@@ -68,7 +68,8 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
         String author = userInfoPort.getNicknameByUserId(lostPost.getUserId());
         URL imageUrl = imageStoragePort.presignDownload(lostPost.getImageKey(),
                 Duration.ofMinutes(15));
-        return new ChatRoomLostPostInfo(lostPost.getLocation(), author, imageUrl);
+        PostType postType = lostPost.getPostType();
+        return new ChatRoomLostPostInfo(lostPost.getLostPostId(), lostPost.getKindNm(), lostPost.getLocation(), author, lostPost.getUserId(), imageUrl, postType);
     }
 
     public SliceLostPostSearchResponses fetchSlicedLostPosts(Pageable pageable, PostType type, Long userId) {
@@ -87,5 +88,10 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
                     return LostPostCardMapper.toLostPostCard(lp, author, bookmarked,clock,url);
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Long getUserIdByLostPostId(Long lostPostId) {
+        return lostPostDataQueryPort.findLostPostByIdOrThrow(lostPostId).getUserId();
     }
 }

@@ -60,9 +60,9 @@ public class JpaAdoptionDataCommandAdapter implements AdoptionDataCommandPort {
 
     @Override
     @Transactional
-    public void saveAdoption(Adoption adoption) {
+    public long saveAdoption(Adoption adoption) {
         AdoptionEntity adoptionEntity = AdoptionEntity.from(adoption);
-        adoptionJpaRepository.save(adoptionEntity);
+        return adoptionJpaRepository.save(adoptionEntity).getAdoptionId();
     }
 
     @Override

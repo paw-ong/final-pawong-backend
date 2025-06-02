@@ -22,7 +22,7 @@ class QueryMyPageDataServiceTest {
         LostPostInfoPort fakePort = new FakeLostPostInfoPort();
         // TODO: FAKE_로 만들어서 넣어줘야함.
         QueryBookmarkDataUseCase queryBookmarkDataUseCase = null;
-        service = new QueryMyPageDataService(fakePort, queryBookmarkDataUseCase);
+        service = new QueryMyPageDataService(fakePort, queryBookmarkDataUseCase, null);
     }
 
     @Test

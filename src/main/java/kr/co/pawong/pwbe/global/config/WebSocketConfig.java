@@ -1,8 +1,8 @@
 package kr.co.pawong.pwbe.global.config;
 
 import java.util.List;
-import kr.co.pawong.pwbe.global.handshake.JwtHandshakeHandler;
-import kr.co.pawong.pwbe.global.interceptor.JwtHandshakeInterceptor;
+import kr.co.pawong.pwbe.global.security.handler.JwtHandshakeHandler;
+import kr.co.pawong.pwbe.global.security.interceptor.JwtHandshakeInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -14,7 +14,6 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.security.authorization.AuthorizationEventPublisher;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.authorization.SpringAuthorizationEventPublisher;
-import org.springframework.security.config.annotation.web.socket.EnableWebSocketSecurity;
 import org.springframework.security.messaging.access.intercept.AuthorizationChannelInterceptor;
 import org.springframework.security.messaging.context.AuthenticationPrincipalArgumentResolver;
 import org.springframework.security.messaging.context.SecurityContextChannelInterceptor;
@@ -43,7 +42,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
                 .addEndpoint("/ws")
-                .setAllowedOriginPatterns("http://localhost", "https://pawong.co.kr", "*")
+                .setAllowedOriginPatterns("http://localhost", "https://pawong.co.kr")
                 .addInterceptors(jwtHandshakeInterceptor)
                 .setHandshakeHandler(jwtHandshakeHandler)
                 .withSockJS();

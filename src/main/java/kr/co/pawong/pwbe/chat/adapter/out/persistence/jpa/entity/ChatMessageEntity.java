@@ -8,7 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import kr.co.pawong.pwbe.chat.domain.ChatMessage;
 import kr.co.pawong.pwbe.chat.enums.ChatMessageStatus;
 import lombok.AllArgsConstructor;
@@ -36,9 +36,9 @@ public class ChatMessageEntity {
     private String content;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
-    private LocalDateTime readAt;
+    private Instant readAt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -66,5 +66,10 @@ public class ChatMessageEntity {
                 .readAt(this.readAt)
                 .status(this.status)
                 .build();
+    }
+
+    public void readMessage() {
+        this.readAt = Instant.now();
+        this.status = ChatMessageStatus.READ;
     }
 }

@@ -2,21 +2,30 @@ package kr.co.pawong.pwbe.lostPost.application.service;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Clock;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
+import kr.co.pawong.pwbe.infrastructure.s3.application.port.out.ImageStoragePort;
+import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.request.LostPostSearchRequest;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAdoptionDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.UserInfoPort;
+import kr.co.pawong.pwbe.lostPost.application.service.QueryLostPostDataServiceTest.FakeLostPostDataQueryPort.FakeImageStoragePort;
 import kr.co.pawong.pwbe.lostPost.application.service.QueryLostPostDataServiceTest.FakeLostPostDataQueryPort.FakeUserInfoPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 
 class QueryLostPostDataServiceTest {
 
@@ -29,6 +38,7 @@ class QueryLostPostDataServiceTest {
         // Fake 구현체들로 Service를 직접 생성
         LostPostDataQueryPort fakeLostPostPort = new FakeLostPostDataQueryPort();
         UserInfoPort fakeUserInfoPort = new FakeUserInfoPort();
+        ImageStoragePort fakeImageStoragePort = new FakeImageStoragePort();
         Clock fixedClock = Clock.fixed(FIXED_LDT.atZone(ZoneId.systemDefault()).toInstant(),
                 ZoneId.systemDefault());
 
@@ -37,6 +47,7 @@ class QueryLostPostDataServiceTest {
                 fakeUserInfoPort,
                 // TODO: 이후 추가
                 null,
+                fakeImageStoragePort,
                 fixedClock
         );
     }
@@ -110,6 +121,16 @@ class QueryLostPostDataServiceTest {
             return null;
         }
 
+        @Override
+        public Page<LostPost> getLostPostsByPostTypePaged(Pageable pageable, PostType type) {
+            return null;
+        }
+
+        @Override
+        public Page<LostPost> searchLostPosts(Pageable pageable, LostPostSearchRequest request) {
+            return null;
+        }
+
         /**
          * userId == 123L 일 때만 고정 닉네임을 반환
          */
@@ -118,6 +139,22 @@ class QueryLostPostDataServiceTest {
             @Override
             public String getNicknameByUserId(Long userId) {
                 return userId.equals(123L) ? "fake-nick" : "";
+            }
+        }
+
+        static class FakeImageStoragePort implements ImageStoragePort {
+            @Override
+            public URL presignDownload(String objectKey, Duration expires) {
+                try {
+                    return new URL("http://localhost/download/" + objectKey);
+                } catch (MalformedURLException e) {
+                    // 테스트용이라 여기서 바로 런타임 예외로 던져도 무방합니다
+                    throw new RuntimeException("잘못된 테스트 URL", e);
+                }
+            }
+            @Override
+            public PresignedPutObjectRequest getPresignedPutObjectRequest(Duration expires, String bucket, String key) {
+                return null;
             }
         }
     }

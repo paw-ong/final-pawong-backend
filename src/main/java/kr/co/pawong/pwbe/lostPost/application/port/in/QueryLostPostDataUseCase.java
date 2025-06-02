@@ -15,5 +15,9 @@ public interface QueryLostPostDataUseCase {
     LostPostDetailDto findLostPostById(Long lostPostId);
 
     ChatRoomLostPostInfo findChatRoomLostPostInfosById(Long lostPostId);
-    SliceLostPostSearchResponses fetchSlicedLostPosts(Pageable pageable, PostType type, Long userId);
+
+    SliceLostPostSearchResponses fetchSlicedLostPosts(Pageable pageable, PostType type,
+            Long userId);
+
+    Long getUserIdByLostPostId(Long lostPostId);
 }

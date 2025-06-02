@@ -4,12 +4,13 @@ spring:
       - optional:file:.env[.properties]
       - classpath:config/ai.yml
       - classpath:config/security.yml
+      - classpath:config/mail.yml
       - classpath:config/kafka.yml
-  batch:
-    jdbc:
-      initialize-schema: always
-    job:
-      enabled: false # 프로젝트 실행 시 자동으로 배치 실행되게 하고 싶으면 true로 변경
+  data:
+    redis:
+      host: ${REDIS_URI}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
 cloud:
   aws:
     region: ${AWS_REGION}
@@ -36,3 +37,6 @@ logging:
         kafka: WARN
 app:
   firebase-configuration-file: firebase/serviceAccountKey.json
+  image:
+    proxy:
+      base-url: ${PROXY_URL}

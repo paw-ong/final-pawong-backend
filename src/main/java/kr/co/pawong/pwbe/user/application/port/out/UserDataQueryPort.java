@@ -7,4 +7,6 @@ public interface UserDataQueryPort {
     User findByUserIdOrThrow(Long userId);
 
     User findByUserSocialId(Long socialId);
+
+    Boolean findByEmail(String email);
 }

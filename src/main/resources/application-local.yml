@@ -9,10 +9,14 @@ spring:
       # 스키마 생성/수정
       ddl-auto: update
     # SQL 로그
-    show-sql: true
+#    show-sql: true
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
   elasticsearch:
     uris: http://localhost:9200
+app:
+  image:
+    proxy:
+      enabled: false

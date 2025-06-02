@@ -9,3 +9,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+app:
+  image:
+    proxy:
+      enabled: true

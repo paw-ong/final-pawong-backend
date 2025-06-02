@@ -1,7 +1,7 @@
 package kr.co.pawong.pwbe.user.adapter.in.api;
 
 import kr.co.pawong.pwbe.user.adapter.in.api.dto.response.FavoritesResponse;
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
+import kr.co.pawong.pwbe.global.security.dto.CustomUserDetails;
 import kr.co.pawong.pwbe.user.application.port.in.QueryFavoritesDataUseCase;
 import kr.co.pawong.pwbe.user.application.port.in.ToggleFavoritesUseCase;
 import lombok.RequiredArgsConstructor;

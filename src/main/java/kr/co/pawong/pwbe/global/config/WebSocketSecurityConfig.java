@@ -29,18 +29,26 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
                 .simpTypeMatchers(
                         SimpMessageType.CONNECT,
                         SimpMessageType.CONNECT_ACK,
+                        SimpMessageType.HEARTBEAT,
                         SimpMessageType.SUBSCRIBE,
                         SimpMessageType.DISCONNECT
                 ).permitAll()
                 .simpDestMatchers("/app/**").authenticated()
-                .simpSubscribeDestMatchers("/user/queue/chat/**").authenticated();
+                .simpSubscribeDestMatchers("/user/queue/**").authenticated();
 //                .anyMessage().denyAll();
         return messages.build();
     }
 
     @Override
     protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
-        messages.simpDestMatchers("/ws/**").authenticated();
+        messages
+                .simpDestMatchers("/ws/**").permitAll()  // WebSocket 연결은 허용
+                .simpDestMatchers("/app/**").authenticated()  // 메시지 전송은 인증 필요
+                .simpSubscribeDestMatchers("/user/queue/chat/**").authenticated();  // 구독은 인증 필요
+    }
+    @Override
+    protected boolean sameOriginDisabled() {
+        return true;
     }
 
 }
