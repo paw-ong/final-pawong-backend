@@ -19,7 +19,7 @@ public class ChatNotificationListener {
     private final ChatMessageBrokerPort chatMessageBrokerPort;
     private final ChatNotificationPort chatNotificationPort;
 
-    @Async("notificationExecutor")   // 별도 스레드풀에서 실행
+    @Async("notificationExecutor")
     @EventListener
     public void onChatMessageCreated(ChatNotificationEvent event) {
 

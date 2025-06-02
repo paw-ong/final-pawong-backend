@@ -35,7 +35,7 @@ public class ChatMessageEventListener {
     private final ChatMessageBrokerPort chatMessageBrokerPort;
     private final ApplicationEventPublisher publisher;
 
-    @Async("chatExecutor")   // 별도 스레드풀에서 실행
+    @Async("chatExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onChatMessageCreated(ChatMessageCreatedEvent event) {
 
