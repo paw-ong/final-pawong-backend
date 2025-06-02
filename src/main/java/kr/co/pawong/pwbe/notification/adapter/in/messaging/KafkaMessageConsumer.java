@@ -16,20 +16,19 @@ public class KafkaMessageConsumer {
     private final MailUseCase mailUseCase;
 
     @KafkaListener(
-            topics = "${kafka.topic.similar-animal-notification}",
+            topics = "${kafka.topic.fcm-notification}",
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void consumeSimilarAnimalNotificationMessage(String jsonString) {
-        // TODO: 이후 구현 token 에러로 인해 병렬처리 필요
-//        notificationUseCase.processFcmNotificationMessage(jsonString);
-        mailUseCase.processMailNotificationMessage(jsonString);
+        notificationUseCase.processFcmNotificationMessage(jsonString);
+        notificationUseCase.processFcmNotificationMessage(jsonString);
     }
 
     @KafkaListener(
-            topics = "${kafka.topic.chat-notification}",
+            topics = "${kafka.topic.mail-notification}",
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void consumeChatNotificationMessage(String jsonString) {
-        notificationUseCase.processFcmNotificationMessage(jsonString);
+        mailUseCase.processMailNotificationMessage(jsonString);
     }
 }

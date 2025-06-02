@@ -12,9 +12,9 @@ import kr.co.pawong.pwbe.global.util.CodeGenerator;
 import kr.co.pawong.pwbe.global.util.NotificationUtils;
 import kr.co.pawong.pwbe.global.util.RedisUtils;
 import kr.co.pawong.pwbe.infrastructure.messaging.application.port.in.PublishMessageUseCase;
+import kr.co.pawong.pwbe.notification.application.port.in.CustomMailSenderUseCase;
 import kr.co.pawong.pwbe.notification.application.port.in.MailUseCase;
 import kr.co.pawong.pwbe.notification.application.port.in.dto.NotificationRequest;
-import kr.co.pawong.pwbe.notification.application.port.out.NotificationPort;
 import kr.co.pawong.pwbe.notification.application.service.dto.NotificationEmailDto;
 import kr.co.pawong.pwbe.notification.domain.Notification;
 import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
@@ -31,11 +31,10 @@ public class MailService implements MailUseCase {
     private static final String AUTH_CODE_PREFIX = "AuthCode ";
     @Value("${spring.mail.auth-code-expiration-millis}")
     private long authCodeExpirationMillis;
-    private final CustomMailSenderService customMailSenderService;
+    private final CustomMailSenderUseCase customMailSenderUseCase;
     private final RedisUtils redisUtils;
     private final NotificationUtils notificationUtils;
     private final QueryUserDataUseCase queryUserDataUseCase;
-    private final NotificationPort notificationPort;
     private final PublishMessageUseCase publishMessageUseCase;
 
 
@@ -65,7 +64,7 @@ public class MailService implements MailUseCase {
 
         // 이메일 전송 시도
         try {
-            customMailSenderService.sendCodeEmail(toEmail, title, authCode);
+            customMailSenderUseCase.sendCodeEmail(toEmail, title, authCode);
         } catch (Exception e) {
             // 이메일 전송 실패 시 Redis에서 방금 저장한 키 삭제
             redisUtils.deleteData(redisKey);
@@ -101,7 +100,7 @@ public class MailService implements MailUseCase {
             // 1. JSON 파싱
             NotificationEmailDto notificationEmailDto = notificationUtils.parseJsonToEmailDto(jsonString);
             // 2. 이메일 전송
-            customMailSenderService.sendSimilarAdoptionEmail(notificationEmailDto);
+            customMailSenderUseCase.sendSimilarAdoptionEmail(notificationEmailDto);
 
         } catch (JsonProcessingException e) {
             log.error("JSON 파싱 실패: jsonString={}, error={}", jsonString, e.getMessage(), e);
