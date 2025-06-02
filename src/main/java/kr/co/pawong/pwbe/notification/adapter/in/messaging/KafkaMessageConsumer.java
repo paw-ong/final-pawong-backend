@@ -14,10 +14,19 @@ public class KafkaMessageConsumer {
     private final NotificationUseCase notificationUseCase;
 
     @KafkaListener(
-            topics = "${kafka.topic.notification}",
+            topics = "${kafka.topic.similar-animal-notification}",
             containerFactory = "kafkaListenerContainerFactory"
     )
-    public void consumeFcmNotificationMessage(String jsonString) {
+    public void consumeSimilarAnimalNotificationMessage(String jsonString) {
         notificationUseCase.processFcmNotificationMessage(jsonString);
     }
+
+    @KafkaListener(
+            topics = "${kafka.topic.chat-notification}",
+            containerFactory = "kafkaListenerContainerFactory"
+    )
+    public void consumeChatNotificationMessage(String jsonString) {
+        notificationUseCase.processFcmNotificationMessage(jsonString);
+    }
+
 }
