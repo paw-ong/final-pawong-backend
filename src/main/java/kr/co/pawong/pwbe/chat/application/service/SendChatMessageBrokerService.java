@@ -1,16 +1,17 @@
 package kr.co.pawong.pwbe.chat.application.service;
 
 import kr.co.pawong.pwbe.chat.adapter.in.messaging.dto.request.ChatMessageCreateRequest;
+import kr.co.pawong.pwbe.chat.adapter.out.notification.ChatNotificationAdapter;
 import kr.co.pawong.pwbe.chat.application.listener.event.ChatMessageCreatedEvent;
 import kr.co.pawong.pwbe.chat.application.listener.event.ChatMessageReadEvent;
 import kr.co.pawong.pwbe.chat.application.port.in.CommandChatMessageDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.SendChatMessageBrokerUseCase;
+import kr.co.pawong.pwbe.chat.application.port.out.ChatMessageBrokerPort;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatMessageDataQueryPort;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatRoomDataQueryPort;
 import kr.co.pawong.pwbe.chat.domain.ChatMessage;
 import kr.co.pawong.pwbe.chat.domain.ChatRoom;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
-import kr.co.pawong.pwbe.notification.application.port.in.NotificationUseCase;
 import kr.co.pawong.pwbe.notification.application.port.in.dto.NotificationRequest;
 import kr.co.pawong.pwbe.user.application.port.out.UserDataQueryPort;
 import kr.co.pawong.pwbe.user.domain.User;
@@ -26,9 +27,10 @@ public class SendChatMessageBrokerService implements SendChatMessageBrokerUseCas
     private final CommandChatMessageDataUseCase commandChatMessageDataUseCase;
     private final ChatMessageDataQueryPort chatMessageDataQueryPort;
     private final ChatRoomDataQueryPort chatRoomDataQueryPort;
-    private final NotificationUseCase notificationUseCase;
+    private final ChatNotificationAdapter chatNotificationAdapter;
     private final UserDataQueryPort userDataQueryPort;
     private final ApplicationEventPublisher publisher;
+    private final ChatMessageBrokerPort chatMessageBrokerPort;
 
     @Override
     @Transactional
@@ -40,27 +42,37 @@ public class SendChatMessageBrokerService implements SendChatMessageBrokerUseCas
         ChatRoom chatRoom = chatRoomDataQueryPort.findChatRoomByIdOrThrow(chatMessage.getChatRoomId());
         User author = userDataQueryPort.findByUserIdOrThrow(chatRoom.getAuthorId());
         User participant = userDataQueryPort.findByUserIdOrThrow(chatRoom.getParticipantId());
-        User receiver = (author.getUserId().equals(chatMessage.getSenderId()))? participant: author;
+        User receiver = (author.getUserId().equals(chatMessage.getSenderId())) ? participant : author;
 
         /* Send a chat message */
         publisher.publishEvent(new ChatMessageCreatedEvent(chatMessage, author, participant));
 
         /* Send notification */
-        notificationUseCase.sendChatNotification(new NotificationRequest(
+        sendChatNotificationToSessionUser(receiver, chatMessage);
+
+    }
+
+    private void sendChatNotificationToSessionUser(User receiver, ChatMessage chatMessage) {
+        if (!chatMessageBrokerPort.isUserSubscribedToRoom(receiver, chatMessage.getChatRoomId())) {
+            return;
+        }
+
+        chatNotificationAdapter.sendChatFcmNotification(new NotificationRequest(
                 receiver.getUserId(),
                 chatMessage.getContent(),
                 chatMessage.getChatRoomId(),
                 PostType.LOST
         ));
-
     }
 
     @Override
     @Transactional
     public void readMessage(Long roomId, Long userId) {
         commandChatMessageDataUseCase.markAllAsRead(roomId, userId);
-        ChatMessage chatMessage = chatMessageDataQueryPort.findLatestReadMessageOrThrow(roomId, userId);
-        publisher.publishEvent(new ChatMessageReadEvent(roomId, userId, chatMessage.getMessageId()));
+        ChatMessage chatMessage = chatMessageDataQueryPort.findLatestReadMessageOrThrow(roomId,
+                userId);
+        publisher.publishEvent(
+                new ChatMessageReadEvent(roomId, userId, chatMessage.getMessageId()));
     }
 
     private ChatMessage createChatMessage(ChatMessageCreateRequest request, Long chatRoomId,
