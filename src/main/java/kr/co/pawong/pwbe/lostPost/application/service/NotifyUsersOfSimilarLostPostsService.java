@@ -5,6 +5,7 @@ import kr.co.pawong.pwbe.lostPost.application.port.in.IndexLostAnimalUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.NotifyUsersOfSimilarLostPostsUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostPostDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAnimalEngineQueryPort;
+import kr.co.pawong.pwbe.lostPost.application.port.out.NotificationSendPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.dto.LostAnimalEngineRequest;
 import kr.co.pawong.pwbe.lostPost.application.port.out.dto.LostAnimalEngineResponse;
 import kr.co.pawong.pwbe.lostPost.enums.PostType;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class NotifyUsersOfSimilarLostPostsService implements NotifyUsersOfSimilarLostPostsUseCase {
 
     private final LostAnimalEngineQueryPort lostAnimalEngineQueryPort;
+    private final NotificationSendPort notificationSendPort;
 
     private final QueryLostPostDataUseCase queryLostPostDataUseCase;
     private final IndexLostAnimalUseCase indexLostAnimalUseCase;
@@ -40,6 +42,7 @@ public class NotifyUsersOfSimilarLostPostsService implements NotifyUsersOfSimila
         // 3. 작성자 정보 가져와서 알림 호출
         for (LostAnimalEngineResponse similarAnimal : similarAnimals) {
             Long userId = queryLostPostDataUseCase.getUserIdByLostPostId(similarAnimal.id());
+            notificationSendPort.sendNotification(userId, similarAnimal.id(), similarAnimal.type());
         }
 
     }
