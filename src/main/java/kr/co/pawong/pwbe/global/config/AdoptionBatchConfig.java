@@ -1,3 +1,4 @@
+/*
 package kr.co.pawong.pwbe.global.config;
 
 import kr.co.pawong.pwbe.adoption.adapter.in.batch.processor.AdoptionAiProcessor;
@@ -79,3 +80,4 @@ public class AdoptionBatchConfig {
     }
 }
 
+*/
