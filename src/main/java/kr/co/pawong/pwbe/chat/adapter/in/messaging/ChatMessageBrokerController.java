@@ -2,7 +2,7 @@ package kr.co.pawong.pwbe.chat.adapter.in.messaging;
 
 import kr.co.pawong.pwbe.chat.adapter.in.messaging.dto.request.ChatMessageCreateRequest;
 import kr.co.pawong.pwbe.chat.application.port.in.SendChatMessageBrokerUseCase;
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
+import kr.co.pawong.pwbe.global.security.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
