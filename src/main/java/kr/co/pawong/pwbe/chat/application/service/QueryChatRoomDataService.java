@@ -49,6 +49,20 @@ public class QueryChatRoomDataService implements QueryChatRoomDataUseCase {
     }
 
     @Override
+    public ChatRoomDetail findUserChatRoomById(Long userId, Long chatRoomId) {
+        if (!isUserInChatRoom(userId, chatRoomId)) {
+            throw new BaseException(CustomErrorCode.FORBIDDEN_CHATROOMS_ACCESS);
+        }
+        ChatRoom chatRoom = chatRoomDataQueryPort.findChatRoomByIdOrThrow(
+                chatRoomId);
+
+        ChatRoomLostPostInfo lostPostInfo = chatRoomLostPostInfoPort.getLostPostInfosById(
+                chatRoom.getPostId());
+
+        return toDetail(chatRoom, lostPostInfo);
+    }
+
+    @Override
     public boolean isUserInChatRoom(Long userId, Long chatRoomId) {
         ChatRoom room = chatRoomDataQueryPort.findChatRoomByIdOrThrow(chatRoomId);
         return room.userExistsInChatRoom(userId);
