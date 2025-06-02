@@ -18,6 +18,7 @@ spring:
 kafka:
   topic:
     notification: fcm-notification
+    mail: mail-notification
     common-dead-letter: "dev.pawong.common.dlt"
     lost-post-created: "dev.pawong.lost-post.created"
     rescued-animal-created: "dev.pawong.rescued-animal.created"
