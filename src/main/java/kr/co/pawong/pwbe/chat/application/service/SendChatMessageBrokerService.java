@@ -27,42 +27,24 @@ public class SendChatMessageBrokerService implements SendChatMessageBrokerUseCas
     private final CommandChatMessageDataUseCase commandChatMessageDataUseCase;
     private final ChatMessageDataQueryPort chatMessageDataQueryPort;
     private final ChatRoomDataQueryPort chatRoomDataQueryPort;
-    private final ChatNotificationAdapter chatNotificationAdapter;
     private final UserDataQueryPort userDataQueryPort;
     private final ApplicationEventPublisher publisher;
-    private final ChatMessageBrokerPort chatMessageBrokerPort;
 
     @Override
     @Transactional
     public void createAndSendChatMessage(ChatMessageCreateRequest request, Long chatRoomId,
             Long userId) {
+        /* save to db */
         ChatMessage chatMessage = createChatMessage(request, chatRoomId, userId);
 
         /* find user in chat room */
         ChatRoom chatRoom = chatRoomDataQueryPort.findChatRoomByIdOrThrow(chatMessage.getChatRoomId());
         User author = userDataQueryPort.findByUserIdOrThrow(chatRoom.getAuthorId());
         User participant = userDataQueryPort.findByUserIdOrThrow(chatRoom.getParticipantId());
-        User receiver = (author.getUserId().equals(chatMessage.getSenderId())) ? participant : author;
+
 
         /* Send a chat message */
         publisher.publishEvent(new ChatMessageCreatedEvent(chatMessage, author, participant));
-
-        /* Send notification */
-        sendChatNotificationToSessionUser(receiver, chatMessage);
-
-    }
-
-    private void sendChatNotificationToSessionUser(User receiver, ChatMessage chatMessage) {
-        if (!chatMessageBrokerPort.isUserSubscribedToRoom(receiver, chatMessage.getChatRoomId())) {
-            return;
-        }
-
-        chatNotificationAdapter.sendChatFcmNotification(new NotificationRequest(
-                receiver.getUserId(),
-                chatMessage.getContent(),
-                chatMessage.getChatRoomId(),
-                PostType.LOST
-        ));
     }
 
     @Override

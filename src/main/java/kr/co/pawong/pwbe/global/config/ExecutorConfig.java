@@ -34,4 +34,15 @@ public class ExecutorConfig {
         return executor;
     }
 
+    @Bean(name = "notificationExecutor")
+    public ThreadPoolTaskExecutor notificationExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(10);       // 최소 10개 스레드
+        executor.setMaxPoolSize(10);        // 최대 10개 스레드
+        executor.setQueueCapacity(1000);   // 대기 큐 크기
+        executor.setThreadNamePrefix("notify-exec-");
+        executor.initialize();
+        return executor;
+    }
+
 }
