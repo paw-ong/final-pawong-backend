@@ -37,11 +37,10 @@ public class NotifyUsersOfSimilarLostPostsService implements NotifyUsersOfSimila
                 new LostAnimalEngineRequest(List.of(PostType.LOST), embedding)
         );
 
-        // 3. 작성자 정보 가져오기
-        List<Long> userIds = queryLostPostDataUseCase.getUserIdsByLostPostIds(
-                similarAnimals.stream().map(LostAnimalEngineResponse::id).toList());
-
-        // 4. 알림 호출
+        // 3. 작성자 정보 가져와서 알림 호출
+        for (LostAnimalEngineResponse similarAnimal : similarAnimals) {
+            Long userId = queryLostPostDataUseCase.getUserIdByLostPostId(similarAnimal.id());
+        }
 
     }
 }
