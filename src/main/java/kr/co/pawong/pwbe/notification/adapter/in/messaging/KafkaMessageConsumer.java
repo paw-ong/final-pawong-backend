@@ -20,7 +20,8 @@ public class KafkaMessageConsumer {
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void consumeSimilarAnimalNotificationMessage(String jsonString) {
-        notificationUseCase.processFcmNotificationMessage(jsonString);
+        // TODO: 이후 구현 token 에러로 인해 병렬처리 필요
+//        notificationUseCase.processFcmNotificationMessage(jsonString);
         mailUseCase.processMailNotificationMessage(jsonString);
     }
 
