@@ -2,10 +2,11 @@ package kr.co.pawong.pwbe.chat.adapter.in.api;
 
 import java.util.List;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomContainsUserResponse;
+import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomResponse;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomsResponse;
 import kr.co.pawong.pwbe.chat.application.port.in.QueryChatRoomDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.dto.ChatRoomDetail;
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
+import kr.co.pawong.pwbe.global.security.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ChatRoomQueryController {
 
-    private final QueryChatRoomDataUseCase queryChatDataUseCase;
+    private final QueryChatRoomDataUseCase queryChatRoomDataUseCase;
 
     /**
      * 유저의 채팅방 목록을 조회하는 api
@@ -37,7 +38,7 @@ public class ChatRoomQueryController {
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getUserId();
-        List<ChatRoomDetail> allChatRooms = queryChatDataUseCase.findUserChatRooms(userId);
+        List<ChatRoomDetail> allChatRooms = queryChatRoomDataUseCase.findUserChatRooms(userId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ChatRoomsResponse(allChatRooms));
@@ -56,7 +57,7 @@ public class ChatRoomQueryController {
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getUserId();
-        List<ChatRoomDetail> chatRoomsByPost = queryChatDataUseCase.findUserChatRoomsByPostId(
+        List<ChatRoomDetail> chatRoomsByPost = queryChatRoomDataUseCase.findUserChatRoomsByPostId(
                 userId, postId);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -79,6 +80,26 @@ public class ChatRoomQueryController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ChatRoomContainsUserResponse(
-                        queryChatDataUseCase.isUserInChatRoom(userId, roomId)));
+                        queryChatRoomDataUseCase.isUserInChatRoom(userId, roomId)));
+    }
+
+    /**
+     * 채팅방의 정보를 공고 정보를 포함해서 받아오는 api
+     *
+     * @param roomId
+     * @param userDetails
+     * @return ChatRoomResponse
+     */
+    @GetMapping("/rooms/{roomId}/info")
+    public ResponseEntity<ChatRoomResponse> getChatRoomPostInfo(
+            @PathVariable Long roomId,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Long userId = userDetails.getUserId();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ChatRoomResponse(
+                        queryChatRoomDataUseCase.findUserChatRoomById(userId, roomId)));
     }
 }

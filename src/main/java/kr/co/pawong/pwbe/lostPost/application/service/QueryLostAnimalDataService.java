@@ -3,6 +3,7 @@ package kr.co.pawong.pwbe.lostPost.application.service;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.List;
+import kr.co.pawong.pwbe.adoption.application.port.out.ProxyUrlPort;
 import kr.co.pawong.pwbe.infrastructure.s3.application.port.out.ImageStoragePort;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostAnimalDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAnimalQuery;
@@ -29,6 +30,7 @@ public class QueryLostAnimalDataService implements QueryLostAnimalDataUseCase {
     private final ImageStoragePort imageStoragePort;
     private final Clock clock;
     private static final Duration DOWNLOAD_URL_EXPIRE = Duration.ofMinutes(15);
+    private final ProxyUrlPort proxyUrlPort;
 
     @Override
     @Transactional(readOnly = true)
@@ -54,11 +56,19 @@ public class QueryLostAnimalDataService implements QueryLostAnimalDataUseCase {
             case LOST_ADOPTION -> {
                 LostAdoption lostAdoption = lostAdoptionDataQueryPort.findAdoptionByIdOrThrow(
                         lostAnimalQuery.id());
+                changePopfilesToProxy(lostAdoption);
                 // 보호소 이름 조회
                 String shelter = shelterCareNmPort.getShelterCareNmByCareRegNo(
                         lostAdoption.getCareRegNo());
                 yield LostPostCardMapper.toLostPostCard(lostAdoption, shelter, clock);
             }
         };
+    }
+
+    private void changePopfilesToProxy(LostAdoption lostAdoption) {
+        String popfile1 = proxyUrlPort.generateProxyUrl(lostAdoption.getPopfile1());
+        String popfile2 = proxyUrlPort.generateProxyUrl(lostAdoption.getPopfile2());
+        lostAdoption.updatePopfile1(popfile1);
+        lostAdoption.updatePopfile2(popfile2);
     }
 }

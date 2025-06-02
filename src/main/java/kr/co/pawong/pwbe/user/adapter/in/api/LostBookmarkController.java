@@ -1,8 +1,8 @@
 package kr.co.pawong.pwbe.user.adapter.in.api;
 
 import kr.co.pawong.pwbe.user.adapter.in.api.dto.response.BookmarkResponse;
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
 import kr.co.pawong.pwbe.user.application.port.in.QueryBookmarkDataUseCase;
+import kr.co.pawong.pwbe.global.security.dto.CustomUserDetails;
 import kr.co.pawong.pwbe.user.application.port.in.ToggleBookmarkUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

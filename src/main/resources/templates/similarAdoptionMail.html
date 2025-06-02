@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<table style="background-color: #f3f3f3; color: #333; font-size: 16px; text-align: center; margin: 0; padding: 0;" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center">
+      <table style="margin: 40px auto; border-collapse: separate;" width="600" cellspacing="0" cellpadding="0">
+        <tr>
+          <td style="padding-bottom: 20px;" align="center"> <!-- Added padding-bottom here -->
+            <h1 style="color: #A79277;">실종 동물과 유사한 공고 입니다.</h1>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 20px;" align="center"> <!-- And here -->
+            <p>아래의 링크를 접속하여 공고를 확인해 주세요</p>
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            <a th:href="${targetType == 'FOUND'}
+                  ? 'https://www.pawong.co.kr/lostAnimal/detail/' + ${targetId}
+                  : 'https://www.pawong.co.kr/adoptions/' + ${targetId}"
+               style="display: inline-block;
+              padding: 12px 24px;
+              background-color: #3b4d63;
+              color: #ffffff;
+              text-decoration: none;
+              font-size: 18px;
+              border-radius: 4px;
+              font-family: Arial, Helvetica, sans-serif;">
+              공고 보러가기
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+
+</html>

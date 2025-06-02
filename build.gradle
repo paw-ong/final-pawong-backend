@@ -35,6 +35,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
     // ElasticSearch
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 
@@ -56,11 +59,6 @@ dependencies {
 
     // AWS S3
     implementation 'software.amazon.awssdk:s3'
-
-    // Spring Batch
-    implementation 'org.springframework.boot:spring-boot-starter-batch'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
 
     // websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'

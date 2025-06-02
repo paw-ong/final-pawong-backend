@@ -1,14 +1,13 @@
 package kr.co.pawong.pwbe.user.adapter.in.api;
 
 import java.util.Map;
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
+import kr.co.pawong.pwbe.global.security.dto.CustomUserDetails;
 import kr.co.pawong.pwbe.user.adapter.in.api.dto.request.SignUpRequest;
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
 import kr.co.pawong.pwbe.user.application.port.in.AuthUseCase;
 import kr.co.pawong.pwbe.user.application.port.in.dto.AuthResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,12 +25,11 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signUp(
             @RequestBody SignUpRequest signUpRequest,
-            Authentication authentication
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
-
-        Long userId = principal.getUserId();
-        return ResponseEntity.ok(authUseCase.signUp(userId, signUpRequest.update()));
+        return ResponseEntity.ok(authUseCase.signUp(
+                userDetails.getUserId(),
+                signUpRequest.update()));
     }
 
     @GetMapping("/csrf-token")

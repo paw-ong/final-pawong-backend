@@ -11,6 +11,10 @@ infra/mysql/db/*
 ### kafka, zookeeper ###
 infra/kafka/*
 
+### monitoring ###
+infra/monitoring/*/data
+infra/monitoring/*/tmp
+
 ### nginx data ###
 infra/nginx/logs
 

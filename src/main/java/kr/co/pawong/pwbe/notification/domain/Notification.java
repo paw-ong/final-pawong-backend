@@ -7,8 +7,8 @@ import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.NOTIFICAT
 
 import java.time.LocalDateTime;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
-import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import kr.co.pawong.pwbe.notification.application.service.dto.NotificationDto;
+import kr.co.pawong.pwbe.notification.application.service.dto.NotificationEmailDto;
 import kr.co.pawong.pwbe.notification.enums.NotificationType;
 import kr.co.pawong.pwbe.notification.enums.TargetType;
 import lombok.AllArgsConstructor;
@@ -44,7 +44,7 @@ public class Notification {
     }
 
     // 유사 공고 알림
-    public static Notification createSimilarAdoptionNotification(Long userId, Long adoptionId, PostType postType) {
+    public static Notification createSimilarAdoptionNotification(Long userId, Long adoptionId, TargetType targetType) {
         String title = "유사 공고 발견";
         String message = "유사한 공고가 발견되었습니다.";
 
@@ -55,7 +55,26 @@ public class Notification {
                 .title(title)
                 .message(message)
                 .targetId(adoptionId)
-                .targetType(TargetType.valueOf(postType.name()))
+                .targetType(targetType)
+                .type(NotificationType.SIMILAR_ADOPTION)
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    // 유사 공고 이메일
+    public static Notification createSimilarAdoptionMailNotification(Long userId, Long adoptionId, TargetType targetType) {
+        String title = "\uD83D\uDD0D 등록하신 실종동물과 유사한 보호 동물이 있습니다 ";
+        String message = "유사한 공고가 발견되었습니다. "
+                + "[PostType: " + targetType.name() + ", AdoptionId: " + adoptionId + "]";
+
+        validateNotificationData(userId, title, message, adoptionId);
+
+        return Notification.builder()
+                .userId(userId)
+                .title(title)
+                .message(message)
+                .targetId(adoptionId)
+                .targetType(targetType)
                 .type(NotificationType.SIMILAR_ADOPTION)
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -67,6 +86,19 @@ public class Notification {
                 .id(this.id)
                 .userId(this.userId)
                 .token(token)
+                .title(this.title)
+                .message(this.message)
+                .targetId(this.targetId)
+                .targetType(this.targetType)
+                .type(this.type)
+                .build();
+    }
+
+    // Notification -> NotificationEmailDto
+    public NotificationEmailDto toDto() {
+        return NotificationEmailDto.builder()
+                .id(this.id)
+                .userId(this.userId)
                 .title(this.title)
                 .message(this.message)
                 .targetId(this.targetId)

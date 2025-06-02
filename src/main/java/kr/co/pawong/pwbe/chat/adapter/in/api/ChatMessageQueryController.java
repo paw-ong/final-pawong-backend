@@ -6,7 +6,7 @@ import kr.co.pawong.pwbe.chat.application.port.in.CommandChatMessageDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.CommandChatRoomDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.QueryChatMessageDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.dto.ChatMessageDetail;
-import kr.co.pawong.pwbe.user.adapter.out.security.CustomUserDetails;
+import kr.co.pawong.pwbe.global.security.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

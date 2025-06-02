@@ -12,8 +12,10 @@ import org.springframework.kafka.core.KafkaAdmin;
 @Configuration
 public class KafkaTopicConfig {
 
-    @Value("${kafka.topic.notification}")
-    private String NOTIFICATION_TOPIC;
+    @Value("${kafka.topic.fcm-notification}")
+    private String FCM_NOTIFICATION_TOPIC;
+    @Value("${kafka.topic.mail-notification}")
+    private String MAIL_NOTIFICATION_TOPIC;
     @Value("${kafka.topic.common-dead-letter}")
     private String COMMON_DEAD_LETTER_TOPIC;
     @Value("${kafka.topic.lost-post-created}")
@@ -78,8 +80,15 @@ public class KafkaTopicConfig {
     // fcm 알림
     @Bean
     public NewTopic fcmNotificationTopic() {
-        return TopicBuilder.name(NOTIFICATION_TOPIC)
-                .partitions(3) // 토픽의 파티션 수
+        return TopicBuilder.name(FCM_NOTIFICATION_TOPIC)
+                .partitions(1) // 토픽의 파티션 수
+                .replicas(1) // 각 파티션의 복제본 수
+                .build();
+    }
+
+    @Bean NewTopic mailNotificationTopic() {
+        return TopicBuilder.name(MAIL_NOTIFICATION_TOPIC)
+                .partitions(1) // 토픽의 파티션 수
                 .replicas(1) // 각 파티션의 복제본 수
                 .build();
     }
