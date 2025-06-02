@@ -2,6 +2,7 @@ package kr.co.pawong.pwbe.chat.adapter.in.api;
 
 import java.util.List;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomContainsUserResponse;
+import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomStatusResponse;
 import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.ChatRoomsResponse;
 import kr.co.pawong.pwbe.chat.application.port.in.QueryChatRoomDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.dto.ChatRoomDetail;
@@ -80,5 +81,22 @@ public class ChatRoomQueryController {
                 .status(HttpStatus.OK)
                 .body(new ChatRoomContainsUserResponse(
                         queryChatDataUseCase.isUserInChatRoom(userId, roomId)));
+    }
+
+    /**
+     * 유저가 채팅방에 존재하는지 확인하는 api
+     *
+     * @param roomId
+     * @return boolean (존재 여부)
+     */
+    @GetMapping("/rooms/{roomId}/status")
+    public ResponseEntity<ChatRoomStatusResponse> checkRoomStatus(
+            @PathVariable Long roomId
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ChatRoomStatusResponse(
+                        queryChatDataUseCase.isChatRoomActive(roomId)
+                ));
     }
 }
