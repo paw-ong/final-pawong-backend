@@ -60,11 +60,6 @@ dependencies {
     // AWS S3
     implementation 'software.amazon.awssdk:s3'
 
-    // Spring Batch
-    implementation 'org.springframework.boot:spring-boot-starter-batch'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
-
     // websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.security:spring-security-messaging'
