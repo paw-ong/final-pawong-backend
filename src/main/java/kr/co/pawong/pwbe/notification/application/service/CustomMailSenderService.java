@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.notification.application.port.in.CustomMailSenderUseCase;
+import kr.co.pawong.pwbe.notification.application.port.in.dto.NotificationRequest;
+import kr.co.pawong.pwbe.notification.enums.TargetType;
+import kr.co.pawong.pwbe.user.application.port.in.QueryEmailUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,11 +29,13 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 public class CustomMailSenderService implements CustomMailSenderUseCase {
 
     private final JavaMailSender javaMailSender;
+    private final QueryEmailUseCase queryEmailUseCase;
     private final SpringTemplateEngine templateEngine;
     @Value("${spring.mail.username}")
     private String username;
 
-    public void sendEmail(String toEmail,
+    // 이메일 인증
+    public void sendCodeEmail(String toEmail,
             String title,
             String authCode){
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -43,7 +48,8 @@ public class CustomMailSenderService implements CustomMailSenderUseCase {
             // html에 들어갈 동적데이터 설정하기
             HashMap<String, String> emailValues = new HashMap<>();
             emailValues.put("authCode", authCode);
-            String text = setContext(emailValues);
+            String templateName = "codeMail";
+            String text = setContext(emailValues,templateName);
 
             helper.setText(text, true);
 
@@ -55,10 +61,37 @@ public class CustomMailSenderService implements CustomMailSenderUseCase {
 
     }
 
-    private String setContext(Map<String, String> emailValues) {
+    // 유사 공고 알림
+    public void sendSimilarAdoptionEmail(NotificationRequest request, String title){
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        String toEmail = queryEmailUseCase.getEmailByUserId(request.getUserId());
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setFrom(username); // 보내는 사람 주소임, smtp 설정과 맞아야함
+            helper.setTo(toEmail); // 받는 사람 주소임
+            helper.setSubject(title); // 메일 제목 설정
+
+            // html에 들어갈 동적데이터 설정하기
+            HashMap<String, String> emailValues = new HashMap<>();
+            emailValues.put("targetId", request.getTargetId().toString());
+            emailValues.put("targetType", String.valueOf(request.getPostType()));
+            String templateName = "similarAdoptionMail";
+            String text = setContext(emailValues,templateName);
+
+            helper.setText(text, true);
+
+            javaMailSender.send(mimeMessage);                                     // HTML 메일 전송 호출
+
+        } catch (MessagingException e) {
+            throw new BaseException(EMAIL_SEND_FAIL);
+        }
+    }
+
+
+    private String setContext(Map<String, String> emailValues, String templateName) {
         Context context = new Context();
         emailValues.forEach(context::setVariable);
-        return templateEngine.process("codemail", context);
+        return templateEngine.process(templateName, context);
     }
 
 }

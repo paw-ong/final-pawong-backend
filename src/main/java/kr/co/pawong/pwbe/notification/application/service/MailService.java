@@ -4,14 +4,15 @@ import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.EMAIL_DUP
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.EMAIL_SEND_FAIL;
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.REDIS_SAVE_ERROR;
 
-import lombok.extern.slf4j.Slf4j;
 import java.time.Duration;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.global.util.CodeGenerator;
 import kr.co.pawong.pwbe.global.util.RedisUtils;
 import kr.co.pawong.pwbe.notification.application.port.in.MailUseCase;
+import kr.co.pawong.pwbe.notification.application.port.in.dto.NotificationRequest;
 import kr.co.pawong.pwbe.user.application.port.in.QueryUserDataUseCase;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,11 @@ public class MailService implements MailUseCase {
     private static final String AUTH_CODE_PREFIX = "AuthCode ";
     @Value("${spring.mail.auth-code-expiration-millis}")
     private long authCodeExpirationMillis;
-    private final CustomMailSenderService mailService;
+    private final CustomMailSenderService customMailSenderService;
     private final RedisUtils redisUtils;
     private final QueryUserDataUseCase queryUserDataUseCase;
 
+    // 이메일 인증
     @Override
     public void sendCodeToEmail(String toEmail) {
         this.checkDuplicatedEmail(toEmail);
@@ -48,12 +50,32 @@ public class MailService implements MailUseCase {
 
         // 이메일 전송 시도
         try {
-            mailService.sendEmail(toEmail, title, authCode);
+            customMailSenderService.sendCodeEmail(toEmail, title, authCode);
         } catch (Exception e) {
             // 이메일 전송 실패 시 Redis에서 방금 저장한 키 삭제
             redisUtils.deleteData(redisKey);
             throw new BaseException(EMAIL_SEND_FAIL);
         }
+    }
+
+    // 유사 공고 알림
+    @Override
+    public void sendSimilarAdoptionEmail(NotificationRequest request){
+        String title = "\uD83D\uDD0D 등록하신 실종동물과 유사한 보호 동물이 있습니다 ";
+
+        try {
+            customMailSenderService.sendSimilarAdoptionEmail(request, title);
+        } catch (Exception e) {
+            throw new BaseException(EMAIL_SEND_FAIL);
+        }
+
+    }
+
+    //
+    @Override
+    public void processMailNotificationMessage(String jsonString){
+
+
     }
 
     private void checkDuplicatedEmail(String email) {
