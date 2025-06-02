@@ -4,6 +4,4 @@ public interface BookmarkInfoPort {
 
     boolean existsByUserIdAndLostPostId(Long userId, Long lostPostId);
 
-    boolean existsByUserIdAndAdoptionId(Long userId, Long adoptionId);
-
 }

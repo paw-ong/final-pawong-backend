@@ -44,7 +44,7 @@ class LostPostCardMapperTest {
                 .build();
 
         // when
-        LostPostCard card = LostPostCardMapper.toLostPostCard( lostPost, "Alice", false, fixedClock, "https://www.aaa.com");
+        LostPostCard card = LostPostCardMapper.toLostPostCard( lostPost, "Alice", fixedClock, "https://www.aaa.com");
 
         // then
         assertThat(card.postId()).isEqualTo(1L);

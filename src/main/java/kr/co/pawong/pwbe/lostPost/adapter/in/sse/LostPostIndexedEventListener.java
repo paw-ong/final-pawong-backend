@@ -7,6 +7,7 @@ import kr.co.pawong.pwbe.lostPost.application.port.in.SearchSimilarLostAnimalsUs
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -18,6 +19,7 @@ public class LostPostIndexedEventListener {
 
     private final SearchSimilarLostAnimalsUseCase searchSimilarLostAnimalsUseCase;
 
+    @Async
     @EventListener
     public void onIndexed(LostPostIndexedEvent event) {
         Long postId = event.getLostPostId();

@@ -26,7 +26,6 @@ public class QueryLostAdoptionDataService implements QueryLostAdoptionDataUseCas
 
     private final LostAdoptionDataQueryPort lostAdoptionDataQueryPort;
     private final ShelterCareNmPort shelterCareNmPort;
-    private final BookmarkInfoPort bookmarkInfoPort;
     private final Clock clock;
     private final ProxyUrlPort proxyUrlPort;
 
@@ -52,10 +51,7 @@ public class QueryLostAdoptionDataService implements QueryLostAdoptionDataUseCas
         return lostAdoptionPage.getContent().stream()
                 .map(la -> {
                     String shelter = shelterCareNmPort.getShelterCareNmByCareRegNo(la.getCareRegNo());
-                    boolean bookmarked = bookmarkInfoPort.existsByUserIdAndAdoptionId(userId, la.getAdoptionId());
-                    // 프록시 URL로 변경
-                    changePopfilesToProxy(la);
-                    return LostPostCardMapper.toLostPostCard(la, shelter, bookmarked, clock);
+                    return LostPostCardMapper.toLostPostCard(la, shelter, clock);
                 })
                 .collect(Collectors.toList());
     }

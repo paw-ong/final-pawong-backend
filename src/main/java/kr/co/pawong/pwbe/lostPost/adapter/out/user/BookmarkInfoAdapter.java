@@ -13,12 +13,7 @@ public class BookmarkInfoAdapter implements BookmarkInfoPort {
 
     @Override
     public boolean existsByUserIdAndLostPostId(Long userId, Long lostPostId) {
-        return queryBookmarkDataUseCase.lostPostBookmarkExists(userId, lostPostId);
-    }
-
-    @Override
-    public boolean existsByUserIdAndAdoptionId(Long userId, Long adoptionId) {
-        return queryBookmarkDataUseCase.lostAdoptionBookmarkExists(userId, adoptionId);
+        return queryBookmarkDataUseCase.existsLostPostBookmark(userId, lostPostId);
     }
 
 }

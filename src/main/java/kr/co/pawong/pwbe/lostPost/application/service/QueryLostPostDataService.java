@@ -44,9 +44,8 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
 
         return lostPosts.stream()
                 .map(post -> {
-                    boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(userId, post.getLostPostId());
                     String url = imageStoragePort.presignDownload(post.getImageKey(), DOWNLOAD_URL_EXPIRE).toString();
-                    return LostPostCardMapper.toLostPostCard(post, author, bookmarked, clock, url);
+                    return LostPostCardMapper.toLostPostCard(post, author, clock, url);
                 })
                 .toList();
     }
@@ -84,8 +83,7 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
                 .map(lp -> {
                     String author = userInfoPort.getNicknameByUserId(lp.getUserId());
                     String url = imageStoragePort.presignDownload(lp.getImageKey(), DOWNLOAD_URL_EXPIRE).toString();
-                    boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(userId, lp.getLostPostId());
-                    return LostPostCardMapper.toLostPostCard(lp, author, bookmarked,clock,url);
+                    return LostPostCardMapper.toLostPostCard(lp, author, clock,url);
                 })
                 .collect(Collectors.toList());
     }
