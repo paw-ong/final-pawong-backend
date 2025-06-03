@@ -1,9 +1,11 @@
 package kr.co.pawong.pwbe.chat.adapter.out.persistence.jpa.repository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import kr.co.pawong.pwbe.chat.adapter.out.persistence.jpa.entity.ChatMessageEntity;
 import kr.co.pawong.pwbe.chat.enums.ChatMessageStatus;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChatMessageJpaRepository extends JpaRepository<ChatMessageEntity, Long> {
@@ -19,4 +21,20 @@ public interface ChatMessageJpaRepository extends JpaRepository<ChatMessageEntit
             ChatMessageStatus status,
             Long readerId
     );
+
+    /**
+     * 채팅방 ID로 조회해서, createdAt 기준 내림차순 정렬 후 Pageable 만큼 가져오기
+     */
+    List<ChatMessageEntity> findByChatRoomIdOrderByCreatedAtDesc(Long chatRoomId, Pageable pageable);
+
+    /**
+     * 채팅방 ID이면서 “createdAt < 주어진 시점”인 메시지들 중에서,
+     * createdAt 기준 내림차순 정렬 후 Pageable 만큼 가져오기
+     */
+    List<ChatMessageEntity> findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
+            Long chatRoomId,
+            Instant createdAtBefore,
+            Pageable pageable
+    );
+
 }

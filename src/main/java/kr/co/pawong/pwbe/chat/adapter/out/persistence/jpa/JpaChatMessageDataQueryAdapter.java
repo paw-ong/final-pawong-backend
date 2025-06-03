@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.chat.adapter.out.persistence.jpa;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.co.pawong.pwbe.chat.adapter.out.persistence.jpa.entity.ChatMessageEntity;
@@ -10,6 +11,7 @@ import kr.co.pawong.pwbe.chat.enums.ChatMessageStatus;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -40,8 +42,33 @@ public class JpaChatMessageDataQueryAdapter implements ChatMessageDataQueryPort 
     @Override
     public ChatMessage findLatestReadMessageOrThrow(Long chatRoomId, Long userId) {
         return chatMessageJpaRepository
-                .findFirstByChatRoomIdAndStatusAndSenderIdNotOrderByCreatedAtDesc(chatRoomId, ChatMessageStatus.READ, userId)
+                .findFirstByChatRoomIdAndStatusAndSenderIdNotOrderByCreatedAtDesc(chatRoomId,
+                        ChatMessageStatus.READ, userId)
                 .orElseThrow(() -> new BaseException(CustomErrorCode.CHATMESSAGE_NOT_FOUND))
                 .toModel();
     }
+
+    @Override
+    public List<ChatMessage> findLatestNByChatRoom(Long chatRoomId, int N) {
+        return chatMessageJpaRepository.findByChatRoomIdOrderByCreatedAtDesc(
+                        chatRoomId,
+                        PageRequest.of(0, N)
+                ).stream()
+                .map(ChatMessageEntity::toModel)
+                .toList();
+    }
+
+    @Override
+    public List<ChatMessage> findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(Long chatRoomId,
+            Instant oldestRedisCreatedAt, int N) {
+        return chatMessageJpaRepository.findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
+                        chatRoomId,
+                        oldestRedisCreatedAt,
+                        PageRequest.of(0, N)
+                ).stream()
+                .map(ChatMessageEntity::toModel)
+                .toList();
+    }
+
+
 }

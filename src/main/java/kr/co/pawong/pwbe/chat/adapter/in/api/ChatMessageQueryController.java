@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatMessageQueryController {
 
     private final QueryChatMessageDataUseCase queryChatMessageDataUseCase;
+
     @GetMapping("/rooms/{roomId}/messages")
     public ResponseEntity<ChatMessagesResponse> findAllMessagesInChatRoom(
             @PathVariable Long roomId,
@@ -34,5 +35,18 @@ public class ChatMessageQueryController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ChatMessagesResponse(allMessages));
+    }
+
+    @GetMapping("/rooms/{roomId}/messages/lastest")
+    public ResponseEntity<ChatMessagesResponse> findLastestMessagesInChatRoom(
+            @PathVariable Long roomId,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Long userId = userDetails.getUserId();
+        List<ChatMessageDetail> lastestMessages = queryChatMessageDataUseCase.findLastestMessagesInChatRoom(userId, roomId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ChatMessagesResponse(lastestMessages));
     }
 }

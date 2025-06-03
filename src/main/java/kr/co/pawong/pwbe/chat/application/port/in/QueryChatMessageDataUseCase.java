@@ -6,4 +6,6 @@ import kr.co.pawong.pwbe.chat.application.port.in.dto.ChatMessageDetail;
 public interface QueryChatMessageDataUseCase {
 
     List<ChatMessageDetail> findAllMessagesInChatRoom(Long userId, Long chatRoomId);
+
+    List<ChatMessageDetail> findLastestMessagesInChatRoom(Long userId, Long roomId);
 }
