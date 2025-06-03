@@ -51,64 +51,95 @@ public class QueryChatMessageDataService implements QueryChatMessageDataUseCase 
                 .collect(Collectors.toList());
     }
 
+    /**
+     * “beforeMillis == null” → 가장 최신 페이지 용 호출
+     * “beforeMillis != null” → 과거 페이지 용 호출
+     * @param userId
+     * @param roomId
+     * @param beforeMillis
+     * @return
+     */
     @Override
-    public List<ChatMessageDetail> findLastestMessagesInChatRoom(Long userId, Long roomId) {
+    public List<ChatMessageDetail> findLatestMessagesInChatRoom(Long userId, Long roomId, Long beforeMillis) {
+        if (!queryChatRoomDataUseCase.isUserInChatRoom(userId, roomId)) {
+            throw new BaseException(CustomErrorCode.FORBIDDEN_CHATMESSAGE_QUERY);
+        }
+        if (beforeMillis == null) return fetchLatestPage(roomId);
+        return fetchOlderPage(roomId, beforeMillis);
+    }
 
+    /**
+     * 채팅방의 최신 N건의 메세지를 반환
+     * @param roomId
+     * @return
+     */
+    private List<ChatMessageDetail> fetchLatestPage(Long roomId) {
         // 1) Redis 에서 최신 PAGE_SIZE건 조회
-        List<ChatMessageDetail> latestMessages =
-                chatMessageCachePort.getLatestMessages(roomId, CACHE_PAGE_SIZE)
-                        .stream()
-                        .map(msg -> {
-                                    User sender = userDataQueryPort.findByUserIdOrThrow(msg.getSenderId());
-                                    return ChatMessageDetail
-                                            .from(msg)
-                                            .updateSenderInfo(sender.getNickname(), sender.getProfileImage());
-                                }
-                        )
-                        .toList();
-        if (latestMessages.size() == CACHE_PAGE_SIZE)
-            return latestMessages;
+        List<ChatMessage> cached = chatMessageCachePort.getLatestMessages(roomId, CACHE_PAGE_SIZE);
 
-        // 2) Redis 데이터가 없으면
-        if(latestMessages.isEmpty()) {
-            List<ChatMessage> fromDb = chatMessageDataQueryPort.findLatestNByChatRoom(roomId, CACHE_PAGE_SIZE);
-            Collections.reverse(fromDb);
-            return fromDb.stream()
-                    .map(msg -> {
-                        User sender = userDataQueryPort.findByUserIdOrThrow(msg.getSenderId());
-                        return ChatMessageDetail
-                                .from(msg)
-                                .updateSenderInfo(sender.getNickname(), sender.getProfileImage());
-                    })
+        if (cached.size() == CACHE_PAGE_SIZE) {
+            return cached.stream()
+                    .map(this::toDetailWithSender)
                     .collect(Collectors.toList());
         }
 
-        // 2) Redis에 충분한 데이터가 없으면, DB에서 추가 조회하여 반환
-        int need = CACHE_PAGE_SIZE-latestMessages.size();
-        Instant oldestRedisCreatedAt = Instant.ofEpochMilli(latestMessages.getFirst().getCreatedAt());
+        // 2) Redis 데이터가 없으면
+        if(cached.isEmpty()) {
+            List<ChatMessage> fromDb = chatMessageDataQueryPort.findLatestNByChatRoom(roomId, CACHE_PAGE_SIZE);
+            Collections.reverse(fromDb);
+            return fromDb.stream()
+                    .map(this::toDetailWithSender)
+                    .collect(Collectors.toList());
+        }
+
+        // 3) Redis에 충분한 데이터가 없으면, DB에서 추가 조회하여 반환
+        int need = CACHE_PAGE_SIZE-cached.size();
+        Instant oldestRedisCreatedAt = cached.getFirst().getCreatedAt();
         List<ChatMessage> dbList = chatMessageDataQueryPort
                 .findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
                         roomId,
                         oldestRedisCreatedAt,
                         need
                 );
-
-        // 3) DB 엔티티 → DTO로 변환 후, "역순(시간 오름차순)"으로 맞춘 다음 Redis 리스트 뒤에 붙임
-        List<ChatMessageDetail> dbDtoList = dbList.stream()
-                .map(msg -> {
-                    User sender = userDataQueryPort.findByUserIdOrThrow(msg.getSenderId());
-                    return ChatMessageDetail
-                            .from(msg)
-                            .updateSenderInfo(sender.getNickname(), sender.getProfileImage());
-                })
-                .sorted(Comparator.comparingLong(ChatMessageDetail::getCreatedAt))
-                .toList();
         Collections.reverse(dbList);
 
         // 4) 최종 반환 리스트: (DB 쪽 과거 메시지들) + (Redis 쪽 최신 메시지들)
         List<ChatMessageDetail> result = new ArrayList<>();
-        result.addAll(dbDtoList);
-        result.addAll(latestMessages);
+        dbList.forEach(msg -> result.add(toDetailWithSender(msg)));
+        cached.forEach(msg -> result.add(toDetailWithSender(msg)));
         return result;
+    }
+
+    /**
+     * Redis에 beforeMillis 이전 메시지가 충분히 없다면 DB에서 보충 조회한 다음 오름차순으로 합쳐서 반환
+     * @param roomId
+     * @param beforeMillis
+     * @return
+     */
+    private List<ChatMessageDetail> fetchOlderPage(Long roomId, Long beforeMillis) {
+        // 1) DB에서 “createdAt < beforeInstant”, 내림차순으로 최대 N건 가져오기
+        Instant beforeInstant = Instant.ofEpochMilli(beforeMillis);
+        List<ChatMessage> dbList = chatMessageDataQueryPort
+                .findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
+                        roomId,
+                        beforeInstant,
+                        CACHE_PAGE_SIZE
+                );
+
+        // 2) “과거→최신” 순서로 뒤집기
+        Collections.reverse(dbList);
+
+        // 3) DTO 변환 + 보낸 사람 정보 채우기
+        return dbList.stream()
+                .map(this::toDetailWithSender)
+                .collect(Collectors.toList());
+    }
+
+    // ChatMessage → ChatMessageDetail + senderName, senderProfileImage 채워서 반환
+    private ChatMessageDetail toDetailWithSender(ChatMessage msg) {
+        User sender = userDataQueryPort.findByUserIdOrThrow(msg.getSenderId());
+        return ChatMessageDetail
+                .from(msg)
+                .updateSenderInfo(sender.getNickname(), sender.getProfileImage());
     }
 }

@@ -7,5 +7,5 @@ public interface QueryChatMessageDataUseCase {
 
     List<ChatMessageDetail> findAllMessagesInChatRoom(Long userId, Long chatRoomId);
 
-    List<ChatMessageDetail> findLastestMessagesInChatRoom(Long userId, Long roomId);
+    List<ChatMessageDetail> findLatestMessagesInChatRoom(Long userId, Long roomId, Long beforeMillis);
 }
