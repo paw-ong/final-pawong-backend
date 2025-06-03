@@ -42,7 +42,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
                 .addEndpoint("/ws")
-                .setAllowedOriginPatterns("http://localhost", "https://pawong.co.kr")
+                .setAllowedOriginPatterns(
+                        "http://localhost",
+                        "https://pawong.co.kr",
+                        "https://www.pawong.co.kr"
+                )
                 .addInterceptors(jwtHandshakeInterceptor)
                 .setHandshakeHandler(jwtHandshakeHandler)
                 .withSockJS();
