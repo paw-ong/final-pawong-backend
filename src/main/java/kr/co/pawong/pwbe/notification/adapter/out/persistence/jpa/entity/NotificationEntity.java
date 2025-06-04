@@ -35,6 +35,8 @@ public class NotificationEntity {
     @Enumerated(EnumType.STRING)
     private NotificationType type; // 알림 유형
 
+    private Long postId;
+
     private LocalDateTime createdAt; // 알림 생성 시간
 
     // Notification -> NotificationEntity
@@ -47,6 +49,7 @@ public class NotificationEntity {
         entity.message = notification.getMessage();
         entity.targetId = notification.getTargetId();
         entity.type = notification.getType();
+        entity.postId = notification.getPostId();
         entity.createdAt = notification.getCreatedAt();
 
         return entity;
@@ -61,6 +64,7 @@ public class NotificationEntity {
                 .message(this.message)
                 .targetId(this.targetId)
                 .type(this.type)
+                .postId(this.postId)
                 .createdAt(this.createdAt)
                 .build();
     }

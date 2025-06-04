@@ -15,4 +15,5 @@ public class NotificationRequest {
     private String message;
     private Long targetId;
     private TargetType targetType;
+    private Long postId;
 }

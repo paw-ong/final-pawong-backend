@@ -20,4 +20,5 @@ public class NotificationDto {
     private Long targetId;
     private TargetType targetType;
     private NotificationType type;
+    private Long postId;
 }

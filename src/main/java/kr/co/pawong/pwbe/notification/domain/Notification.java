@@ -26,19 +26,21 @@ public class Notification {
     private Long targetId;
     private TargetType targetType;
     private NotificationType type;
+    private Long postId;
     private LocalDateTime createdAt;
 
     // 채팅 알림
-    public static Notification createChatNotification(Long userId, String message, Long chatId) {
-        validateNotificationData(userId, "새로운 채팅 메시지", message, chatId);
+    public static Notification createChatNotification(Long userId, String message, Long chatRoomId, TargetType targetType, Long postId) {
+        validateNotificationData(userId, "새로운 채팅 메시지", message, chatRoomId);
 
         return Notification.builder()
                 .userId(userId)
                 .title("새로운 메시지")
                 .message(message)
-                .targetId(chatId)
-                .targetType(TargetType.CHAT)
+                .targetId(chatRoomId)
+                .targetType(targetType)
                 .type(NotificationType.CHAT)
+                .postId(postId)
                 .createdAt(LocalDateTime.now())
                 .build();
     }
@@ -57,6 +59,7 @@ public class Notification {
                 .targetId(adoptionId)
                 .targetType(targetType)
                 .type(NotificationType.SIMILAR_ADOPTION)
+                .postId(adoptionId)
                 .createdAt(LocalDateTime.now())
                 .build();
     }
@@ -91,6 +94,7 @@ public class Notification {
                 .targetId(this.targetId)
                 .targetType(this.targetType)
                 .type(this.type)
+                .postId(this.postId)
                 .build();
     }
 

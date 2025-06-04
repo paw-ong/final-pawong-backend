@@ -24,13 +24,13 @@ public class NotificationSendAdapter implements NotificationSendPort {
         switch (postType) {
             case PostType.FOSTER -> {
                 NotificationRequest request = new NotificationRequest(userId, null, targetId,
-                        TargetType.FOSTER);
+                        TargetType.FOSTER, null);
                 mailUseCase.sendSimilarAdoptionEmail(request);
                 notificationUseCase.sendSimilarAdoptionNotification(request);
             }
             case PostType.FOUND -> {
                 NotificationRequest request = new NotificationRequest(userId, null, targetId,
-                        TargetType.FOUND);
+                        TargetType.FOUND, null);
                 mailUseCase.sendSimilarAdoptionEmail(request);
                 notificationUseCase.sendSimilarAdoptionNotification(request);
             }
