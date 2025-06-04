@@ -31,7 +31,7 @@ public class IndexLostAnimalService implements IndexLostAnimalUseCase {
                 LostAnimalDto lostPostDto = LostAnimalDto.fromLostPost(lostPost, type, embedding);
 
                 // ES에 저장
-                lostAnimalEngineCommandPort.saveLostAnimalToEs(lostPostDto);
+                lostAnimalEngineCommandPort.saveLostAnimal(lostPostDto);
             }
             case PostType.FOSTER -> {
                 // 구조 API 데이터 가져오기
@@ -42,7 +42,7 @@ public class IndexLostAnimalService implements IndexLostAnimalUseCase {
                         embedding);
 
                 // ES에 저장
-                lostAnimalEngineCommandPort.saveLostAnimalToEs(lostAdoptionDto);
+                lostAnimalEngineCommandPort.saveLostAnimal(lostAdoptionDto);
             }
             default -> throw new IllegalStateException("Unexpected PostType: " + type.name());
         }

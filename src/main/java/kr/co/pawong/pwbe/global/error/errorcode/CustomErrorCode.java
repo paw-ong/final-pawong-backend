@@ -70,6 +70,7 @@ public enum CustomErrorCode implements ErrorCode {
     SERVER_ERROR(INTERNAL_SERVER_ERROR, "서버와의 연결에 실패하였습니다."),
     DATABASE_ERROR(INTERNAL_SERVER_ERROR, "데이터베이스 연결에 실패하였습니다."),
     ES_SAVE_ERROR(INTERNAL_SERVER_ERROR, "Elasticsearch 저장에 실패하였습니다."),
+    ES_DELETE_ERROR(INTERNAL_SERVER_ERROR, "Elasticsearch에서 삭제하는데 실패하였습니다."),
     KAFKA_MESSAGE_PUBLISH_ERROR(INTERNAL_SERVER_ERROR, "Kafka 메시지 발행에 실패하였습니다."),
     KAFKA_CONNECTION_ERROR(INTERNAL_SERVER_ERROR, "Kafka 서버 연결에 실패하였습니다."),
     NOTIFICATION_SAVE_ERROR(INTERNAL_SERVER_ERROR, "알림 저장에 실패하였습니다."),
@@ -85,8 +86,7 @@ public enum CustomErrorCode implements ErrorCode {
     SEARCH_ERROR(SERVICE_UNAVAILABLE, "검색 기능이 정상적으로 동작하지 않습니다."),
 
     // 이메일
-    EMAIL_DUPLICATE(CONFLICT, "사용 중인 이메일입니다.")
-    ;
+    EMAIL_DUPLICATE(CONFLICT, "사용 중인 이메일입니다.");
     private final HttpStatus httpStatus;
     private final String message;
 }
