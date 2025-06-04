@@ -3,9 +3,9 @@ package kr.co.pawong.pwbe.chat.application.listener;
 import kr.co.pawong.pwbe.chat.application.listener.event.ChatNotificationEvent;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatMessageBrokerPort;
 import kr.co.pawong.pwbe.chat.domain.ChatMessage;
-import kr.co.pawong.pwbe.lostPost.enums.PostType;
 import kr.co.pawong.pwbe.notification.application.port.in.dto.NotificationRequest;
 import kr.co.pawong.pwbe.notification.application.port.out.ChatNotificationPort;
+import kr.co.pawong.pwbe.notification.enums.TargetType;
 import kr.co.pawong.pwbe.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -37,7 +37,7 @@ public class ChatNotificationListener {
                 receiver.getUserId(),
                 chatMessage.getContent(),
                 chatMessage.getChatRoomId(),
-                PostType.LOST
+                TargetType.CHAT
         ));
     }
 
