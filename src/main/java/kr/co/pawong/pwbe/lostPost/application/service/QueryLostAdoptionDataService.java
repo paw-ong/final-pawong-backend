@@ -50,6 +50,7 @@ public class QueryLostAdoptionDataService implements QueryLostAdoptionDataUseCas
     private List<LostPostCard> mapToLostPostCards(Page<LostAdoption> lostAdoptionPage, Clock clock, Long userId) {
         return lostAdoptionPage.getContent().stream()
                 .map(la -> {
+                    changePopfilesToProxy(la);
                     String shelter = shelterCareNmPort.getShelterCareNmByCareRegNo(la.getCareRegNo());
                     return LostPostCardMapper.toLostPostCard(la, shelter, clock);
                 })
