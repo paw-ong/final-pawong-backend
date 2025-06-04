@@ -34,6 +34,7 @@ public class FcmService implements FcmUsecase {
             log.info("FCM 토큰 저장 완료: 사용자={}", userId);
         } else if (!fcmToken.getToken().equals(token)) {
             fcmToken.updateToken(token);
+            fcmPort.save(fcmToken);
         }
     }
 
