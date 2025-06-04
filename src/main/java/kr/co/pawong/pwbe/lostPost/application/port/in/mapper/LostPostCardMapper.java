@@ -1,5 +1,8 @@
 package kr.co.pawong.pwbe.lostPost.application.port.in.mapper;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Clock;
 import kr.co.pawong.pwbe.global.util.TimeUtils;
@@ -18,13 +21,13 @@ public class LostPostCardMapper {
      * @param author   - 작성자 닉네임
      */
     public static LostPostCard toLostPostCard(
-            LostPost lostPost, String author, Clock clock, String url) {
+            LostPost lostPost, String author, Clock clock, URL url) {
 
         return LostPostCard.builder()
                 .postId(lostPost.getLostPostId())
                 .postType(lostPost.getPostType().name())
                 .author(author)
-                .imageUrl(url)
+                .imageUrl(url==null?null:url.toString())
                 .happenedDate(TimeUtils.formatDate(lostPost.getDate()))
                 .happenedPlace(lostPost.getLocation())
                 .kindNm(lostPost.getKindNm())
@@ -35,7 +38,7 @@ public class LostPostCardMapper {
 
     /**
      * @param lostAdoption - 변환할 LostAdoption
-     * @param shelter   - 작성자 닉네임
+     * @param shelter      - 작성자 닉네임
      */
     public static LostPostCard toLostPostCard(
             LostAdoption lostAdoption, String shelter, Clock clock) {
@@ -51,6 +54,7 @@ public class LostPostCardMapper {
                 .createdAt(TimeUtils.formatDateAgo(lostAdoption.getNoticeSdt(), clock))
                 .feature(lostAdoption.getSpecialMark())
                 .build();
+
     }
 
 }

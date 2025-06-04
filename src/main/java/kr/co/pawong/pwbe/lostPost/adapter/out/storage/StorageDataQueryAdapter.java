@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.lostPost.adapter.out.storage;
 
+import java.net.URL;
 import kr.co.pawong.pwbe.infrastructure.s3.application.port.in.AcquireImageUrlUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.out.StorageDataQueryPort;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ public class StorageDataQueryAdapter implements StorageDataQueryPort {
 
     @Override
     public String acquireImageUrl(String objectKey) {
-        return acquireImageUrlUseCase.acquireImageUrl(objectKey).toString();
+        URL imageUrl = acquireImageUrlUseCase.acquireImageUrl(objectKey);
+        if(imageUrl == null) return null;
+        return imageUrl.toString();
     }
 }

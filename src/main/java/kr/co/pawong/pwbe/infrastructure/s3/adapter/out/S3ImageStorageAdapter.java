@@ -60,6 +60,7 @@ public class S3ImageStorageAdapter implements ImageStoragePort {
      */
     @Override
     public URL presignDownload(String objectKey, Duration expires) {
+        if(objectKey == null) return null;
         return presigner
                 .presignGetObject(r -> r
                         .signatureDuration(expires)
