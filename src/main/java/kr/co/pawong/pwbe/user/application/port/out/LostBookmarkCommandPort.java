@@ -7,4 +7,6 @@ public interface LostBookmarkCommandPort {
     LostBookmark save(LostBookmark bookmark);
 
     void delete(Long bookmarkId);
+
+    void deleteByLostPostId(Long lostPostId);
 }

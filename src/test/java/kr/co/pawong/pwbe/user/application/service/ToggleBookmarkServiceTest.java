@@ -112,6 +112,11 @@ class ToggleBookmarkServiceTest {
             store.remove(bookmarkId);
         }
 
+        @Override
+        public void deleteByLostPostId(Long lostPostId) {
+            store.remove(lostPostId);
+        }
+
         int count() {
             return store.size();
         }
