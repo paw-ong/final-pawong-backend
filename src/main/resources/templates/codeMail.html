@@ -2,27 +2,23 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <title>이메일 인증 코드</title>
 </head>
-<body>
-<table style="background-color: #f3f3f3; color: #333; font-size: 16px; text-align: center; margin: 0; padding: 0;" width="100%" cellspacing="0" cellpadding="0">
+<body style="margin:0; padding:0; background: #FFFFFF; font-family: Arial, Helvetica, sans-serif; color: #2F1C1D;">
+<table width="600" cellspacing="0" cellpadding="0" style="background: #FFF6F2;">
   <tr>
     <td align="center">
-      <table style="margin: 40px auto; border-collapse: separate;" width="600" cellspacing="0" cellpadding="0">
+      <table width="420" cellspacing="0" cellpadding="0" style="background: #FFFFFF; border-radius: 16px; margin: 48px 0; box-shadow: 0 2px 16px rgba(47,28,29,0.08);">
         <tr>
-          <td style="padding-bottom: 20px;" align="center"> <!-- Added padding-bottom here -->
-            <h1 style="color: #A79277;">이메일 인증 코드</h1>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding-bottom: 20px;" align="center"> <!-- And here -->
-            <p>아래의 코드을 사용하여 이메일을 인증해주세요:</p>
-          </td>
-        </tr>
-        <tr>
-          <td align="center">
-            <h1 style="margin:0; color:#3b4d63; line-height:140%; text-align:center; font-family:arial,helvetica,sans-serif; font-size:41px; font-weight:400;">
-              <span style="text-decoration:underline;"><strong th:text="${authCode}">123456</strong></span>
-            </h1>
+          <td align="center" style="padding: 36px 24px 16px 24px;">
+            <h1 style="font-size: 28px; color: #F86A60; margin: 0 0 8px 0; letter-spacing: 1px;">이메일 인증</h1>
+            <div style="width: 40px; height: 3px; background: #F86A60; border-radius: 2px; margin: 0 auto 18px auto;"></div>
+            <p style="font-size: 16px; color: #2F1C1D; margin: 0 0 18px 0;">
+              아래 <span style="color: #A71F24; font-weight: bold;">코드</span>를 입력해 인증을 완료하세요.
+            </p>
+            <div style="display: inline-block; background: #FFFFFF; border: 2px solid #3581B8; border-radius: 10px; padding: 18px 36px; margin: 22px 0 12px 0;">
+              <span style="font-size: 38px; color: #3581B8; font-weight: bold; letter-spacing: 8px;" th:text="${authCode}">123456</span>
+            </div>
           </td>
         </tr>
       </table>
@@ -30,5 +26,4 @@
   </tr>
 </table>
 </body>
-
 </html>

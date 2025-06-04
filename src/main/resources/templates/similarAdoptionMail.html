@@ -2,35 +2,32 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <title>유사 공고 알림</title>
 </head>
-<body>
-<table style="background-color: #f3f3f3; color: #333; font-size: 16px; text-align: center; margin: 0; padding: 0;" width="100%" cellspacing="0" cellpadding="0">
+<body style="margin:0; padding:0; background: white; font-family: Arial, Helvetica, sans-serif; color: #2F1C1D;">
+<table width="600" cellspacing="0" cellpadding="0" style="background: #FFF6F2;">
   <tr>
     <td align="center">
-      <table style="margin: 40px auto; border-collapse: separate;" width="600" cellspacing="0" cellpadding="0">
+      <table width="420" cellspacing="0" cellpadding="0" style="background: #FFFFFF; border-radius: 16px; margin: 48px 0; box-shadow: 0 2px 16px rgba(47,28,29,0.08);">
         <tr>
-          <td style="padding-bottom: 20px;" align="center"> <!-- Added padding-bottom here -->
-            <h1 style="color: #A79277;">실종 동물과 유사한 공고 입니다.</h1>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding-bottom: 20px;" align="center"> <!-- And here -->
-            <p>아래의 링크를 접속하여 공고를 확인해 주세요</p>
-          </td>
-        </tr>
-        <tr>
-          <td align="center">
-            <a th:href="${targetType == 'FOUND'}
-                  ? 'https://www.pawong.co.kr/lostAnimal/detail/' + ${targetId}
-                  : 'https://www.pawong.co.kr/adoptions/' + ${targetId}"
+          <td align="center" style="padding: 36px 24px 16px 24px;">
+            <h1 style="font-size: 24px; color: #F86A60; margin: 0 0 12px 0; letter-spacing: 1px;">
+              실종 동물과 유사한 공고입니다
+            </h1>
+            <div style="width: 40px; height: 3px; background: #F86A60; border-radius: 2px; margin: 0 auto 18px auto;"></div>
+            <p style="font-size: 16px; color: #2F1C1D; margin: 30px 0 22px 0;">
+              아래 링크를 클릭하여 공고를 확인해 주세요.
+            </p>
+            <a th:href="${targetType == 'FOUND'} ? 'https://www.pawong.co.kr/lostAnimal/detail/' + ${targetId} : 'https://www.pawong.co.kr/adoptions/' + ${targetId}"
                style="display: inline-block;
-              padding: 12px 24px;
-              background-color: #3b4d63;
-              color: #ffffff;
-              text-decoration: none;
-              font-size: 18px;
-              border-radius: 4px;
-              font-family: Arial, Helvetica, sans-serif;">
+                        padding: 14px 32px;
+                        background-color: #3581B8;
+                        color: #FFFFFF;
+                        text-decoration: none;
+                        font-size: 18px;
+                        border-radius: 8px;
+                        font-weight: bold;
+                        margin: 10px 0 8px 0;">
               공고 보러가기
             </a>
           </td>
@@ -40,5 +37,4 @@
   </tr>
 </table>
 </body>
-
 </html>

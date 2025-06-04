@@ -26,13 +26,13 @@ public class NotificationSendAdapter implements NotificationSendPort {
                 NotificationRequest request = new NotificationRequest(userId, null, targetId,
                         TargetType.FOSTER);
                 mailUseCase.sendSimilarAdoptionEmail(request);
-//                notificationUseCase.sendSimilarAdoptionNotification(request);
+                notificationUseCase.sendSimilarAdoptionNotification(request);
             }
             case PostType.FOUND -> {
                 NotificationRequest request = new NotificationRequest(userId, null, targetId,
                         TargetType.FOUND);
                 mailUseCase.sendSimilarAdoptionEmail(request);
-//                notificationUseCase.sendSimilarAdoptionNotification(request);
+                notificationUseCase.sendSimilarAdoptionNotification(request);
             }
             default -> log.error("[NotificationSendAdapter][sendNotification] 알림 보내는 게시글 타입이 LOST 임. userId={}, targetId={}, postType={}", userId, targetId, postType);
         }
