@@ -33,6 +33,7 @@ public enum CustomErrorCode implements ErrorCode {
     NOTIFICATION_MESSAGE_REQUIRED(BAD_REQUEST, "알림 메시지는 필수입니다."),
     NOTIFICATION_TOKEN_REQUIRED(BAD_REQUEST, "FCM 토큰은 필수입니다."),
     NOTIFICATION_TARGET_ID_REQUIRED(BAD_REQUEST, "대상 ID는 필수입니다."),
+    LOCATION_REQUEST_ERROR(BAD_REQUEST, "위도 경도 입력이 올바르지 않습니다."),
 
     /**
      * 401 UNAUTHORIZED
