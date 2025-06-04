@@ -21,7 +21,7 @@ public class EsLostAnimalEngineCommandAdapter implements LostAnimalEngineCommand
     private static final IndexCoordinates INDEX = IndexCoordinates.of("lost_animal");
 
     @Override
-    public void saveLostAnimalToEs(LostAnimalDto lostAnimalDto) {
+    public void saveLostAnimal(LostAnimalDto lostAnimalDto) {
         if (lostAnimalDto == null) {
             return;
         }
@@ -29,8 +29,22 @@ public class EsLostAnimalEngineCommandAdapter implements LostAnimalEngineCommand
             LostAnimalDocument document = LostAnimalDocument.from(lostAnimalDto);
             elasticsearchOperations.save(document, INDEX);
         } catch (Exception e) {
-            log.error("LostAnimal ES 저장이 실패하였습니다.", e);
+            log.error("LostAnimal ES 저장이 실패하였습니다. type={}, id={}",
+                    lostAnimalDto.getType(), lostAnimalDto.getLostAnimalId(), e);
             throw new BaseException(CustomErrorCode.ES_SAVE_ERROR, e);
+        }
+    }
+
+    @Override
+    public void deleteLostAnimal(String lostAnimalId) {
+        if (lostAnimalId == null || lostAnimalId.isBlank()) {
+            return;
+        }
+        try {
+            elasticsearchOperations.delete(lostAnimalId, INDEX);
+        } catch (Exception e) {
+            log.error("LostAnimal ES 삭제에 실패하였습니다. id={}", lostAnimalId, e);
+            throw new BaseException(CustomErrorCode.ES_DELETE_ERROR, e);
         }
     }
 }
