@@ -17,8 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SendChatMessageBrokerService implements SendChatMessageBrokerUseCase {
 
-    private static final int MAX_CACHE_SIZE = 100;
-
     private final CommandChatMessageDataUseCase commandChatMessageDataUseCase;
     private final ChatMessageDataQueryPort chatMessageDataQueryPort;
     private final ApplicationEventPublisher publisher;
@@ -30,7 +28,7 @@ public class SendChatMessageBrokerService implements SendChatMessageBrokerUseCas
     public void createAndSendChatMessage(ChatMessageCreateRequest request, Long chatRoomId,
             Long userId) {
         ChatMessage chatMessage = createChatMessage(request, chatRoomId, userId);
-        chatMessageCachePort.cacheMessage(chatRoomId, chatMessage, MAX_CACHE_SIZE);
+        chatMessageCachePort.cacheMessage(chatRoomId, chatMessage);
         publisher.publishEvent(new ChatMessageCreatedEvent(chatMessage));
     }
 
@@ -39,6 +37,7 @@ public class SendChatMessageBrokerService implements SendChatMessageBrokerUseCas
     public void readMessage(Long roomId, Long userId) {
         commandChatMessageDataUseCase.markAllAsRead(roomId, userId);
         ChatMessage chatMessage = chatMessageDataQueryPort.findLatestReadMessageOrThrow(roomId, userId);
+        if(chatMessage == null) return;
         publisher.publishEvent(new ChatMessageReadEvent(roomId, userId, chatMessage.getMessageId()));
     }
 

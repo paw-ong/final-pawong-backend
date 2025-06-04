@@ -5,7 +5,9 @@ import kr.co.pawong.pwbe.chat.domain.ChatMessage;
 
 public interface ChatMessageCachePort {
 
-    void cacheMessage(Long chatRoomId, ChatMessage chatMessage, int cacheSize);
-    List<ChatMessage> getLatestMessages(Long chatRoomId, int maxSize);
-
+    void cacheMessage(Long chatRoomId, ChatMessage chatMessage);
+    void cacheMessageChunk(List<ChatMessage> recentChatMessage, Long roomId);
+    List<ChatMessage> getLatestMessages(Long chatRoomId);
+    void updateTotalCount(Long chatRoomId, Long count);
+    Long getTotalCount(Long roomId);
 }

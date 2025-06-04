@@ -1,6 +1,7 @@
 package kr.co.pawong.pwbe.chat.adapter.out.persistence.jpa;
 
-import java.time.Instant;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.co.pawong.pwbe.chat.adapter.out.persistence.jpa.entity.ChatMessageEntity;
@@ -11,7 +12,8 @@ import kr.co.pawong.pwbe.chat.enums.ChatMessageStatus;
 import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -35,39 +37,30 @@ public class JpaChatMessageDataQueryAdapter implements ChatMessageDataQueryPort 
     public ChatMessage findLatestChatMessageInChatRoomOrThrow(Long chatRoomId) {
         ChatMessageEntity chatMessageEntity = chatMessageJpaRepository.findFirstByChatRoomIdOrderByCreatedAtDesc(
                         chatRoomId)
-                .orElseThrow(() -> new BaseException(CustomErrorCode.CHATMESSAGE_NOT_FOUND));
+                .orElseThrow(() -> new BaseException(CHATMESSAGE_NOT_FOUND));
         return chatMessageEntity.toModel();
     }
 
+    // 내가 가장 최근에 읽은 메세지 가져오기
     @Override
     public ChatMessage findLatestReadMessageOrThrow(Long chatRoomId, Long userId) {
         return chatMessageJpaRepository
                 .findFirstByChatRoomIdAndStatusAndSenderIdNotOrderByCreatedAtDesc(chatRoomId,
                         ChatMessageStatus.READ, userId)
-                .orElseThrow(() -> new BaseException(CustomErrorCode.CHATMESSAGE_NOT_FOUND))
+                .orElseThrow(() -> new BaseException(CHATMESSAGE_NOT_FOUND))
                 .toModel();
     }
 
+    // Page number, size에 맞는 메시지 슬라이스 가져오기
     @Override
-    public List<ChatMessage> findLatestNByChatRoom(Long chatRoomId, int N) {
-        return chatMessageJpaRepository.findByChatRoomIdOrderByCreatedAtDesc(
-                        chatRoomId,
-                        PageRequest.of(0, N)
-                ).stream()
-                .map(ChatMessageEntity::toModel)
-                .toList();
+    public Slice<ChatMessage> findSliceMessages(Long chatRoomId, Pageable pageable) {
+        return chatMessageJpaRepository.findByChatRoomIdOrderByCreatedAtDesc(chatRoomId, pageable)
+                .map(ChatMessageEntity::toModel);
     }
 
     @Override
-    public List<ChatMessage> findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(Long chatRoomId,
-            Instant oldestRedisCreatedAt, int N) {
-        return chatMessageJpaRepository.findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
-                        chatRoomId,
-                        oldestRedisCreatedAt,
-                        PageRequest.of(0, N)
-                ).stream()
-                .map(ChatMessageEntity::toModel)
-                .toList();
+    public Long countByChatRoomId(Long chatRoomId) {
+        return chatMessageJpaRepository.countByChatRoomId(chatRoomId);
     }
 
 

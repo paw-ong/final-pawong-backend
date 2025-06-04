@@ -1,29 +1,33 @@
 package kr.co.pawong.pwbe.chat.application.service;
 
-import java.time.Instant;
+import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.co.pawong.pwbe.chat.adapter.in.api.dto.response.SliceChatMessagePageResponse;
+import kr.co.pawong.pwbe.chat.adapter.out.persistence.jpa.entity.ChatMessageEntity;
 import kr.co.pawong.pwbe.chat.application.port.in.QueryChatMessageDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.QueryChatRoomDataUseCase;
 import kr.co.pawong.pwbe.chat.application.port.in.dto.ChatMessageDetail;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatMessageCachePort;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatMessageDataQueryPort;
 import kr.co.pawong.pwbe.chat.domain.ChatMessage;
-import kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import kr.co.pawong.pwbe.user.application.port.out.UserDataQueryPort;
 import kr.co.pawong.pwbe.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class QueryChatMessageDataService implements QueryChatMessageDataUseCase {
-
-    private static final int CACHE_PAGE_SIZE = 50;
 
     private final QueryChatRoomDataUseCase queryChatRoomDataUseCase;
     private final ChatMessageDataQueryPort chatMessageDataQueryPort;
@@ -34,7 +38,7 @@ public class QueryChatMessageDataService implements QueryChatMessageDataUseCase 
     public List<ChatMessageDetail> findAllMessagesInChatRoom(Long userId, Long chatRoomId) {
         // 유저가 해당 채팅방에 속하지 않다면 예외를 발생
         if (!queryChatRoomDataUseCase.isUserInChatRoom(userId, chatRoomId)) {
-            throw new BaseException(CustomErrorCode.FORBIDDEN_CHATMESSAGE_QUERY);
+            throw new BaseException(FORBIDDEN_CHATMESSAGE_QUERY);
         }
 
         List<ChatMessage> chatMessages = chatMessageDataQueryPort
@@ -42,100 +46,91 @@ public class QueryChatMessageDataService implements QueryChatMessageDataUseCase 
 
         return chatMessages.stream()
                 .map(msg -> {
-                    User sender = userDataQueryPort.findByUserIdOrThrow(msg.getSenderId());
-                    return ChatMessageDetail
+                            User sender = userDataQueryPort.findByUserIdOrThrow(msg.getSenderId());
+                            return ChatMessageDetail
                                     .from(msg)
                                     .updateSenderInfo(sender.getNickname(), sender.getProfileImage());
-                    }
+                        }
                 )
                 .collect(Collectors.toList());
     }
 
     /**
-     * “beforeMillis == null” → 가장 최신 페이지 용 호출
-     * “beforeMillis != null” → 과거 페이지 용 호출
+     * page number에 따라서 메세지를 슬라이싱하여 반환한다
+     * 첫 페이지 로드일 때에는 findLatestMessagesInChatRoom
+     * 이후 페이지 로드 때에는 findOlderMessagesInChatRoom
      * @param userId
      * @param roomId
-     * @param beforeMillis
+     * @param pageable
      * @return
      */
     @Override
-    public List<ChatMessageDetail> findLatestMessagesInChatRoom(Long userId, Long roomId, Long beforeMillis) {
+    public SliceChatMessagePageResponse getSliceMessage(Long userId, Long roomId, Pageable pageable) {
         if (!queryChatRoomDataUseCase.isUserInChatRoom(userId, roomId)) {
-            throw new BaseException(CustomErrorCode.FORBIDDEN_CHATMESSAGE_QUERY);
+            throw new BaseException(FORBIDDEN_CHATMESSAGE_QUERY);
         }
-        if (beforeMillis == null) return fetchLatestPage(roomId);
-        return fetchOlderPage(roomId, beforeMillis);
+
+        if(pageable.getPageNumber() == 0)
+            return findLatestMessagesInChatRoom(roomId, pageable);
+
+        return findOlderMessagesInChatRoom(roomId, pageable);
     }
 
     /**
-     * 채팅방의 최신 N건의 메세지를 반환
+     * 최근 메세지를 반환한다
+     * 처음으로 캐시에서 데이터를 가져오는 경우 전체 데이터의 개수를 계산하여 HasNext를 반환한다
+     * 만약 캐시의 데이터가 page size 만큼 존재하지 않으면 DB에서 데이터를 가져온 뒤에 캐시에 저장한다
      * @param roomId
-     * @return
+     * @param pageable
+     * @return SliceChatMessagePageResponse
      */
-    private List<ChatMessageDetail> fetchLatestPage(Long roomId) {
-        // 1) Redis 에서 최신 PAGE_SIZE건 조회
-        List<ChatMessage> cached = chatMessageCachePort.getLatestMessages(roomId, CACHE_PAGE_SIZE);
+    private SliceChatMessagePageResponse findLatestMessagesInChatRoom(Long roomId, Pageable pageable) {
 
-        if (cached.size() == CACHE_PAGE_SIZE) {
-            return cached.stream()
-                    .map(this::toDetailWithSender)
-                    .collect(Collectors.toList());
+        /* get messages from cache */
+        List<ChatMessage> recentChatMessage = chatMessageCachePort.getLatestMessages(roomId);
+        Long totalCount = chatMessageCachePort.getTotalCount(roomId);
+        if(totalCount==0)  updateCacheTotalCount(roomId);
+        boolean hasNext = totalCount > recentChatMessage.size();
+
+        /* get messages from a database */
+        if(recentChatMessage.size() < pageable.getPageSize()) {
+            Slice<ChatMessage> sliceMessages = chatMessageDataQueryPort.findSliceMessages(roomId, PageRequest.of(0, pageable.getPageSize()));
+            List<ChatMessage> chatMessageList = new ArrayList<>(sliceMessages.getContent());
+            Collections.reverse(chatMessageList);
+            hasNext = sliceMessages.hasNext();
+
+            /* save to cache */
+            recentChatMessage = chatMessageList;
+            chatMessageCachePort.cacheMessageChunk(chatMessageList, roomId);
+            updateCacheTotalCount(roomId);
         }
 
-        // 2) Redis 데이터가 없으면
-        if(cached.isEmpty()) {
-            List<ChatMessage> fromDb = chatMessageDataQueryPort.findLatestNByChatRoom(roomId, CACHE_PAGE_SIZE);
-            Collections.reverse(fromDb);
-            return fromDb.stream()
-                    .map(this::toDetailWithSender)
-                    .collect(Collectors.toList());
-        }
+        List<ChatMessageDetail> chatMessageDetails = recentChatMessage.stream().map(this::toDetailWithSender).toList();
+        return new SliceChatMessagePageResponse(chatMessageDetails, hasNext, 0, chatMessageDetails.size());
+    }
 
-        // 3) Redis에 충분한 데이터가 없으면, DB에서 추가 조회하여 반환
-        int need = CACHE_PAGE_SIZE-cached.size();
-        Instant oldestRedisCreatedAt = cached.getFirst().getCreatedAt();
-        List<ChatMessage> dbList = chatMessageDataQueryPort
-                .findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
-                        roomId,
-                        oldestRedisCreatedAt,
-                        need
-                );
-        Collections.reverse(dbList);
-
-        // 4) 최종 반환 리스트: (DB 쪽 과거 메시지들) + (Redis 쪽 최신 메시지들)
-        List<ChatMessageDetail> result = new ArrayList<>();
-        dbList.forEach(msg -> result.add(toDetailWithSender(msg)));
-        cached.forEach(msg -> result.add(toDetailWithSender(msg)));
-        return result;
+    private void updateCacheTotalCount(Long roomId) {
+        Long count = chatMessageDataQueryPort.countByChatRoomId(roomId);
+        chatMessageCachePort.updateTotalCount(roomId, count);
     }
 
     /**
-     * Redis에 beforeMillis 이전 메시지가 충분히 없다면 DB에서 보충 조회한 다음 오름차순으로 합쳐서 반환
+     * 이전 메세지들은 데이터베이스에서 조회하여 반환한다.
      * @param roomId
-     * @param beforeMillis
-     * @return
+     * @param pageable
+     * @return SliceChatMessagePageResponse
      */
-    private List<ChatMessageDetail> fetchOlderPage(Long roomId, Long beforeMillis) {
-        // 1) DB에서 “createdAt < beforeInstant”, 내림차순으로 최대 N건 가져오기
-        Instant beforeInstant = Instant.ofEpochMilli(beforeMillis);
-        List<ChatMessage> dbList = chatMessageDataQueryPort
-                .findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
-                        roomId,
-                        beforeInstant,
-                        CACHE_PAGE_SIZE
-                );
+    private SliceChatMessagePageResponse findOlderMessagesInChatRoom(Long roomId, Pageable pageable) {
+        Slice<ChatMessage> sliceMessages = chatMessageDataQueryPort.findSliceMessages(roomId, pageable);
+        List<ChatMessage> chatMessageList = new ArrayList<>(sliceMessages.getContent());
+        Collections.reverse(chatMessageList);
+        boolean hasNext = sliceMessages.hasNext();
 
-        // 2) “과거→최신” 순서로 뒤집기
-        Collections.reverse(dbList);
-
-        // 3) DTO 변환 + 보낸 사람 정보 채우기
-        return dbList.stream()
-                .map(this::toDetailWithSender)
-                .collect(Collectors.toList());
+        List<ChatMessageDetail> chatMessageDetails = chatMessageList.stream().map(this::toDetailWithSender).toList();
+        return new SliceChatMessagePageResponse(chatMessageDetails, hasNext, pageable.getPageNumber(), chatMessageDetails.size());
     }
 
-    // ChatMessage → ChatMessageDetail + senderName, senderProfileImage 채워서 반환
+    // TODO: ChatMessage 마다 사용자 정보를 가져오는 로직 리팩토링
     private ChatMessageDetail toDetailWithSender(ChatMessage msg) {
         User sender = userDataQueryPort.findByUserIdOrThrow(msg.getSenderId());
         return ChatMessageDetail
