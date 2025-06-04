@@ -7,9 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ChatMessageCreatedEvent {
-    private final ChatMessage chatMessage;
-    private final User author;
-    private final User participant;
-
+public class ChatNotificationEvent {
+    User receiver;
+    ChatMessage chatMessage;
 }
