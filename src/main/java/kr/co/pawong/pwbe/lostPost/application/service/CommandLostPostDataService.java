@@ -6,6 +6,7 @@ import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataCommandPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.StorageDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.dto.CreatedLostAnimalPublishDto;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
+import kr.co.pawong.pwbe.user.application.port.in.ToggleBookmarkUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ public class CommandLostPostDataService implements CommandLostPostDataUseCase {
     private final LostPostDataCommandPort lostPostUpdatePort;
     private final LostAnimalMessagePublishPort lostAnimalMessagePublishPort;
     private final StorageDataQueryPort storageDataQueryPort;
+    private final ToggleBookmarkUseCase toggleBookmarkUseCase;
 
     @Override
     public Long createLostPost(LostPost lostPost, Long userId) {
@@ -60,6 +62,7 @@ public class CommandLostPostDataService implements CommandLostPostDataUseCase {
     @Override
     @Transactional
     public void deleteLostPost(Long postId, Long userId) {
+        toggleBookmarkUseCase.deleteByLostPostId(postId);
         lostPostUpdatePort.modifyDeleteStatusOrThrow(postId, userId);
     }
 }

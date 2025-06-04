@@ -24,4 +24,9 @@ public class JpaLostBookmarkCommandAdapter implements LostBookmarkCommandPort {
     public void delete(Long bookmarkId) {
         lostBookmarkRepository.deleteById(bookmarkId);
     }
+
+    @Override
+    public void deleteByLostPostId(Long lostPostId) {
+        lostBookmarkRepository.deleteByLostPostId(lostPostId);
+    }
 }

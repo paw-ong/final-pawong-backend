@@ -3,7 +3,9 @@ package kr.co.pawong.pwbe.notification.application.service;
 import static kr.co.pawong.pwbe.global.error.errorcode.CustomErrorCode.EMAIL_SEND_FAIL;
 
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
@@ -43,7 +45,7 @@ public class CustomMailSenderService implements CustomMailSenderUseCase {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            helper.setFrom(username); // 보내는 사람 주소임, smtp 설정과 맞아야함
+            helper.setFrom(new InternetAddress(username,"포옹","UTF-8")); // 보내는 사람 주소임, smtp 설정과 맞아야함
             helper.setTo(toEmail); // 받는 사람 주소임
             helper.setSubject(title); // 메일 제목 설정
 
@@ -57,7 +59,7 @@ public class CustomMailSenderService implements CustomMailSenderUseCase {
 
             javaMailSender.send(mimeMessage);                                     // HTML 메일 전송 호출
 
-        } catch (MessagingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             throw new BaseException(EMAIL_SEND_FAIL);
         }
 
@@ -72,7 +74,7 @@ public class CustomMailSenderService implements CustomMailSenderUseCase {
         String toEmail = queryEmailUseCase.getEmailByUserId(notificationEmailDto.getUserId());
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            helper.setFrom(username); // 보내는 사람 주소임, smtp 설정과 맞아야함
+            helper.setFrom(new InternetAddress(username,"포옹","UTF-8")); // 보내는 사람 주소임, smtp 설정과 맞아야함
             helper.setTo(toEmail); // 받는 사람 주소임
             helper.setSubject(notificationEmailDto.getTitle()); // 메일 제목 설정
 
@@ -94,7 +96,7 @@ public class CustomMailSenderService implements CustomMailSenderUseCase {
             Notification savedEmailNotification = notificationPort.save(notification);
             log.debug("유사 공고 이메일 저장 완료: id={}", savedEmailNotification.getId());
 
-        } catch (MessagingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             throw new BaseException(EMAIL_SEND_FAIL);
         }
     }

@@ -53,4 +53,11 @@ public class ToggleBookmarkService implements ToggleBookmarkUseCase {
                     return true;
                 });
     }
+
+    // 삭제된 실종 게시물에 대한 Bookmark 삭제
+    @Override
+    @Transactional
+    public void deleteByLostPostId(Long lostPostId){
+        bookmarkCommandPort.deleteByLostPostId(lostPostId);
+    }
 }

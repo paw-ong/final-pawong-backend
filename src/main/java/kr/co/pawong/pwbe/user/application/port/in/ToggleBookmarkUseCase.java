@@ -11,4 +11,7 @@ public interface ToggleBookmarkUseCase {
      * Adoption Lost 북마크 토글
      */
     boolean toggleLostAdoptionBookmark(long userId, long adoptionId);
+
+    // 게시글 삭제시 게시글에 포함된 북마크도 삭제
+    void deleteByLostPostId(Long lostPostId);
 }

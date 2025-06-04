@@ -18,4 +18,6 @@ public interface LostBookmarkRepository extends JpaRepository<LostBookmarkEntity
     boolean existsByUserIdAndLostPostId(Long userId, Long lostPostId);
 
     boolean existsByUserIdAndAdoptionId(Long userId, Long adoptionId);
+
+    void deleteByLostPostId(Long lostPostId);
 }
