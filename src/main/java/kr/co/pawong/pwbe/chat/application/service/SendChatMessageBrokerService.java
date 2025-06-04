@@ -8,6 +8,7 @@ import kr.co.pawong.pwbe.chat.application.port.in.SendChatMessageBrokerUseCase;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatMessageCachePort;
 import kr.co.pawong.pwbe.chat.application.port.out.ChatMessageDataQueryPort;
 import kr.co.pawong.pwbe.chat.domain.ChatMessage;
+import kr.co.pawong.pwbe.global.error.exception.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -36,9 +37,13 @@ public class SendChatMessageBrokerService implements SendChatMessageBrokerUseCas
     @Transactional
     public void readMessage(Long roomId, Long userId) {
         commandChatMessageDataUseCase.markAllAsRead(roomId, userId);
-        ChatMessage chatMessage = chatMessageDataQueryPort.findLatestReadMessageOrThrow(roomId, userId);
-        if(chatMessage == null) return;
-        publisher.publishEvent(new ChatMessageReadEvent(roomId, userId, chatMessage.getMessageId()));
+        try {
+            ChatMessage chatMessage = chatMessageDataQueryPort.findLatestReadMessageOrThrow(roomId,
+                    userId);
+            publisher.publishEvent(new ChatMessageReadEvent(roomId, userId, chatMessage.getMessageId()));
+        } catch (BaseException e) {
+            return;
+        }
     }
 
     private ChatMessage createChatMessage(ChatMessageCreateRequest request, Long chatRoomId,
