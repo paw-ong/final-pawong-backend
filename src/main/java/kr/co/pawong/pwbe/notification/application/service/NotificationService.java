@@ -53,7 +53,9 @@ public class NotificationService implements NotificationUseCase {
             Notification notification = Notification.createChatNotification(
                     request.getUserId(),
                     request.getMessage(),
-                    request.getTargetId()
+                    request.getTargetId(),
+                    request.getTargetType(),
+                    request.getPostId()
             );
 
             // DB에 저장
