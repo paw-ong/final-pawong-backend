@@ -4,17 +4,18 @@ import java.time.Clock;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.co.pawong.pwbe.adoption.application.port.out.ProxyUrlPort;
-import kr.co.pawong.pwbe.adoption.domain.model.Adoption;
+import kr.co.pawong.pwbe.adoption.application.port.out.ShelterInfoPort;
+import kr.co.pawong.pwbe.lostPost.adapter.in.api.dto.response.LostAdoptionDetailResponse;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostAdoptionDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostAdoptionDetailDto;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.SliceLostPostSearchResponses;
 import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostAdoptionDetailMapper;
 import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostPostCardMapper;
-import kr.co.pawong.pwbe.lostPost.application.port.out.BookmarkInfoPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostAdoptionDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.ShelterCareNmPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostAdoption;
+import kr.co.pawong.pwbe.shelter.application.port.in.dto.ShelterDetailDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,15 +29,18 @@ public class QueryLostAdoptionDataService implements QueryLostAdoptionDataUseCas
     private final ShelterCareNmPort shelterCareNmPort;
     private final Clock clock;
     private final ProxyUrlPort proxyUrlPort;
+    private final ShelterInfoPort shelterInfoPort;
 
     @Override
-    public LostAdoptionDetailDto findAdoptionById(Long adoptionId) {
-
+    public LostAdoptionDetailResponse getLostAdoptionDetails(Long adoptionId){
         LostAdoption lostAdoption = lostAdoptionDataQueryPort.findAdoptionByIdOrThrow(adoptionId);
         changePopfilesToProxy(lostAdoption);
         String careNm = shelterCareNmPort.getShelterCareNmByCareRegNo(lostAdoption.getCareRegNo());
 
-        return LostAdoptionDetailMapper.toModel(lostAdoption, careNm);
+        LostAdoptionDetailDto lostAdoptionDetailDto = LostAdoptionDetailMapper.toModel(lostAdoption, careNm);
+        ShelterDetailDto shelterDetailDto = shelterInfoPort.getShelterDetail(lostAdoption.getCareRegNo());
+
+        return new LostAdoptionDetailResponse(lostAdoptionDetailDto, shelterDetailDto);
     }
 
     @Override
