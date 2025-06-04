@@ -20,12 +20,14 @@ import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter
 @DynamicUpdate
 @NoArgsConstructor
 @Table(name = "Adoption")
+@SQLRestriction("active_state = 'ADOPTABLE'")
 public class AdoptionEntity {
 
     @Id

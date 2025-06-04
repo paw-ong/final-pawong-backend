@@ -19,13 +19,13 @@ import kr.co.pawong.pwbe.adoption.enums.UpKindNm;
 import kr.co.pawong.pwbe.lostPost.domain.LostAdoption;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @Table(name = "Adoption")
-@Where(clause = "active_state = 'MISSING'")
+@SQLRestriction("active_state = 'MISSING'")
 // @Where은 추가 예정
 public class LostAdoptionEntity {
     @Id
