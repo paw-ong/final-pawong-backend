@@ -40,4 +40,9 @@ public class FcmAdapter implements FcmPort {
         log.debug("사용자 ID로 FCM 토큰 삭제: userId={}", userId);
         fcmRepository.deleteByUserId(userId);
     }
+
+    @Override
+    public void deleteByToken(String token) {
+        fcmRepository.deleteByToken(token);
+    }
 }

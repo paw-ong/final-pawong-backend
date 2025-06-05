@@ -16,10 +16,19 @@ public class KafkaMessageConsumer {
     private final MailUseCase mailUseCase;
 
     @KafkaListener(
-            topics = "${kafka.topic.fcm-notification}",
+            topics = "${kafka.topic.similar-animal-fcm-notification}",
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void consumeSimilarAnimalNotificationMessage(String jsonString) {
+        log.info("[유사 공고 알림] 메시지 수신: {}", jsonString);
+        notificationUseCase.processFcmNotificationMessage(jsonString);
+    }
+
+    @KafkaListener(
+            topics = "${kafka.topic.chat-fcm-notification}",
+            containerFactory = "kafkaListenerContainerFactory"
+    )
+    public void consumeChatNotificationMessage(String jsonString) {
         notificationUseCase.processFcmNotificationMessage(jsonString);
     }
 
@@ -27,7 +36,7 @@ public class KafkaMessageConsumer {
             topics = "${kafka.topic.mail-notification}",
             containerFactory = "kafkaListenerContainerFactory"
     )
-    public void consumeChatNotificationMessage(String jsonString) {
+    public void consumeMailNotificationMessage(String jsonString) {
         mailUseCase.processMailNotificationMessage(jsonString);
     }
 }

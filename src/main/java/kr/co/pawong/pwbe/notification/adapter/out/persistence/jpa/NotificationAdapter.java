@@ -10,6 +10,7 @@ import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.WebpushConfig;
 import com.google.firebase.messaging.WebpushNotification;
 import kr.co.pawong.pwbe.global.error.exception.BaseException;
+import kr.co.pawong.pwbe.infrastructure.fcm.application.port.out.FcmPort;
 import kr.co.pawong.pwbe.notification.adapter.out.persistence.jpa.entity.NotificationEntity;
 import kr.co.pawong.pwbe.notification.adapter.out.persistence.jpa.repository.NotificationJpaRepository;
 import kr.co.pawong.pwbe.notification.application.port.out.NotificationPort;
@@ -26,6 +27,7 @@ public class NotificationAdapter implements NotificationPort {
 
     private final NotificationJpaRepository notificationJpaRepository;
     private final FirebaseMessaging firebaseMessaging;
+    private final FcmPort fcmPort;
 
     @Override
     public Notification save(Notification notification) {
@@ -94,6 +96,10 @@ public class NotificationAdapter implements NotificationPort {
         } catch (FirebaseMessagingException e) {
             log.error("FCM 알림 전송 실패: notificationId={}, error={}",
                     notificationDto.getId(), e.getMessage(), e);
+            if (e.getErrorCode() != null && e.getErrorCode().equals("UNREGISTERED")) {
+                fcmPort.deleteByToken(notificationDto.getToken()); // 토큰 삭제
+            }
+            log.error("토큰을 삭제하였습니다!");
             throw new BaseException(NOTIFICATION_SEND_ERROR);
         } catch (Exception e) {
             log.error("알림 처리 중 예상치 못한 오류 발생: notificationId={}",
