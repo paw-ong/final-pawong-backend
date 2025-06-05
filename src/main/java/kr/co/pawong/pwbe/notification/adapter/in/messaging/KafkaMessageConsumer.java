@@ -21,7 +21,6 @@ public class KafkaMessageConsumer {
     )
     public void consumeSimilarAnimalNotificationMessage(String jsonString) {
         notificationUseCase.processFcmNotificationMessage(jsonString);
-        notificationUseCase.processFcmNotificationMessage(jsonString);
     }
 
     @KafkaListener(
