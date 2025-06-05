@@ -19,8 +19,8 @@ public class LostAdoptionDetailMapper {
                 .age(lostAdoption.getAge())
                 .popfile1(lostAdoption.getPopfile1())
                 .popfile2(lostAdoption.getPopfile2())
-                .specialMark(lostAdoption.getSpecialMark())
-                .happenPlace(lostAdoption.getHappenPlace())
+                .tagsField(lostAdoption.getSpecialMark())
+                .happenPlace(lostAdoption.getTagsField())
                 .neuterYn(lostAdoption.getNeuterYn())
                 .careNm(careNm)
                 .build();
