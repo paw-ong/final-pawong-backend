@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.lostPost.application.service;
 
+import java.net.URL;
 import java.util.List;
 import kr.co.pawong.pwbe.lostPost.application.port.in.PublishCreatedLostAnimalUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.QueryLostAnimalDataUseCase;
@@ -60,8 +61,9 @@ public class SearchSimilarLostAnimalsService implements SearchSimilarLostAnimals
                 lostPostDetail.getColor(),
                 lostPostDetail.getKindNm(),
                 lostPostDetail.getUpKindNm().name());
+        URL imageUrl = lostPostDetail.getImageUrl();
         publishCreatedLostAnimalUseCase.publishCreatedLostAnimal(
-                lostPostId, lostPostDetail.getPostType(), textFeature, lostPostDetail.getImageUrl().toString()
+                lostPostId, lostPostDetail.getPostType(), textFeature, imageUrl==null?null:imageUrl.toString()
         );
     }
 }

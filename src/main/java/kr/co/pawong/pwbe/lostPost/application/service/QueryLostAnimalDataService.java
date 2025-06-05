@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.lostPost.application.service;
 
+import java.net.URL;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.List;
@@ -59,7 +60,7 @@ public class QueryLostAnimalDataService implements QueryLostAnimalDataUseCase {
                 }
                 // 작성자 이름 조회
                 String author = userInfoPort.getNicknameByUserId(lostPost.getUserId());
-                String url = imageStoragePort.presignDownload(lostPost.getImageKey(), DOWNLOAD_URL_EXPIRE).toString();
+                URL url = imageStoragePort.presignDownload(lostPost.getImageKey(), DOWNLOAD_URL_EXPIRE);
                 yield LostPostCardMapper.toLostPostCard(lostPost, author, clock, url);
             }
             // Lost Adoption 가져오기

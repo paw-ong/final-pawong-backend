@@ -1,5 +1,6 @@
 package kr.co.pawong.pwbe.lostPost.application.service;
 
+import java.net.URL;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.List;
@@ -10,7 +11,6 @@ import kr.co.pawong.pwbe.lostPost.application.port.in.SearchLostPostDataUseCase;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostCard;
 import kr.co.pawong.pwbe.lostPost.application.port.in.dto.LostPostSearchResponses;
 import kr.co.pawong.pwbe.lostPost.application.port.in.mapper.LostPostCardMapper;
-import kr.co.pawong.pwbe.lostPost.application.port.out.BookmarkInfoPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.LostPostDataQueryPort;
 import kr.co.pawong.pwbe.lostPost.application.port.out.UserInfoPort;
 import kr.co.pawong.pwbe.lostPost.domain.LostPost;
@@ -41,7 +41,7 @@ public class SearchLostPostDataService implements SearchLostPostDataUseCase {
         return lostPostPage.getContent().stream()
                 .map(lp -> {
                     String author = userInfoPort.getNicknameByUserId(lp.getUserId());
-                    String url = imageStoragePort.presignDownload(lp.getImageKey(), DOWNLOAD_URL_EXPIRE).toString();
+                    URL url = imageStoragePort.presignDownload(lp.getImageKey(), DOWNLOAD_URL_EXPIRE);
                     return LostPostCardMapper.toLostPostCard(lp, author, clock, url);
                 })
                 .collect(Collectors.toList());
