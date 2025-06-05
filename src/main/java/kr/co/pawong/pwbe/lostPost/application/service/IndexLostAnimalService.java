@@ -25,7 +25,7 @@ public class IndexLostAnimalService implements IndexLostAnimalUseCase {
         switch (type) {
             case PostType.FOUND, PostType.LOST -> {
                 // 발견 게시물 데이터 가져오기
-                LostPost lostPost = lostPostDataQueryPort.findLostPostByIdOrThrow(id);
+                LostPost lostPost = lostPostDataQueryPort.findActiveLostPostByIdOrThrow(id);
 
                 // lostPost -> lostAnimalDto
                 LostAnimalDto lostPostDto = LostAnimalDto.fromLostPost(lostPost, type, embedding);

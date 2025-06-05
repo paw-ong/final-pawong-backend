@@ -11,7 +11,9 @@ public interface LostPostDataQueryPort {
 
     List<LostPost> getLostPostsByUserId(Long userId);
 
-    LostPost findLostPostByIdOrThrow(Long lostPostId);
+    LostPost findActiveLostPostByIdOrThrow(Long lostPostId);
+
+    LostPost findAnyLostPostByIdOrThrow(Long lostPostId);
 
     Page<LostPost> getLostPostsByPostTypePaged(Pageable pageable, PostType type);
 
