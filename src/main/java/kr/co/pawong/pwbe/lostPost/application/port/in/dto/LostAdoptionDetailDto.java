@@ -26,7 +26,7 @@ public class LostAdoptionDetailDto {
     private Integer age; // 나이
     private String popfile1; // 이미지1(텍스트)
     private String popfile2; // 이미지2(텍스트)
-    private String specialMark; // 특징
+    private String tagsField; // 특징
     private String happenPlace; // 발견장소
     private NeuterYn neuterYn; // 중성화여부(타입)
     private String careNm; // 보호소 번호
