@@ -104,7 +104,7 @@ class QueryLostPostDataServiceTest {
 
         // TODO: 이후 구현
         @Override
-        public LostPost findLostPostByIdOrThrow(Long lostPostId) {
+        public LostPost findActiveLostPostByIdOrThrow(Long lostPostId) {
             if (lostPostId.equals(123L)) {
                 LostPost lp = LostPost.builder()
                         .lostPostId(555L)
@@ -118,6 +118,12 @@ class QueryLostPostDataServiceTest {
                         .build();
                 return lp;
             }
+            return null;
+        }
+
+        // TODO: 이후 구현
+        @Override
+        public LostPost findAnyLostPostByIdOrThrow(Long lostPostId) {
             return null;
         }
 

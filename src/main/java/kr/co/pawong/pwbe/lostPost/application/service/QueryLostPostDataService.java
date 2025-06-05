@@ -53,7 +53,7 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
     @Override
     public LostPostDetailDto findLostPostById(Long lostPostId) {
 
-        LostPost lostPost = lostPostDataQueryPort.findLostPostByIdOrThrow(lostPostId);
+        LostPost lostPost = lostPostDataQueryPort.findActiveLostPostByIdOrThrow(lostPostId);
         String author = userInfoPort.getNicknameByUserId(lostPost.getUserId());
         URL url = imageStoragePort.presignDownload(lostPost.getImageKey(), DOWNLOAD_URL_EXPIRE);
         boolean bookmarked = bookmarkInfoPort.existsByUserIdAndLostPostId(lostPost.getUserId(), lostPost.getLostPostId());
@@ -63,7 +63,7 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
 
     @Override
     public ChatRoomLostPostInfo findChatRoomLostPostInfosById(Long lostPostId) {
-        LostPost lostPost = lostPostDataQueryPort.findLostPostByIdOrThrow(lostPostId);
+        LostPost lostPost = lostPostDataQueryPort.findAnyLostPostByIdOrThrow(lostPostId);
         String author = userInfoPort.getNicknameByUserId(lostPost.getUserId());
         URL imageUrl = imageStoragePort.presignDownload(lostPost.getImageKey(),
                 Duration.ofMinutes(15));
@@ -90,6 +90,6 @@ public class QueryLostPostDataService implements QueryLostPostDataUseCase {
 
     @Override
     public Long getUserIdByLostPostId(Long lostPostId) {
-        return lostPostDataQueryPort.findLostPostByIdOrThrow(lostPostId).getUserId();
+        return lostPostDataQueryPort.findActiveLostPostByIdOrThrow(lostPostId).getUserId();
     }
 }

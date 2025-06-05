@@ -23,14 +23,26 @@ public class JpaLostPostDataQueryAdapter implements LostPostDataQueryPort {
     private final LostPostJpaRepository lostPostJpaRepository;
     private final LostPostQueryBuilder lostPostQueryBuilder;
 
+    // active인 lost post만 조회
     @Override
-    public LostPost findLostPostByIdOrThrow(Long lostPostId) {
+    public LostPost findActiveLostPostByIdOrThrow(Long lostPostId) {
         LostPostEntity entity = lostPostJpaRepository.findById(lostPostId)
                 .orElseThrow(() ->
                         new BaseException(LOST_NOT_FOUND));
 
         return entity.toDomain();
     }
+
+    // active, inactive 상태 모두 조회
+    @Override
+    public LostPost findAnyLostPostByIdOrThrow(Long lostPostId) {
+        LostPostEntity entity = lostPostJpaRepository.findAnyByLostPostId(lostPostId)
+                .orElseThrow(() ->
+                        new BaseException(LOST_NOT_FOUND));
+
+        return entity.toDomain();
+    }
+
 
     @Override
     public List<LostPost> getLostPostsByUserId(Long userId) {

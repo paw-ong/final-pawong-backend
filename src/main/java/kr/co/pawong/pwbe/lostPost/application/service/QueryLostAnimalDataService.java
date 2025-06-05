@@ -80,7 +80,7 @@ public class QueryLostAnimalDataService implements QueryLostAnimalDataUseCase {
 
     private LostPost getLostPostByIdOrDeleteFromEngine(LostAnimalQuery lostAnimalQuery) {
         try {
-            return lostPostDataQueryPort.findLostPostByIdOrThrow(lostAnimalQuery.id());
+            return lostPostDataQueryPort.findActiveLostPostByIdOrThrow(lostAnimalQuery.id());
         } catch (BaseException e) {
             // ES_에서 해당 데이터 삭제 -> ES와 RDB 싱크 맞추기
             // TODO: 현재 함수 구성으로는 FOUND인지 LOST인지 알 수 없어서 둘 다 삭제하게 했습니다...
